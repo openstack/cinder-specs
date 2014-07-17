@@ -47,11 +47,11 @@ Proposed change
 ===============
 
 Implement a volume number weighter:VolumeNumberWeighter.
-1. _weigh_object fucntion return volume-backend's non-deleted volume number by
-using db api volume_get_all_by_host.
-2. Add a new config item volume_num_weight_multiplier and its default value is
--1, which means to spread volume among volume backend according to
-volume-backend's non-deleted volume number.
+ 1. _weigh_object fucntion return volume-backend's non-deleted volume number by
+    using db api volume_get_all_by_host.
+ 2. Add a new config item volume_num_weight_multiplier and its default value is
+    -1, which means to spread volume among volume backend according to
+    volume-backend's non-deleted volume number.
 
 Since VolumeNumberWeighter is mutually exclusive with
 CapacityWeigher/AllocatedCapacityWeigher and cinder's
@@ -121,7 +121,7 @@ Work Items
 
 * Implement Volume Number Weighter
 * Add weighter option of Volume Number Weighter to OPENSTACK CONFIGURATION
-REFERENCE
+  REFERENCE
 
 Dependencies
 ============

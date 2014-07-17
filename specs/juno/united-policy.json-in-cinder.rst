@@ -25,9 +25,9 @@ miss one.
 Proposed change
 ===============
 
-*Delete the policy.json under the test
+* Delete the policy.json under the test
 
-*Modify the unittest to use the file /etc/cinder/policy.json
+* Modify the unittest to use the file /etc/cinder/policy.json
 
 Alternatives
 ------------
@@ -46,6 +46,11 @@ None
 
 Security impact
 ---------------
+
+None
+
+Notifications impact
+--------------------
 
 None
 
@@ -82,9 +87,9 @@ Primary assignee:
 Work Items
 ----------
 
-*Delete policy.json in the test
+* Delete policy.json in the test
 
-*Modify the unittest to use /etc/cinder/policy.json
+* Modify the unittest to use /etc/cinder/policy.json
 
 
 Dependencies

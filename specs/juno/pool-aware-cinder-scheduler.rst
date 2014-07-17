@@ -154,6 +154,8 @@ flexibility, developer should update their drivers to include all sub-pool
 capacities and capabilities in the volume stats it reports to scheduler.
 Below is an example of new stats message:
 
+.. code-block:: python
+
         {
             'volume_backend_name': 'Local iSCSI', #\
             'vendor_name': 'OpenStack',           #  backend level
@@ -192,6 +194,10 @@ Below is an example of new stats message:
                  }
             ]
         }
+
+
+Implementation
+==============
 
 Assignee(s)
 -----------

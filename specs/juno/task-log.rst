@@ -64,6 +64,11 @@ The following suggestion seems to be agreed upon:
 .. _notification: http://docs.openstack.org/developer/taskflow/notifications.html
 .. _log listener: http://docs.openstack.org/developer/taskflow/notifications.html#printing-and-logging-listeners
 
+Alternatives
+------------
+
+N/A
+
 Data model impact
 -----------------
 

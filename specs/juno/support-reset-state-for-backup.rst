@@ -27,20 +27,22 @@ bp is to another mean for administrators to solve these problems by calling
 backup reset state API.
 
 1. Resetting status from creating/restoring to available
-1) restoring --> available
-Directly change the backup status to 'error', because the backup data is
-already existed in storage backend.
-2) creating --> available
-Use backup-create routine as an example to illustrate what benefit we can get
-from backup-reset function. Backup-create routine first backup volume and
-metadatas, and then update the status of volume and backup. If database just
-went down after update the volume's status to 'available', leaving the
-backup's status to be 'creating' without having methods to deal with through
-API.
-If we have reset-state API and resetting status from creating to available, we
-first verify whether the backup is ok on storage backend.
-If so, we change backup status from creating to available.
-If not, we throw an exception and change backup status from creating to error.
+
+ 1) restoring --> available
+    Directly change the backup status to 'error', because the backup data is
+    already existed in storage backend.
+ 2) creating --> available
+    Use backup-create routine as an example to illustrate what benefit we can
+    get from backup-reset function. Backup-create routine first backup volume
+    and metadatas, and then update the status of volume and backup. If database
+    just went down after update the volume's status to 'available', leaving the
+    backup's status to be 'creating' without having methods to deal with
+    through API.
+
+ If we have reset-state API and resetting status from creating to available, we
+ first verify whether the backup is ok on storage backend.
+ If so, we change backup status from creating to available.
+ If not, we throw an exception and change backup status from creating to error.
 
 2. Resetting status from creating/restoring to error
 Directly change the backup status to 'error' without restart cinder-backup.
@@ -59,6 +61,9 @@ Alternatives
 
 Login in the cinder database, use the following update sql to change the
 backup item.
+
+::
+
     update backups set status='some status' where id='xxx-xxx-xxx-xxx';
 
 Data model impact

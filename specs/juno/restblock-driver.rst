@@ -36,12 +36,12 @@ This block driver currently offers the following simple features:
 Also, we have plans for a few features that should come shortly:
 
  * Storage Pool management to provide volumes from different storage pools.
-Each pool will have their own list of mirrors to choose from.
+   Each pool will have their own list of mirrors to choose from.
 
  * Real failover implementation
 
  * Multiple back-ends support (for multiple REST-like protocols
-implementations, ours being a CDMI implementation)
+   implementations, ours being a CDMI implementation)
 
  * Native snapshot management
 
@@ -54,10 +54,10 @@ module. For the general feature implementation, here is how we plan to support
 the multiple required features of a Cinder driver:
 
  * Provisionning (create/extend/delete) : natively supported by the kernel
-driver
+   driver
 
  * Automatic attach of volumes at setup-time: Natively supported by the kernel
-driver
+   driver
 
  * Snapshots (create/delete) : Supported through LVM tool classes/functions
 

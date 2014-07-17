@@ -35,7 +35,7 @@ so we also add a new connector to realize attach/detach volume.
 
 The following diagram shows the command and data paths.
 
-````
+::
 
                     +------------------+
                     |                  |
@@ -71,7 +71,6 @@ The following diagram shows the command and data paths.
                     +------------------+
 
 
-````
 
 Add new driver in /cinder/volume/drivers path, and realize cinder driver
 minimum features:

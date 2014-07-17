@@ -79,7 +79,7 @@ class TestTitles(testtools.TestCase):
             self.assertTrue(
                 len(line) < 80,
                 msg="%s:%d: Line limited to a maximum of 79 characters." %
-                (tpl, i+1))
+                (tpl, i + 1))
 
     def _check_no_cr(self, tpl, raw):
         matches = re.findall('\r', raw)

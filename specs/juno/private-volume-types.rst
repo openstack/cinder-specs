@@ -59,6 +59,8 @@ Database schema changes:
   table for every volume_type_id and project_id combination.
   It will be a many-to-many relationship.
 
+::
+
   mysql> DESC volume_types;
   +--------------+--------------+------+-----+---------+-------+
   | Field        | Type         | Null | Key | Default | Extra |
@@ -120,13 +122,13 @@ Other end user impact
 
 Proposed python-cinderclient shell interface::
 
-type-access-add --volume-type <type> --project-id <project_id>
+ type-access-add --volume-type <type> --project-id <project_id>
     Add type access for the given project.
 
-type-access-list --volume-type <type>
+ type-access-list --volume-type <type>
     Print access information about the given type.
 
-type-access-remove --volume-type <type> --project-id <project_id>
+ type-access-remove --volume-type <type> --project-id <project_id>
     Remove type access for the given project.
 
 

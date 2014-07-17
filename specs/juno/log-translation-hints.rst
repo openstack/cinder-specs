@@ -25,6 +25,9 @@ Proposed change
 
 Since there are too many files need to change, so divide this bp into 16
 patches according to cinder directories.
+
+::
+
 	├─cinder
 	│  ├─api
 	│  ├─backup
@@ -43,15 +46,20 @@ patches according to cinder directories.
 	│  └─zonemanager
 
 For each directory's files, we change all the log messages as follows.
-1. Change "LOG.exception(_(" to "LOG.exception(_LE".
-2. Change "LOG.warning(_(" to "LOG.warning(_LW(".
-3. Change "LOG.info(_(" to "LOG.info(_LI(".
-4. Change "LOG.critical(_(" to "LOG.info(_LC(".
+ 1. Change "LOG.exception(_(" to "LOG.exception(_LE".
+ 2. Change "LOG.warning(_(" to "LOG.warning(_LW(".
+ 3. Change "LOG.info(_(" to "LOG.info(_LI(".
+ 4. Change "LOG.critical(_(" to "LOG.info(_LC(".
 
 Note that this spec and associated blueprint are not to address the problem of
 removing translation of debug msgs.
 That work is being addressed by the following spec/blueprint:
 https://review.openstack.org/#/c/100338/
+
+Alternatives
+------------
+
+None
 
 Data model impact
 -----------------
@@ -104,12 +112,15 @@ Work Items
 ----------
 
 For each directory's files, we change all the log messages as follows.
-1. Change "LOG.exception(_(" to "LOG.exception(_LE".
-2. Change "LOG.warning(_(" to "LOG.warning(_LW(".
-3. Change "LOG.info(_(" to "LOG.info(_LI(".
-4. Change "LOG.critical(_(" to "LOG.info(_LC(".
+ 1. Change "LOG.exception(_(" to "LOG.exception(_LE".
+ 2. Change "LOG.warning(_(" to "LOG.warning(_LW(".
+ 3. Change "LOG.info(_(" to "LOG.info(_LI(".
+ 4. Change "LOG.critical(_(" to "LOG.info(_LC(".
 
 We handle these changes in the following order:
+
+::
+
 	cinder
 	cinder/api
 	cinder/backup
@@ -130,6 +141,9 @@ We handle these changes in the following order:
 Add a HACKING check rule to ensure that log messages to relative domain.
 Using regular expression to check whether log messages with relative _L*
 function.
+
+ .. code-block:: python
+
 	log_translation_domain_error = re.compile(
 		r"(.)*LOG\.error\(\s*\_LE('|\")")
 	log_translation_domain_warning = re.compile(
@@ -157,6 +171,6 @@ None
 References
 ==========
 
-[1]https://blueprints.launchpad.net/oslo/+spec/log-messages-translation-domain-rollout
-[2]https://review.openstack.org/#/c/70455
-[3]https://wiki.openstack.org/wiki/LoggingStandards
+.. [#] https://blueprints.launchpad.net/oslo/+spec/log-messages-translation-domain-rollout
+.. [#] https://review.openstack.org/#/c/70455
+.. [#] https://wiki.openstack.org/wiki/LoggingStandards

@@ -15,59 +15,62 @@ This is to enable OpenStack to work on top of XtremIO storage.
 Problem description
 ===================
 
-This is a new Cinder driver that would enable Open Stack to work on top of XtremIO
-storage.
+This is a new Cinder driver that would enable Open Stack to work on top of
+XtremIO storage.
 The following diagram shows the command and data paths.
-``
-+----------------+                 +--------+---------+
-|                |  Command        |                  |
-|                |  Path           |  Cinder +        |
-|  Nova          +---------------> |  Cinder Volume   |
-|                |                 |                  |
-|                |                 |                  |
-+-----+----------+                 +--------+---------+
-      |                                     |
-      |                                     |
-      |                                     |
-      |                                     |
-      |                                     |  +------------------+
-      |                                     |  |                  |
- Command                                    +--+                  |
- Path +                                        |  XtremIO Driver  |
-      |                                        |                  |
-      |                                        |                  |
-      |                                        +------+-----------+
-      |                                               |
-      |                                               |
-      |                                               +
-      |                                        XtremIO Rest API
-      |                                               |
-      v                                               |
-                                                      |
-+----------------+                                    |    +------------------+
-|                |                                    |    |                  |
-|  Compute       |                                    |    |                  |
-|                |                                    +---->    XtremIO       |
-|                |           Data Link                     |    storeage      |
-|                +-----------------------------------------+                  |
-+----------------+                                         +------------------+
-``
+
+::
+
+ +----------------+                 +--------+---------+
+ |                |  Command        |                  |
+ |                |  Path           |  Cinder +        |
+ |  Nova          +---------------> |  Cinder Volume   |
+ |                |                 |                  |
+ |                |                 |                  |
+ +-----+----------+                 +--------+---------+
+       |                                     |
+       |                                     |
+       |                                     |
+       |                                     |
+       |                                     |  +------------------+
+       |                                     |  |                  |
+  Command                                    +--+                  |
+  Path +                                        |  XtremIO Driver  |
+       |                                        |                  |
+       |                                        |                  |
+       |                                        +------+-----------+
+       |                                               |
+       |                                               |
+       |                                               +
+       |                                        XtremIO Rest API
+       |                                               |
+       v                                               |
+                                                       |
+ +----------------+                                    |    +-----------------+
+ |                |                                    |    |                 |
+ |  Compute       |                                    |    |                 |
+ |                |                                    +---->    XtremIO      |
+ |                |           Data Link                     |    storeage     |
+ |                +-----------------------------------------+                 |
+ +----------------+                                         +-----------------+
+
 
 Proposed change
 ===============
 
-2 new volume drivers for iSCSI and FC should be developed, bridging Open stack commands to
-XtremIO managment system (XMS) using XMS Rest API.
+2 new volume drivers for iSCSI and FC should be developed, bridging Open stack
+commands to XtremIO managment system (XMS) using XMS Rest API.
 The drivers should support the following Open stack actions:
-* Volume Create/Delete
-* Volume Attach/Detach
-* Snapshot Create/Delete
-* Create Volume from Snapshot
-* Get Volume Stats
-* Copy Image to Volume
-* Copy Volume to Image
-* Clone Volume
-* Extend Volume
+
+ * Volume Create/Delete
+ * Volume Attach/Detach
+ * Snapshot Create/Delete
+ * Create Volume from Snapshot
+ * Get Volume Stats
+ * Copy Image to Volume
+ * Copy Volume to Image
+ * Clone Volume
+ * Extend Volume
 
 Alternatives
 ------------

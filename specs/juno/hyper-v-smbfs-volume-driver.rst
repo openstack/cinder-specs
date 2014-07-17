@@ -4,9 +4,9 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-=================
+=========================
 Windows SMB Volume Driver
-=================
+=========================
 
 https://blueprints.launchpad.net/cinder/+spec/hyper-v-smbfs-volume-driver
 
@@ -96,9 +96,10 @@ Certain volume related operations will require to be synchronized.
 Other deployer impact
 ---------------------
 
-The user will provide a list of SMB shares on which volumes may reside. This list
-will be placed in a file located at a path configured in the cinder config file.
-This share list may contain SMB mount options such as flags or credentials.
+The user will provide a list of SMB shares on which volumes may reside. This
+list will be placed in a file located at a path configured in the cinder config
+file.  This share list may contain SMB mount options such as flags or
+credentials.
 
 The config file will also contain the path to the Samba config file. Oversubmit
 and used space ratios may also be configured.
@@ -131,13 +132,13 @@ Dependencies
 ============
 
 Libvirt smbfs volume driver blueprint:
-https://blueprints.launchpad.net/nova/+spec/libvirt-smbfs-volume-support
+ https://blueprints.launchpad.net/nova/+spec/libvirt-smbfs-volume-support
 
 Hyper-V smbfs volume driver blueprint:
-https://blueprints.launchpad.net/nova/+spec/hyper-v-smbfs-volume-support
+ https://blueprints.launchpad.net/nova/+spec/hyper-v-smbfs-volume-support
 
 Linux smbfs volume driver blueprint:
-https://blueprints.launchpad.net/cinder/+spec/smbfs-volume-driver
+ https://blueprints.launchpad.net/cinder/+spec/smbfs-volume-driver
 
 Testing
 =======

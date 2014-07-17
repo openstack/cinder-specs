@@ -97,15 +97,16 @@ retrieve informations such as free space or total allocated space.
 
 Certain volume related operations will require to be synchronized.
 
-In order to use local shares, the share paths will be read from the Samba config
-file.
+In order to use local shares, the share paths will be read from the Samba
+config file.
 
 Other deployer impact
 ---------------------
 
-The user will provide a list of SMB shares on which volumes may reside. This list
-will be placed in a file located at a path configured in the cinder config file.
-This share list may contain SMB mount options such as flags or credentials.
+The user will provide a list of SMB shares on which volumes may reside. This
+list will be placed in a file located at a path configured in the cinder config
+file.  This share list may contain SMB mount options such as flags or
+credentials.
 
 The config file will also contain the path to the Samba config file. Oversubmit
 and used space ratios may also be configured.

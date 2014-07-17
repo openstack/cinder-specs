@@ -27,17 +27,17 @@ Consistency Group support will be added for snapshots in phase 1 (Juno).
 Future:
 
 * After the Consistency Group is introduced and implemented for snapshots,
-it may be applied to backups. That will be after phase 1.
+  it may be applied to backups. That will be after phase 1.
 
 * Modify Consistency Group (adding existing volumes to CG and removing volumes
-from CG after it is created) will be supported after phase 1.
+  from CG after it is created) will be supported after phase 1.
 
 Assumptions:
 
 * Cinder provides APIs that can be consumed by an orchestration layer.
 
 * The orchestration layer has knowledge of what volumes should be grouped
-together.
+  together.
 
 * Volumes in a CG belong to the same backend.
 
@@ -49,13 +49,13 @@ together.
 * Application level: Not in Cinder's control
 
 * Filesystem level: Cinder can call newly proposed Nova admin quiesce API
-which uses QEMU guest agent to freeze the guest filesystem before taking a
-snapshot of CG and thaw afterwards. However, this freeze feature in QEMU
-guest agent was just added to libvirt recently, so we can't rely on it yet.
+  which uses QEMU guest agent to freeze the guest filesystem before taking a
+  snapshot of CG and thaw afterwards. However, this freeze feature in QEMU
+  guest agent was just added to libvirt recently, so we can't rely on it yet.
 
 * Storage level: Arrays can freeze IO before taking a snapshot of CG.  We can
-only rely on the storage level quiesce in phase 1 because the freeze feature
-mentioned above is not ready yet.
+  only rely on the storage level quiesce in phase 1 because the freeze feature
+  mentioned above is not ready yet.
 
 Proposed change
 ===============
@@ -74,23 +74,23 @@ Consistency Groups work flow
 * Create a snapshot of the CG.
 
   * Cinder API creates cgsnapshot and individual snapshot entries in the db
-and sends request to Cinder volume node.
+    and sends request to Cinder volume node.
 
   * Cinder manager calls novaclient which calls a new Nova admin API "quiesce"
-that uses QEMU guest agent to freeze the guest filesystem. Can leverage this
-work:
-https://wiki.openstack.org/wiki/Cinder/QuiescedSnapshotWithQemuGuestAgent
-(Note: This step will be on hold for now because the freeze feature is not
-reliable yet.)
+    that uses QEMU guest agent to freeze the guest filesystem. Can leverage
+    this work:
+    https://wiki.openstack.org/wiki/Cinder/QuiescedSnapshotWithQemuGuestAgent
+    (Note: This step will be on hold for now because the freeze feature is not
+    reliable yet.)
 
   * Cinder manager calls Cinder driver.
 
   * Cinder driver communicates with backend array to create a point-in-time
-consistency snapshot of the CG.
+    consistency snapshot of the CG.
 
-  * Cinder manager calls novaclient which calls a new Nova admin API "unquiesce"
-that uses QEMU guest agent to thaw the guest filesystem.
-(Note: This step will be on hold for now.)
+  * Cinder manager calls novaclient which calls a new Nova admin API
+    "unquiesce" that uses QEMU guest agent to thaw the guest filesystem.
+    (Note: This step will be on hold for now.)
 
 Alternatives
 ------------
@@ -100,9 +100,9 @@ at the orchestration layer.  However, in that case, Cinder wouldn't know which
 volumes are belonging to a CG.  As a result, user can delete a volume belonging
 to the CG using Cinder CLI or Horizon without knowing the consequences.
 
-Another alternative is not to implement CG at all.  User will be able to operate
-at individual volume level, but can't provide crash consistent data protection of
-multiple volumes in the same application.
+Another alternative is not to implement CG at all.  User will be able to
+operate at individual volume level, but can't provide crash consistent data
+protection of multiple volumes in the same application.
 
 Data model impact
 -----------------
@@ -114,51 +114,52 @@ DB Schema Changes
 * A new cgsnapshots table will be created.
 
 * Volume entries in volumes tables will have a foreign key of the
-consistencygroup uuid that they belong to.
+  consistencygroup uuid that they belong to.
 
 * cgsnapshot entries in cgsnapshots table will have a foreign key of the
-consistencygroup uuid.
+  consistencygroup uuid.
 
 * snapshot entries in snapshots table will have a foreign key of the
-cgsnapshot uuid.
+  cgsnapshot uuid.
 
+::
 
-mysql> desc cgsnapshots;
-+---------------------+--------------+------+-----+---------+-------+
-| Field               | Type         | Null | Key | Default | Extra |
-+---------------------+--------------+------+-----+---------+-------+
-| created_at          | datetime     | YES  |     | NULL    |       |
-| updated_at          | datetime     | YES  |     | NULL    |       |
-| deleted_at          | datetime     | YES  |     | NULL    |       |
-| deleted             | tinyint(1)   | YES  |     | NULL    |       |
-| id                  | varchar(36)  | NO   | PRI | NULL    |       |
-| consistencygroup_id | varchar(36)  | YES  |     | NULL    |       |
-| user_id             | varchar(255) | YES  |     | NULL    |       |
-| project_id          | varchar(255) | YES  |     | NULL    |       |
-| name                | varchar(255) | YES  |     | NULL    |       |
-| description         | varchar(255) | YES  |     | NULL    |       |
-| status              | varchar(255) | YES  |     | NULL    |       |
-+---------------------+--------------+------+-----+---------+-------+
-11 rows in set (0.00 sec)
+ mysql> desc cgsnapshots;
+ +---------------------+--------------+------+-----+---------+-------+
+ | Field               | Type         | Null | Key | Default | Extra |
+ +---------------------+--------------+------+-----+---------+-------+
+ | created_at          | datetime     | YES  |     | NULL    |       |
+ | updated_at          | datetime     | YES  |     | NULL    |       |
+ | deleted_at          | datetime     | YES  |     | NULL    |       |
+ | deleted             | tinyint(1)   | YES  |     | NULL    |       |
+ | id                  | varchar(36)  | NO   | PRI | NULL    |       |
+ | consistencygroup_id | varchar(36)  | YES  |     | NULL    |       |
+ | user_id             | varchar(255) | YES  |     | NULL    |       |
+ | project_id          | varchar(255) | YES  |     | NULL    |       |
+ | name                | varchar(255) | YES  |     | NULL    |       |
+ | description         | varchar(255) | YES  |     | NULL    |       |
+ | status              | varchar(255) | YES  |     | NULL    |       |
+ +---------------------+--------------+------+-----+---------+-------+
+ 11 rows in set (0.00 sec)
 
-mysql> desc consistencygroups;
-+-------------------+--------------+------+-----+---------+-------+
-| Field             | Type         | Null | Key | Default | Extra |
-+-------------------+--------------+------+-----+---------+-------+
-| created_at        | datetime     | YES  |     | NULL    |       |
-| updated_at        | datetime     | YES  |     | NULL    |       |
-| deleted_at        | datetime     | YES  |     | NULL    |       |
-| deleted           | tinyint(1)   | YES  |     | NULL    |       |
-| id                | varchar(36)  | NO   | PRI | NULL    |       |
-| user_id           | varchar(255) | YES  |     | NULL    |       |
-| project_id        | varchar(255) | YES  |     | NULL    |       |
-| host              | varchar(255) | YES  |     | NULL    |       |
-| availability_zone | varchar(255) | YES  |     | NULL    |       |
-| name              | varchar(255) | YES  |     | NULL    |       |
-| description       | varchar(255) | YES  |     | NULL    |       |
-| status            | varchar(255) | YES  |     | NULL    |       |
-+-------------------+--------------+------+-----+---------+-------+
-12 rows in set (0.00 sec)
+ mysql> desc consistencygroups;
+ +-------------------+--------------+------+-----+---------+-------+
+ | Field             | Type         | Null | Key | Default | Extra |
+ +-------------------+--------------+------+-----+---------+-------+
+ | created_at        | datetime     | YES  |     | NULL    |       |
+ | updated_at        | datetime     | YES  |     | NULL    |       |
+ | deleted_at        | datetime     | YES  |     | NULL    |       |
+ | deleted           | tinyint(1)   | YES  |     | NULL    |       |
+ | id                | varchar(36)  | NO   | PRI | NULL    |       |
+ | user_id           | varchar(255) | YES  |     | NULL    |       |
+ | project_id        | varchar(255) | YES  |     | NULL    |       |
+ | host              | varchar(255) | YES  |     | NULL    |       |
+ | availability_zone | varchar(255) | YES  |     | NULL    |       |
+ | name              | varchar(255) | YES  |     | NULL    |       |
+ | description       | varchar(255) | YES  |     | NULL    |       |
+ | status            | varchar(255) | YES  |     | NULL    |       |
+ +-------------------+--------------+------+-----+---------+-------+
+ 12 rows in set (0.00 sec)
 
 
 Alternatives:
@@ -323,13 +324,13 @@ Add V2 API extensions for snapshots of consistency group
   * JSON schema definition for V2: None
 
   * Should not be able to delete individual volume snapshot if part of a
-consistency group.
+    consistency group.
 
 
 * List snapshots API
 
   * This API lists summary information for all snapshots of a
-consistency group.
+    consistency group.
 
   * Method type: GET
 
@@ -345,7 +346,7 @@ consistency group.
 * List consistency groups (detailed) API
 
   * This API lists detailed information for all snapshots of a
-consistency group.
+    consistency group.
 
   * Method type: GET
 
@@ -361,7 +362,7 @@ consistency group.
 * Show snapshot API
 
   * This API shows information about a specified snapshot of a
-consistency group.
+    consistency group.
 
   * Method type: GET
 
@@ -405,39 +406,39 @@ python-cinderclient needs to be changed to support CG.  The following CLI
 will be added.
 
 To list all consistency groups:
-cinder consistencygroup-list
+ cinder consistencygroup-list
 
 To create a consistency group:
-cinder consistencygroup-create --name <name> --description <description>
---volume_type <type1,type2,...>
+ cinder consistencygroup-create --name <name> --description <description>
+ --volume_type <type1,type2,...>
 
 Example:
-cinder consistencygroup-create --name mycg --description "My CG"
---volume_type lvm-1,lvm-2
+ cinder consistencygroup-create --name mycg --description "My CG"
+ --volume_type lvm-1,lvm-2
 
 To create a new volume and add it to the consistency group:
-cinder create --volume_type <type> --consistencygroup <cg uuid or name> <size>
+ cinder create --volume_type <type> --consistencygroup <cg uuid or name> <size>
 
 To delete one or more consistency groups:
-cinder consistencygroup-delete <cg uuid or name> [<cg uuid or name> ...]
+ cinder consistencygroup-delete <cg uuid or name> [<cg uuid or name> ...]
 
-cinder consistencygroup-show <cg uuid or name>
+ cinder consistencygroup-show <cg uuid or name>
 
 
 python-cinderclient needs to be changed to support snapshots.
 
 To list snapshots of a consistency group:
-cinder consistencygroup-snapshot-list <cg uuid or name>
+ cinder consistencygroup-snapshot-list <cg uuid or name>
 
 To create a snapshot of a consistency group:
-cinder consistencygroup-snapshot-create <cg uuid or name>
+ cinder consistencygroup-snapshot-create <cg uuid or name>
 
 To show a snapshot of a consistency group:
-cinder consistencygroup-snapshot-show <cgsnapshot uuid or name>
+ cinder consistencygroup-snapshot-show <cgsnapshot uuid or name>
 
 To delete one or more snapshots:
-cinder consistencygroup-snapshot-delete <cgsnapshot uuid or name>
-[<cgsnapshot uuid or name> ...]
+ cinder consistencygroup-snapshot-delete <cgsnapshot uuid or name>
+ [<cgsnapshot uuid or name> ...]
 
 
 Performance Impact

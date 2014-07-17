@@ -77,7 +77,8 @@ None
 Other end user impact
 ---------------------
 
-Addition of the X-IO volume driver will allow the end user to use X-IO storage as backend storage in Cinder.
+Addition of the X-IO volume driver will allow the end user to use X-IO storage
+as backend storage in Cinder.
 
 Performance Impact
 ------------------
@@ -95,7 +96,11 @@ The driver can be configured with the following parameters in cinder.conf:
 * ise_default_pool - storage pool to use for volume creation
 * iscsi_ip_address - IP to one ISCSI target interface on ISE
 
-The ISE ISCSI target interface specified in iscsi_ip_address will return all target portals available on that ISE, limited to the same subnet when receiving an ISCSI discover sendtargets request from a host identified as an Openstack host.  This was added to allow the host to use multipathing, if enabled on the hypervisor.
+The ISE ISCSI target interface specified in iscsi_ip_address will return all
+target portals available on that ISE, limited to the same subnet when receiving
+an ISCSI discover sendtargets request from a host identified as an Openstack
+host.  This was added to allow the host to use multipathing, if enabled on the
+hypervisor.
 
 Developer impact
 ----------------
@@ -156,7 +161,8 @@ Documentation Impact
 Support Matrix needs to be updated to include X-IO support.
 https://wiki.openstack.org/wiki/CinderSupportMatrix
 
-Block storage documentation needs to be updated to include X-IO volume driver information in the volume drivers section.
+Block storage documentation needs to be updated to include X-IO volume driver
+information in the volume drivers section.
 http://docs.openstack.org/
 
 References

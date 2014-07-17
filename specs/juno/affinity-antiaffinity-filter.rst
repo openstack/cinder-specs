@@ -4,9 +4,9 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-==========================================
+===========================================
 Affinity and anti-affinity scheduler filter
-==========================================
+===========================================
 
 https://blueprints.launchpad.net/cinder/+spec/affinity-antiaffinity-filter
 

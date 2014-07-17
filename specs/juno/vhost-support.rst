@@ -72,7 +72,8 @@ Performance Impact
 ------------------
 
 Cinder itself being the control plane will not experience any different
-performance. The data plane should experience a greater deal of performance [1].
+performance. The data plane should experience a greater deal of performance
+[1].
 
 Other deployer impact
 ---------------------

@@ -1,11 +1,9 @@
-Proposal to implement incremental backup feature in Cinder
+..
+ This work is licensed under a Creative Commons Attribution 3.0 Unported
+ License.
 
-This work is licensed under a Creative Commons Attribution 3.0 Unported
-License.
-http://creativecommons.org/licenses/by/3.0/legalcode
+ http://creativecommons.org/licenses/by/3.0/legalcode
 
-This specification proposes two new options to cinder-backup create api to
-support incremental backup and backup from a volume snapshot.
 
 ========================================
 Support for incremental backup in Cinder
@@ -13,7 +11,7 @@ Support for incremental backup in Cinder
 Launchpad Blueprint:
   https://blueprints.launchpad.net/cinder/+spec/incremental-backup
 
-Problem description:
+Problem description
 ====================
 The current implementation of Cinder Backup functionality only supports full
 backup and restore of a given volume. There is no provision to backup changes
@@ -23,7 +21,7 @@ entire volumes during backups will be resource intensive and do not scale well
 for larger deployments. This specification discusses implementation of
 incremental backup feature in detail.
 
-Proposed change:
+Proposed change
 ================
 Cinder backup API, by default uses Swift as its backend. When a volume is
 backed up to Swift, Swift creates a manifest file that describes the contents
@@ -70,6 +68,8 @@ contains a reference to the full backup container.
 
 Following changes are made to the manifest header of the backup
 
+::
+
         metadata['version'] = self.DRIVER_VERSION
         metadata['backup_id'] = backup['id']
         metadata['volume_id'] = volume_id
@@ -92,28 +92,28 @@ of the full volume from the full backup copy and then apply incremental
 changes at offset and length as described in the incremental backup manifest.
 
 
-Snapshot based backups
-======================
-Since existing backup implementation copies the data directly from the volume,
-it requires the volume to be detached from the instance. For most cloud
-workloads this may be sufficient but other workloads that cannot tolerate
-prolonged downtimes, a snapshot based backup solution can be a viable
-alternative. Snapshot based backup will perform a point in time copy of the
-volume and backup the data from point in time copy. This approach does not
-require volume to be detached from the instance. Rest of the backup and
-restore functionality remain the same.
+Snapshot based backups::
 
-As an alternative, snapshot based backup can be implemented by extending
-existing backup functionality to snapshot volumes. This approach can be lot
-more simpler than backup API taking snapshot of the volume and then managing
-the snapshots.
+ Since existing backup implementation copies the data directly from the volume,
+ it requires the volume to be detached from the instance. For most cloud
+ workloads this may be sufficient but other workloads that cannot tolerate
+ prolonged downtimes, a snapshot based backup solution can be a viable
+ alternative. Snapshot based backup will perform a point in time copy of the
+ volume and backup the data from point in time copy. This approach does not
+ require volume to be detached from the instance. Rest of the backup and
+ restore functionality remain the same.
+
+ As an alternative, snapshot based backup can be implemented by extending
+ existing backup functionality to snapshot volumes. This approach can be lot
+ more simpler than backup API taking snapshot of the volume and then managing
+ the snapshots.
 
 Alternatives
-============
+------------
 Incremental backup offers two important benefits:
-1. Use less storage when storing backup images
-2. Use less network bandwidth and improve overall efficiency of backup process
-   in terms of CPU and time utilization
+ 1. Use less storage when storing backup images
+ 2. Use less network bandwidth and improve overall efficiency of backup process
+    in terms of CPU and time utilization
 
 The first benefit can be achieved as a post processing of the backup images to
 remove duplication or by using dedupe enabled backup storage. However the
@@ -121,39 +121,41 @@ second benefit cannot be achieved unless Cinder backup supports incremental
 backup.
 
 Data model impact
-=================
+-----------------
 No percieved data model changes
 
 REST API impact
-===============
+---------------
 No new APIs are proposed. Instead existing backup API will be enhanced to
 accept additional option called "--incr" with <path to full backup container>"
 as its argument.
 
-cinder backup-create <volumeid> --incr <full backup container>
+::
+
+ cinder backup-create <volumeid> --incr <full backup container>
    Performs incremental backup
 
-cinder backup-create <volumeid> --snapshot
+ cinder backup-create <volumeid> --snapshot
    Optionally backup-create will backup a snapshot of the volume. Snapshot
-based backups can be performed while the volume is still attached to the
-instance.
+   based backups can be performed while the volume is still attached to the
+   instance.
 
-cinder backup-create <volumeid> --snapshot --incr <full backup container>
+ cinder backup-create <volumeid> --snapshot --incr <full backup container>
    Optionally backup-create will perform incremental backup from volume
-snapshot
+   snapshot
 
 No anticipated changes to restore api
 
 Security impact
-===============
+---------------
 None
 
 Notifications impact
-====================
+--------------------
 None
 
 Other end user impact
-=====================
+---------------------
 python-cinderclient will be modified to accept "--incr" option. It may
 include some validation code to validate if the full backup container path
 is valid
@@ -163,7 +165,7 @@ it happens, the dashboard will provide an option for user to choose incremental
 backup
 
 Performance Impact
-==================
+------------------
 Except for calculating SHAs during full backup operation, there is no other
 performance impact on existing API. The performance penalty can be easily
 offset by the efficiency gained by incremental backup. Also new hardware
@@ -171,18 +173,19 @@ support CPU instructions to calculate SHAs which alleviates some stress on
 the CPU cycles.
 
 Other deployer impact
-=====================
+---------------------
 None
 
 
 Developer impact
-================
+----------------
 None
 
 Implementation
 ==============
 
 Assignee(s)
+-----------
 Primary assignee:
 muralibalcha(murali.balcha@triliodata.com)
 
@@ -190,7 +193,7 @@ Other contributors:
 giribasava(giri.basava@triliodata.com)
 
 Work Items
-==========
+----------
 1. python-cinderclient
    That accepts "--incr" option and some validation code
 
@@ -208,27 +211,36 @@ Work Items
 
 Dependencies
 ============
+
 None
 
 Testing
 =======
+
 Unit tests will be added for incremental backup.
 
 Testing will primarily focus on the following:
-1. SHA file generation
-2. Creating various changes to the original volume. These include
-   1. Changes to first block
-   2. Changes to last block
-   3. Changes to odd number of successive blocks
-   4. Changes to even number of successive blocks
-   5. Changes spread across multiple sections of the volume
-3. Perform 1 incremental
-4. Peform multiple incremental backups
-5. Restore series of incremental backups and compare the contents
-6. Perform full backup, then incremental, then full and then incremenal
-   restore the volume from various backups.
+ 1. SHA file generation
+ 2. Creating various changes to the original volume. These include
+
+  1. Changes to first block
+  2. Changes to last block
+  3. Changes to odd number of successive blocks
+  4. Changes to even number of successive blocks
+  5. Changes spread across multiple sections of the volume
+
+ 3. Perform 1 incremental
+ 4. Peform multiple incremental backups
+ 5. Restore series of incremental backups and compare the contents
+ 6. Perform full backup, then incremental, then full and then incremenal
+    restore the volume from various backups.
 
 Documentation Impact
 ====================
+
 Need to document new option in the block storage manual.
 
+References
+==========
+
+None

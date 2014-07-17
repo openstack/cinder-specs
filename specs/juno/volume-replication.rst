@@ -94,8 +94,8 @@ Each Cinder host will report replication capabilities:
 Add extra-specs in the volume type to indicate replication:
 
 * Replication_enabled - if True, volume to be replicated if exists as extra
-   specs. if option is not specified or False, then replication is not
-   enabled. This option is required to enable replication.
+  specs. if option is not specified or False, then replication is not
+  enabled. This option is required to enable replication.
 * replica_same_az  - (optional) indicate if replica should be in the same AZ
 * replica_volume_backend_name - (optional) specify back-end to be used as
   target
@@ -196,13 +196,16 @@ Replication relationship db table:
 * secondary_id = Column(String(36), ForeignKey('volumes.id'), nullable=False)
 * primary_replication_unit_id = Column(String(255))
 * secondary_replication_unit_id = Column(String(255))
-* status = Column(Enum('error', 'creating', 'copying', 'active', 'active-stopped',
-                       'stopping', 'deleting', 'deleted', 'inactive',
-                       name='replicationrelationship_status'))
+* status = Column(Enum('error', 'creating', 'copying', 'active',
+                       'active-stopped', 'stopping', 'deleting', 'deleted',
+                       'inactive', name='replicationrelationship_status'))
 * extended_status = Column(String(255))
 * driver_data = Column(String(255))
 
-State diagram for replication (status)::
+State diagram for replication (status)
+
+::
+
  <start>
                                           any error
  Create replica   +----------+             condition   +-------+

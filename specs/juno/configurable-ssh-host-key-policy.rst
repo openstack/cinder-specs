@@ -4,9 +4,9 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-==========================================
+=============================================
 Configurable SSH Host Key Policies for Cinder
-==========================================
+=============================================
 
 Include the URL of your launchpad blueprint:
 

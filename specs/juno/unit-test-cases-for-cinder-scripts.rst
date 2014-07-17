@@ -130,17 +130,19 @@ Packagers should be aware of the following changes to setup.cfg.
 cinder uses pbr to handle packaging.  The cinder scripts that is under the
 [files] section will be moved to the [entry_points] section of setup.cfg.
 More specifically, this proposal adds console_scripts to the [entry_points]
-section of setup.cfg as follows::
+section of setup.cfg as follows:
 
-[entry_points]
-console_scripts =
-    cinder-all = cinder.cmd.cinder_all:main
-    cinder-api = cinder.cmd.api:main
-    cinder-backup = cinder.cmd.backup:main
-    cinder-manage = cinder.cmd.manage:main
-    cinder-rtstool = cinder.cmd.rtstool:main
-    cinder-scheduler = cinder.cmd.scheduler:main
-    cinder-volume = cinder.cmd.volume:main
+.. code-block:: ini
+
+  [entry_points]
+  console_scripts =
+  cinder-all = cinder.cmd.cinder_all:main
+  cinder-api = cinder.cmd.api:main
+  cinder-backup = cinder.cmd.backup:main
+  cinder-manage = cinder.cmd.manage:main
+  cinder-rtstool = cinder.cmd.rtstool:main
+  cinder-scheduler = cinder.cmd.scheduler:main
+  cinder-volume = cinder.cmd.volume:main
 
 This will cause each console script to be installed that executes the main
 functions found in cinder.cmd.

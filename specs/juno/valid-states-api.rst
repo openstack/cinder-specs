@@ -20,8 +20,8 @@ Problem description
 
 The purpose of this feature is to facilite exposing the reset-state API in
 horizon in a meaningful way by restricting the set of permissible states that
-the administrator can specify for a volume.  There is no API for this, and it is
-undesirable to hardcode this information into horizon.
+the administrator can specify for a volume.  There is no API for this, and it
+is undesirable to hardcode this information into horizon.
 
 Proposed change
 ===============
@@ -73,7 +73,8 @@ Other end user impact
 A new command, get-valid-states, will be added to python-cinderclient.  This
 command mirrors the underlying API function.
 
-Obtaining the list of valid states for a volume or snapshot can be performed by:
+Obtaining the list of valid states for a volume or snapshot can be performed
+by:
 $ cinder get-valid-states
 
 
