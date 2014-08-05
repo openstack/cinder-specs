@@ -1,8 +1,8 @@
 .. cinder-specs documentation master file
 
-==============================
-Cinder Project Specifications
-==============================
+======================================
+Volume Service Specifications (cinder)
+======================================
 
 Contents:
 
