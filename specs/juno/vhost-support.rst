@@ -5,9 +5,7 @@
  http://creativecommons.org/licenses/by/3.0/legalcode
 
 ==========================================
-
 Add vHost Executor
-
 ==========================================
 
 https://blueprints.launchpad.net/cinder/+spec/vhost-support
