@@ -5,3 +5,4 @@ sphinx>=1.1.2,<1.2
 testrepository>=0.0.18
 testtools>=0.9.34
 flake8
+yasfb>=0.5.1
