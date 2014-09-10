@@ -4,14 +4,6 @@
 Volume Service Specifications (cinder)
 ======================================
 
-Contents:
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/*
-
 Juno approved specs:
 
 .. toctree::
