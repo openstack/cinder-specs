@@ -37,7 +37,7 @@ approach, we can allow the volume driver to determine how best to attach its
 volume locally.  For most drivers, this will continue to be iSCSI.  And for
 Ceph, a RBD object that support file semantics is returned.  In both cases, the
 copy_volume_data routine operates on these file objects as it does now, but
-without explicit knowledge of the underlying transport mechanism. 
+without explicit knowledge of the underlying transport mechanism.
 
 Specifically, I would like to add a routine to the volume driver
 (cinder/volume/driver.py):

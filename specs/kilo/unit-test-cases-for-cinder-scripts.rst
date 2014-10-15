@@ -152,4 +152,3 @@ References
 
 * Original code proposed by eharney: https://review.openstack.org/#/c/52229/
 * Original issue: https://review.openstack.org/#/c/79791/
-
