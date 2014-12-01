@@ -8,3 +8,4 @@ build
 *.swo
 *.pyc
 .testrepository
+.DS_Store

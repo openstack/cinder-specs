@@ -12,6 +12,17 @@ Juno approved specs:
 
    specs/juno/*
 
+=============
+Volume V2 API
+=============
+
+.. toctree::
+    :glob:
+    :maxdepth: 1
+
+    specs/api/v2/*
+
+
 ==================
 Indices and tables
 ==================
