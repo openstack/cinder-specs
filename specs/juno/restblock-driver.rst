@@ -114,7 +114,7 @@ Other deployer impact
 
 As this is a 3rd-party provided driver, it implies setting up the said
 software first. Other than that, only the new driver-specific configuration
-values will be added. 
+values will be added.
 
 Developer impact
 ----------------

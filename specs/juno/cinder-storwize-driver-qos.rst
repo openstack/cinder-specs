@@ -97,7 +97,7 @@ Other deployer impact
 The QoS for Storwize driver can be configurable with a configuration option
 in cinder.conf. An extra spec with the key of IOThrottling can bind to a
 volume type, so that the volumes with this volume type are guaranteed with
-an I/O throttling rate. 
+an I/O throttling rate.
 
 Developer impact
 ----------------

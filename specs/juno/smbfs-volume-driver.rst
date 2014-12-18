@@ -63,7 +63,7 @@ Alternatives
 ------------
 
 None
- 
+
 Data model impact
 -----------------
 

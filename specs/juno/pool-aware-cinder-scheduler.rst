@@ -36,7 +36,7 @@ there are obvious problems when using them with current Cinder:
 1. A volume/snapshot that is larger than any sub-pool of the target backend
    be schedule the backend would fail;
 2. A sub pool may not have enough space to serve consecutive request (e.g.
-   volume clones, snapshots) while the entire backend appears to have 
+   volume clones, snapshots) while the entire backend appears to have
    sufficient capacity;
 
 These issues are very confusing and result in inconsistent user experience.

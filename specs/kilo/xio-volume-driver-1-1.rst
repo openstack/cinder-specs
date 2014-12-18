@@ -11,7 +11,7 @@ Add QoS, media affinity and thin allocation support to X-IO volume driver
 https://blueprints.launchpad.net/cinder/+spec/xio-volume-driver-1-1
 
 This blueprint covers enhancements of X-IO volume driver to add support for:
-- QoS specs - add ability to pass down IOPSmin, IOPSmax and IOPSburst to 
+- QoS specs - add ability to pass down IOPSmin, IOPSmax and IOPSburst to
 ISE storage system.
 - Media affinity - add ability to pass down requested media type for volume.
 Media types supported: Flash, CADP (hybrid) and HDD only.

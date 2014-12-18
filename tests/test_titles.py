@@ -89,6 +89,12 @@ class TestTitles(testtools.TestCase):
             "Found %s literal carriage returns in file %s" %
             (len(matches), tpl))
 
+    def _check_trailing_spaces(self, tpl, raw):
+        for i, line in enumerate(raw.split("\n")):
+            trailing_spaces = re.findall(" +$", line)
+            msg = "Found trailing spaces on line %s of %s" % (i + 1, tpl)
+            self.assertEqual(len(trailing_spaces), 0, msg)
+
     def test_template(self):
         releases = ['juno', 'kilo']
 
@@ -114,3 +120,4 @@ class TestTitles(testtools.TestCase):
             self._check_titles(filename, titles)
             self._check_lines_wrapping(filename, data)
             self._check_no_cr(filename, data)
+            self._check_trailing_spaces(filename, data)

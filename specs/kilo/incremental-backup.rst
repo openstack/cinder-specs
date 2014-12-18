@@ -81,7 +81,7 @@ Following changes are made to the manifest header of the backup
         metadata['shafile'] = <shafilename>  # Path to shafile name. Or
                                              # can be hardcoded to "shafile"
                                              # in the container
-   
+
         metadata['backup_type'] = "incrementa/full" # backup type
         metadata['full_container'] = <object path> # path of full backup
 
