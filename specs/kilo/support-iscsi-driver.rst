@@ -10,8 +10,9 @@ Support iSER driver within the ISCSIDriver flow
 
 https://blueprints.launchpad.net/cinder/+spec/support-iscsi-driver
 
-This purpose of this BP is to avoid code duplications of classes and parameters,
-and to prevent instability in the iSER driver flow, for the TGT and LIO cases.
+This purpose of this BP is to avoid code duplications of classes and
+parameters, and to prevent instability in the iSER driver flow,
+for the TGT and LIO cases.
 
 Problem description
 ===================

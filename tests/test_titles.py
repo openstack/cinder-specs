@@ -38,8 +38,9 @@ class TestTitles(testtools.TestCase):
                 titles[section['name']] = section['subtitles']
         return titles
 
-    def _check_titles(self, titles):
-        self.assertEqual(7, len(titles))
+    def _check_titles(self, spec, titles):
+        self.assertEqual(7, len(titles),
+                         "Titles count in '%s' doesn't match expected" % spec)
         problem = 'Problem description'
         self.assertIn(problem, titles)
 
@@ -89,8 +90,19 @@ class TestTitles(testtools.TestCase):
             (len(matches), tpl))
 
     def test_template(self):
-        release = ['juno', 'kilo']
-        files = ['specs/template.rst'] + glob.glob("specs/%s/*/*" % release)
+        releases = ['juno', 'kilo']
+
+        files = ['specs/template.rst']
+
+        # NOTE (e0ne): We don't check specs in 'api' directory because
+        # they don't match template.rts. Uncomment code below it you want
+        # to test them.
+        # files.extend(glob.glob('specs/api/*/*'))
+
+        for release in releases:
+            specs = glob.glob('specs/%s/*' % release)
+            files.extend(specs)
+
         for filename in files:
             self.assertTrue(filename.endswith(".rst"),
                             "spec's file must use 'rst' extension.")
@@ -99,6 +111,6 @@ class TestTitles(testtools.TestCase):
 
             spec = docutils.core.publish_doctree(data)
             titles = self._get_titles(spec)
-            self._check_titles(titles)
+            self._check_titles(filename, titles)
             self._check_lines_wrapping(filename, data)
             self._check_no_cr(filename, data)

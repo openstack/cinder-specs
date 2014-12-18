@@ -28,7 +28,7 @@ There are a couple of problems in capacity reporting in thin provisioning:
   it is an important concept in providing thin provisioning support.
 
 Terminologies
-===============
+-------------
 
 The following terminologies will be used in this spec:
 
