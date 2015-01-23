@@ -31,6 +31,8 @@ usable. e.g. When instances directly access to the storage and doesn't go
 through I/O scheduler of cinder control node, ionice cannot control I/O
 priority and instances access may slow down.
 
+Use Cases
+=========
 
 Proposed change
 ===============

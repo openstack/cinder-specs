@@ -30,6 +30,8 @@ has retrieved from the server. The items in this table need to be sorted
 by status first and by display name second. In order to retrieve data in
 this order, the APIs must accept multiple sort keys/directions.
 
+Use Cases
+=========
 
 Proposed change
 ===============

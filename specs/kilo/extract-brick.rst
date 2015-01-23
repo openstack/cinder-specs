@@ -24,6 +24,8 @@ it was meant to be a standalone library that Cinder, Nova and any other
 project in OpenStack could use.  Currently brick lives in a directory
 inside of Cinder, which means that only Cinder can use it.
 
+Use Cases
+=========
 
 Proposed change
 ===============

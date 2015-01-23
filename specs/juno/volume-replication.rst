@@ -26,6 +26,9 @@ While this blueprint focuses on volume replication, a related blueprint
 focuses on consistency groups, and replication would be extended to
 support it.
 
+Use Cases
+=========
+
 Problem description
 ===================
 

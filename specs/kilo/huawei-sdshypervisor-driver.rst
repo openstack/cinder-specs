@@ -49,6 +49,8 @@ Problem description
 
 Currently, user can't access Huawei SDShypervisor by Openstack Cinder.
 
+Use Cases
+=========
 
 Proposed change
 ===============

@@ -23,6 +23,9 @@ horizon in a meaningful way by restricting the set of permissible states that
 the administrator can specify for a volume.  There is no API for this, and it
 is undesirable to hardcode this information into horizon.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

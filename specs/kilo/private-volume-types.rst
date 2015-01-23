@@ -22,6 +22,8 @@ Some volume types should only be restricted. Examples are test volume types
 where a new technology is being tried out or ultra high performance volumes
 for special needs where most users should not be able to select these volumes.
 
+Use Cases
+=========
 
 Proposed change
 ===============

@@ -28,6 +28,8 @@ performance and maintaining:
 
 * Storage usage utilization (low priority)
 
+Use Cases
+=========
 
 Proposed change
 ===============

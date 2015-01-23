@@ -26,6 +26,9 @@ features will be added for VMAX.
 In previous release, masking view, storage group, and initiator group
 need to be created ahead of time. In Juno, this will be automated.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

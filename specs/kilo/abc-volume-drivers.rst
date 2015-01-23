@@ -25,6 +25,8 @@ the outside (manager layer) it is not visible which functionality a driver
 implements. So the only way to discover that is to try to call a function of
 a feature set and to see if it raises a ``NotImplementedError``.
 
+Use Cases
+=========
 
 Proposed change
 ===============

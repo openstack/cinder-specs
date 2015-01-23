@@ -17,6 +17,9 @@ Problem description
 
 Integration for Datera storage is not available in OpenStack.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

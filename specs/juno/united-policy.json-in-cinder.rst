@@ -22,6 +22,9 @@ Currently, there is two policy.json files in cinder. One for cinder code,
 one for unit test code. It's not convenient for the developer and easy to
 miss one.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

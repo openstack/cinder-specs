@@ -22,6 +22,9 @@ the amount of I/O for a specific volume. QoS has been implemented for
 some cinder storage drivers, and it is feasible for the storwize driver
 to add this feature as well.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

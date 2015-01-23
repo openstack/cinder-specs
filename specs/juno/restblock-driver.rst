@@ -45,6 +45,9 @@ Also, we have plans for a few features that should come shortly:
 
  * Native snapshot management
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

@@ -29,6 +29,9 @@ local cinder-volume instance.  This is technically not necessary for local
 volumes and also prevents drivers such as Ceph from participating in volume
 migration operations.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

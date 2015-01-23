@@ -31,6 +31,8 @@ API messages to also be returned in the language chosen by the user.
 This functionality is important to support the use of OpenStack by the
 international community.
 
+Use Cases
+=========
 
 Problem description
 ===================

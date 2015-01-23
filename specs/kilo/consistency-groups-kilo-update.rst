@@ -38,6 +38,9 @@ Problem description
   Cinder database.  There's a limitation to this approach, however, because
   the size of the column is fixed.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

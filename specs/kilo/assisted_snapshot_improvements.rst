@@ -30,6 +30,8 @@ This work will also assist in supporting proper transitions between
 different phases of the snapshot create/delete process as we move
 toward a state machine in Kilo.
 
+Use Cases
+=========
 
 Proposed change
 ===============

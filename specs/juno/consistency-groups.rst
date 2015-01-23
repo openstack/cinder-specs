@@ -57,6 +57,9 @@ Assumptions:
   only rely on the storage level quiesce in phase 1 because the freeze feature
   mentioned above is not ready yet.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

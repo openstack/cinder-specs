@@ -25,6 +25,8 @@ Problem description
 
 Currently, user can't access Huawei Dsware by Openstack Cinder.
 
+Use Cases
+=========
 
 Proposed change
 ===============

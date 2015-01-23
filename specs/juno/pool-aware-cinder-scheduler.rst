@@ -44,6 +44,8 @@ Therefore it is important to extend Cinder so that it is aware of storage
 pools within backend and also use them as finest granularity for resource
 placement.
 
+Use Cases
+=========
 
 Proposed change
 ===============

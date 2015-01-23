@@ -39,6 +39,8 @@ actually used.  There is also a maximum volume size of 500 GB.  These details
 can be highly variable between vendors and even within different backend
 arrays from the same vendor.
 
+Use Cases
+=========
 
 Proposed change
 ===============

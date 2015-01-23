@@ -29,6 +29,8 @@ The current global config has some issues.
   consumed. From the viewpoint of QoS (to keep bandwidth for access from
   instances), we should limit total volume copy bandwidth per backend.
 
+Use Cases
+=========
 
 Proposed change
 ===============

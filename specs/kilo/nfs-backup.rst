@@ -36,6 +36,8 @@ Problem description
   by the POSIX filesystem driver (currently in review, see [3]
   and [4]).
 
+Use Cases
+=========
 
 Proposed change
 ===============

@@ -42,6 +42,8 @@ for these volumes----three on volume-backend A, three on volume-backend-B. So
 that we can make full use of all volume-backends' IO capabilities to help
 improve volume-backends' IO balance and volumes' IO performance.
 
+Use Cases
+=========
 
 Proposed change
 ===============

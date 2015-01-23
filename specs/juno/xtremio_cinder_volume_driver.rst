@@ -55,6 +55,9 @@ The following diagram shows the command and data paths.
  +----------------+                                         +-----------------+
 
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

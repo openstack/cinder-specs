@@ -28,7 +28,7 @@ that assumes the limitation of a single volume to a single instance.
   see nova/volume/cinder.py: check_attach()
 
 Use Cases
----------
+=========
 Allow users to share volumes between multiple guests using either
 read-write or read-only attachments. Clustered applications
 with two nodes where one is active and one is passive. Both

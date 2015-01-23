@@ -30,6 +30,8 @@ If a MITM attack were to happen, the users data could be compromised.
 In a worst case scenario, users could be tricked into attaching or even
 booting spoofed volumes containing malicious code.
 
+Use Cases
+=========
 
 Proposed change
 ===============

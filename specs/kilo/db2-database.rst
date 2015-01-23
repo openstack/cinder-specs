@@ -32,6 +32,8 @@ Problem description
   since the majority of core projects support DB2 but Cinder does not
   yet.
 
+Use Cases
+=========
 
 Proposed change
 ===============

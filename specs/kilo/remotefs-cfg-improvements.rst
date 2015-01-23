@@ -27,6 +27,8 @@ The configuration system for NFS/GlusterFS/etc drivers:
  * is more complex than necessary
  * limits functionality such as migration
 
+Use Cases
+=========
 
 Proposed change
 ===============

@@ -37,6 +37,9 @@ portal is unaccessible due to network trouble.
 that the session to the main portal can be re-established when the network
 is recovered.)
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

@@ -33,6 +33,9 @@ for the ``vmdk`` protocol and hence the attach\\detach fails for volumes
 created by the VMDK driver. This blueprint proposes adding support for
 ``backup-create``\\ ``backup-restore`` for these volumes.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

@@ -21,6 +21,9 @@ entire volumes during backups will be resource intensive and do not scale well
 for larger deployments. This specification discusses implementation of
 incremental backup feature in detail.
 
+Use Cases
+=========
+
 Proposed change
 ================
 Cinder backup API, by default uses Swift as its backend. When a volume is

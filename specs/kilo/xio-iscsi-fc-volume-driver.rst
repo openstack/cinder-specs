@@ -22,6 +22,9 @@ Problem description
 Currently no volume driver for X-IO ISE storage available in any release
 branch.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

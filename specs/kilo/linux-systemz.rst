@@ -39,6 +39,9 @@ respects:
 * vHBAs may be turned online, or offline. Offline vHBAs need to be
   ignored.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

@@ -22,6 +22,9 @@ Currently, cinder-backup doesn't support qcow2 format disk because the backup
 code assumes the source volume is a raw volume. The destination (i.e. swift,
 rbd) should absolutely remain universal across all volume back-ends.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

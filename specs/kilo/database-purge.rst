@@ -28,7 +28,7 @@ for years and years. To date, there is no "mechanism" to programatically
 purge the deleted data. The archive rows feature doesn't solve this.
 
 Use Cases
-----------
+=========
 
 Operators should have the ability to purge deleted rows, possibily on a
 schedule (cronjob) or as needed (Before an upgrade, prior to maintenance)

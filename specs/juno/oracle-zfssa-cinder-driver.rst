@@ -24,6 +24,9 @@ Problem description
 Currently there is no support for ZFS Storage Appliance product line from
 Openstack Cinder.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 iSCSI driver uses REST API to communicate out of band with the storage

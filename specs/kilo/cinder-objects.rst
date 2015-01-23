@@ -31,6 +31,8 @@ There are a few problems that exists today in cinder:
 * There are multiple places where database calls are made in cinder, and this
   could result in race conditions.
 
+Use Cases
+=========
 
 Proposed change
 ===============

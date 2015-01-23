@@ -48,6 +48,9 @@ this new filter can be useful.
    volumes as close to each other as possible, ideally on the same storage
    backend, for the sake of performance.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

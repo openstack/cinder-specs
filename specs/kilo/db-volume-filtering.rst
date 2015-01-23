@@ -34,6 +34,8 @@ support additional filtering.
 The purpose of this blueprint is to make the filtering support consistent
 across these APIs.
 
+Use Cases
+=========
 
 Proposed change
 ===============

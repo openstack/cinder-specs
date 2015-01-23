@@ -24,6 +24,9 @@ This means the data plane does not go through emulations, which can slow down
 I/O performance. Cinder today does not provide an option for taking advantage
 of the Linux vHost driver.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

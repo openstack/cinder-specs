@@ -23,6 +23,9 @@ Problem description
    This code duplication causes instability in the iSER driver code, when new
    features or changes are added to the iSCSI driver flow.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

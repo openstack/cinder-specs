@@ -85,6 +85,9 @@ looking up rich information about the metadata from the definition catalog
 to display information to users and admins. This can include metadata about
 software on the volume.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

@@ -44,6 +44,9 @@ Benefits:
 * Reduce the IO pressure on cinder-volume host when doing the
   copy_volume_to_image operation.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

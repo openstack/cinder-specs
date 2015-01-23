@@ -39,10 +39,12 @@ class TestTitles(testtools.TestCase):
         return titles
 
     def _check_titles(self, spec, titles):
-        self.assertEqual(7, len(titles),
+        self.assertEqual(8, len(titles),
                          "Titles count in '%s' doesn't match expected" % spec)
         problem = 'Problem description'
         self.assertIn(problem, titles)
+
+        self.assertIn('Use Cases', titles)
 
         proposed = 'Proposed change'
         self.assertIn(proposed, titles)

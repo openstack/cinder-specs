@@ -37,6 +37,8 @@ The following new functionalities will be added in this update:
 * Storage-Assisted Volume Migration
 * SP Toggle for HA
 
+Use Cases
+=========
 
 Proposed change
 ===============

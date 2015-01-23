@@ -23,6 +23,9 @@ upload/download of virtual disks. The VMware drivers for nova, glance and
 ceilometer have already integrated with oslo.vmware. This spec proposes
 the integration of VMDK driver with oslo.vmware.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

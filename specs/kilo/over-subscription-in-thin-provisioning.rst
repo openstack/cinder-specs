@@ -92,6 +92,8 @@ subscription ratio is 2.0. If no volumes have been provisioned yet,
 the apparent_available_capacity is 100 x 2.0 = 200. If 50G volumes have
 already been provisioned, the apparent_available_capacity is 200 - 50 = 150.
 
+Use Cases
+=========
 
 Proposed change
 ===============

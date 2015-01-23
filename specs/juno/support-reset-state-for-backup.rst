@@ -47,6 +47,9 @@ backup reset state API.
 2. Resetting status from creating/restoring to error
 Directly change the backup status to 'error' without restart cinder-backup.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

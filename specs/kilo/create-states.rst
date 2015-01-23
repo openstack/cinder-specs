@@ -67,6 +67,9 @@ and lock acquisition techniques will likely not end in a correct solution. We
 will have to explore how to do this in a way that is *piecemeal* but also does
 not destabilize cinder more.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

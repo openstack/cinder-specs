@@ -34,6 +34,9 @@ The volume will be updated to align with the new type accordingly.
 Thin allocation support:
 Allow the end user to specify that the volume should be thinly allocated.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

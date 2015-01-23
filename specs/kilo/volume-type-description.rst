@@ -29,6 +29,8 @@ Problem description
   default volume type or None. There is no way for a user to find out
   what is the default volume type.
 
+Use Cases
+=========
 
 Proposed change
 ===============

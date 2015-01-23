@@ -27,6 +27,8 @@ to take backup into account:
   of backup storage back-end, it would cause cinder-backup in the state of
   rejecting service.
 
+Use Cases
+=========
 
 Proposed change
 ===============

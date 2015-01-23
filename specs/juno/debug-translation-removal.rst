@@ -27,6 +27,8 @@ been decided that this is not the case.  In order to bring Cinder in
 line with other OpenStack components we need to remove translation
 from debug level log messages.
 
+Use Cases
+=========
 
 Proposed change
 ===============

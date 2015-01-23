@@ -24,6 +24,9 @@ assumed there are many clients out there still supporting v1, as well as many
 deployed clouds still using v1 that would need to make some changes to ease the
 switch.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

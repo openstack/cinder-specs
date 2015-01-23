@@ -29,6 +29,8 @@ Problem description
 Currently, the Pure Storage FlashArray cannot be used a block storage backend
 in an OpenStack environment.
 
+Use Cases
+=========
 
 Proposed change
 ===============

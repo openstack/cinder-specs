@@ -26,6 +26,9 @@ Other vendors have moved common, protocol-agnostic driver code into library
 modules and called those from the actual driver modules, which then become
 very thin indirection layers.  NetApp will take this approach as well.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

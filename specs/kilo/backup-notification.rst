@@ -21,6 +21,9 @@ Cinder is supposed to send the notifications to ceilometer to report the
 resource usage status. This notification support has been implemented for
 the volume and the volume snapshot, but not the backup.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

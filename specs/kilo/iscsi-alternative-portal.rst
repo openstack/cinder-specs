@@ -23,6 +23,9 @@ attach/detach will fail even though the other portal addresses is reachable.
 To enable nova-compute to fall-back to alternative portal addresses, cinder
 should tell the alternative portal addresses to nova.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

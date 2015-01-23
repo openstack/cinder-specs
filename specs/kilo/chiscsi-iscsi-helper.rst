@@ -30,6 +30,9 @@ chiscsi target is not currently supported by openstack
 * Manual intervention is currently required to export volumes, as cinder does
   not understand chiscsi target implementation.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

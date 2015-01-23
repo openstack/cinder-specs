@@ -36,6 +36,9 @@ It will support using any type of SMB share, including:
 
     - vendor specific hardware exporting SMB shares.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

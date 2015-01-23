@@ -24,6 +24,8 @@ exports provided from a gpfs server.
 * Lacking this capability will limit the end users from using remote gpfs
   NAS servers as a backend in OpenStack environment.
 
+Use Cases
+=========
 
 Proposed change
 ===============

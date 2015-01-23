@@ -24,6 +24,9 @@ driver.
 * delete snapshot
 * clone from snapshot
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

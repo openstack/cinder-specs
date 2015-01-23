@@ -24,6 +24,9 @@ tests for these scripts can help prevent issues similar to
 https://review.openstack.org/#/c/79791/, where a non-existent module was
 imported.  Furthermore, it increases the test coverage for each cinder script.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

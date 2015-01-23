@@ -25,6 +25,9 @@ values are. Having the ability to obtain the permissible volume type extra
 specs while creating or editing the extra specs will make this task easier and
 more user-friendly.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

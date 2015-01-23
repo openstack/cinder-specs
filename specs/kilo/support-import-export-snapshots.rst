@@ -41,6 +41,9 @@ Benefits:
     By using import snapshots function to import snapshots, we could first
     delete the import snapshots, and then delete the import volumes.
 
+Use Cases
+=========
+
 Proposed change
 ===============
 

@@ -30,6 +30,8 @@ backends have this capability.
 A use case for this is storing target CHAP secrets so iSCSI initiators can
 do CHAP authentication against targets.
 
+Use Cases
+=========
 
 Proposed change
 ===============
