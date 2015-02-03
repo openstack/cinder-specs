@@ -15,15 +15,20 @@ Volume replication is a key storage feature and a requirement for
 features such as high-availability and disaster recovery of applications
 running on top of OpenStack clouds.
 This blueprint is an attempt to add initial support for volume replication
-in Cinder, and is considered a first take, and will include support for:
+in Cinder, and is considered a first take which will include support for:
 * Replicate volumes (primary to secondary approach)
 * Promote a secondary to primary (and stop replication)
-* Synchronize replication with direction
+* Re-enable replication
+* Test that replication is running properly
 
-This would further be enhanced in the future.
+It is important to note that this is a first pass at volume replication.
+The process of implementing replication for drivers has uncovered a
+number of challenges that will be addressed in a future revision of
+replication that will address the ability to have different replication
+types and the ability to replicate across multiple backends.
 
 While this blueprint focuses on volume replication, a related blueprint
-focuses on consistency groups, and replication would be extended to
+focuses on consistency groups, and replication will be extended to
 support it.
 
 Problem description
@@ -57,7 +62,7 @@ Assumptions:
 * Replication should be transparent to the end-user, failover, failback
   and test will be executed by the cloud admin.
   However, to test that the application is working, the end-user may be
-  involved, as he will be required to verify that his application is
+  involved, as they will be required to verify that his application is
   working with the volume replica.
 
 * The storage admin will provide the setup and configuration to enable the
@@ -75,95 +80,236 @@ Assumptions:
   the cloud admin).
 
 * Quota management: quota are consumed as 2x as two volumes are
-  created and the consumed space id double.
+  created and the consumed space is doubled.
   We can re-examine this mechanism after we get comments from deployers.
 
 Proposed change
 ===============
 
-Each Cinder host will report replication capabilities:
+Introduction:
 
-* Replication_support: indicate if replication is enabled for this driver
-  instance
-* Replication_unit_id: device specific id used for replication
-* Replication_partners: list of device specific ids that this node can
-  replicate with
-* Replication_rpo_range - supported RPO by this driver instance <min,max>
-* replication_supported_methods - list of methods supported by the back-end
+  The proposed design provides just a framework in Cinder for backend volume
+  drivers to implement volume replication using the facilities in the storage
+  backend.  As such, this spec provides guidance as to how volume replication
+  should be implemented but the actual implementation will vary depending
+  upon the backend in question.
+
+  The key to enabling replication starts with adding an extra spec to the
+  volume type to indicate that replication is desired.  That extra spec is
+  then used in the volume driver to enable the set-up and control of
+  replication on the storage backend in each of the different functions
+  documented below.
+
+  Since Cinder is just providing the framework for backend volume drivers
+  to implement replication, details of replication implementation are left
+  to the backend to implement.  The backend driver developer will need to
+  decide for their storage backend the best way to enable replication.  For
+  instance one storage provider may feel that implementing synchronous
+  replication is the best choice while another storage provider may choose
+  asynchronous.  A provider could also choose to make it a configurable
+  option.  Implementing volume replication in Cinder in this manner allows
+  the greatest flexibility to the backend developer to implement replication.
+
+  It is also important to note that the developer documentation must provide
+  examples of how this is implemented in the Storwize driver.  This is an
+  important item to note as it is not currently possible to demonstrate
+  volume replication in Cinder's reference implementation, LVM.  Therefore
+  developer documentation will have to serve as the reference.
 
 Add extra-specs in the volume type to indicate replication:
 
-* Replication_enabled - if True, volume to be replicated if exists as extra
-  specs. if option is not specified or False, then replication is not
-  enabled. This option is required to enable replication.
-* replica_same_az  - (optional) indicate if replica should be in the same AZ
-* replica_volume_backend_name - (optional) specify back-end to be used as
-  target
-* replication_target_rpo - (optional) requested RPO (numeric, minutes) for
-  the volume
+* capabilities:replication <is> True - if True, the volume is to be replicated,
+  if supported, by the backend driver.  If the option is not specified or
+  False, then replication is not enabled. This option is required to enable
+  replication.
 
 Create volume with replication enabled:
 
-* Scheduler selects two hosts for volume placement and sets up the replication
-  DB entry
-* Manager on primary creates the primary volume (as is done today)
-* Manager on secondary creates the replica volume
-* Manager on primary sets up the replication
+* Backend drivers that wish to enable replication will need to update their
+  create_volume() function to check for the
+  'capabilities:replication <is> True' extra spec.  It is up to the backend
+  driver developers to implement replication in a manner that is compatible
+  with their storage backend.
 
-Re-type volume:
+  When a replicated volume is created it is expected that the volume dictionary
+  will be populated as follows:
 
-* Replication_enabled: True->False:
-  drop the replication and continue with the regular retype logic.
-* Replication_enabled: False->True:
-  after the retype logic selects back-ends (scheduler) and enables
-  replication.
+  ** volume['replication_status'] = 'copying'
+  ** volume['replication_extended_status'] = <driver specific value>
+  ** volume['driver_data'] = <driver specific value>
 
-Promote to primary:
+  The replica volume is hidden from the end user as the end user will
+  never need to directly interact with the replica volume.  Any interaction
+  with the replica happens through the primary volume.
 
-* Manager on secondary stops the replication.
-* Switch between volume ids of primary and secondary
-  (user sees no change in volume ids)
+  Further details around the dictionary fields above may be seen in the data
+  "Data Model Impact" section below.
 
-Sync replication:
+Create Volume from Snapshot:
 
-* Manager on primary restarts the replication
+  If the volume type extra specs include 'capabilities:replication <is> True'
+  for the new volume, the driver needs to create a volume replica at volume
+  creation time and set up replication between the newly created volume and its
+  associated replica.  The volume dictionary should be populated in the same
+  manner as create volume.
 
-Test:
+Create Cloned Volume:
 
-* Create a clone of the secondary volume.
+  If the volume type extra specs include 'capabilities:replication <is> True'
+  for the new volume, the driver needs to create a volume replica at clone
+  creation time and set up replication between the newly created volume and its
+  associated replica.  The volume dictionary should be populated in the same
+  manner as create volume.
+
+Create Replica Test Volume:
+
+  Create a clone of the replica (secondary) volume.  This clone can then be
+  used for testing replication to ensure that fail-over can be executed when
+  necessary.  It is important to note that this doesn't actually execute the
+  the promote path as the intention is not to promote the replica but it gives
+  a method to ensure that the replica contains data and would be useful if
+  it had to be promoted.
+
+  The administrator is able to access this functionality using the
+  --source-replica option when creating a volume.
 
 Delete volume:
 
-* Disable the replication
-* Delete secondary volume
-* Delete primary volume (as is done today)
+  For volumes with replication enabled the replica needs to be deleted
+  along with the primary copy.  So, if a volume type has
+  'capabilities:replication <is> True' set, the driver will need to do the
+  additional deletion.
 
-Cloning a volume:
+Get Volume Stats:
 
-* Since the replica are added after the primary is created, if we
-  clone a volume and keep the volume-type, it will be replicated.
+  If the storage backend driver supports replication the following state should
+  be reported:
+  * replication = True (None or False disables replication)
 
-Snapshots:
+Re-type volume:
 
-* Snapshot for the primary volume works as is today, and create
-  a snapshot on the primary. No snapshot is done for the replica.
-* Snapshot for the replica (secondary) volume will fail.
+  Changing volume-type is the mechanism an admin can use to make an existing
+  volume replicated, or to disable replication for a volume.  Change the
+  volume-type of a volume to a volume-type that includes
+  'capabilities:replication: <is> True' (and didn't have it before) should
+  result in adding a secondary copy to a volume.  Change the volume-type of
+  a volume to a volume-type that no longer includes
+  'capabilities:replication: <is> True' should result in removing the secondary
+  copy while preserving the primary copy.
+
+  Returns either:
+    A boolean indicating whether the retype occurred, or
+    A tuple (retyped, model_update) where retyped is a boolean
+    indicating if the retype occurred, and the model_update includes
+    changes for the volume db.
+
+  The steps to implement this would look as follows:
+  * Do a diff['extra_specs'] and see if 'replication' is included.
+  * If replication was enabled for the original volume_type but is not
+    not enabled for the new volume_type, then replication should be disabled.
+  * The replica should be deleted.
+  * The volume dictionary should be updated as follows:
+  ** volume['replication_status'] = 'disabled'
+  ** volume['replication_extended_status'] = None
+  ** volume['driver_data'] = None
+  * If replication was not enabled for the original volume_type but is
+    enabled for the new volume_type, then replication should be enabled.
+  * A volume replica should be created and the replication should
+    be set up between the volume and the newly created replica.
+  * The volume dictionary should be updated as follows:
+  ** volume['replication_status'] = 'copying'
+  ** volume['replication_extended_status'] = <driver specific value>
+  ** volume['driver_data'] = <driver specific value>
+
+Get Replication Status:
+
+  This will be used to update the status of replication between the primary and
+  secondary volume.
+
+  This function is called by the "_update_replication_relationship_status"
+  function in 'manager.py' and is the mechanism to update the status
+  replication between the primary and secondary copies.
+
+  The actual state of the replication, as the storage backed is aware of,
+  should be returned and the Cinder database should be updated to reflect the
+  status reported from the storage backend.
+
+  It is expected that the following model update for the volume will
+  happen:
+
+  * volume['replication_status'] = <error | copying | active | active-stopped |
+                                    inactive>
+  **  'error' if an error occurred with replication.
+  **  'copying' replication copying data to secondary (inconsistent)
+  **  'active' replication copying data to secondary (consistent)
+  **  'active-stopped' replication data copy on hold (consistent)
+  **  'inactive' if replication data copy is stopped (inconsistent)
+  * volume['replication_extended_status'] = <driver specific value>
+  * volume['driver_data'] = <driver specific value>
+
+  Note for get replication status, that the replication_extended_status and
+  driver_data may not need to be updated.
+
+Promote replica:
+
+  Promotion of a replica means that the secondary volume will take over
+  for the primary volume.  This can be thought of as a 'fail over' operation.
+  Once promotion has happened replication between the two volumes, at the
+  storage level, should be stopped, the replica should be available to be
+  attached and the replication status should be changed to 'inactive' if the
+  change is successful, otherwise it should be 'error'.
+
+  A model update for the volume is returned.
+
+  As with the functions above, the volume driver is expected to update the
+  volume dictionary as follows:
+  * volume['replication_status'] = <error | inactive>
+  **  'error' if an error occurred with replication.
+  **  'inactive' if replication data copy on hold (inconsistent)
+  * volume['replication_extended_status'] = <driver specific value>
+  * volume['driver_data'] = <driver specific value>
+
+Re-enable replication:
+
+  Re-enabling replication would be used to fix the replication between
+  the primary and secondary volumes.  Replication would need to be
+  re-enabled as part of the fail-back process to make the promoted
+  volume and the old primary volume consistent again.
+
+  The volume driver returns a model update to reflect the actions taken.
+
+  The backend driver is expected to update the following volume dictionary
+  entries:
+  * volume['replication_status'] = <error | copying | active | active-stopped |
+                                    inactive>
+  **  'error' if an error occurred with replication.
+  **  'copying' replication copying data to secondary (inconsistent)
+  **  'active' replication copying data to secondary (consistent)
+  **  'active-stopped' replication data copy on hold (consistent)
+  **  'inactive' if replication data copy is stopped (inconsistent)
+  * volume['replication_extended_status'] = <driver specific value>
+  * volume['driver_data'] = <driver specific value>
 
 Notes:
 
-* Manager acts via the driver for back-end replication specific functions.
-* Failover is "promote to primary" as described above.
-* Failback is "sync replication" + "promote to primary".
+  The replication_extended_status should be used to store information that
+  the backend driver will need to track replication status.  For instance,
+  the Storwize driver, will use the replication_extended_status to track
+  the primary copy status and synchronization status for the primary volume
+  and the copy status, synchronization status and synchronization progress for
+  the replica (secondary) volume.
+
+  The driver_data field may be, optionally, used to contain any additional data
+  that the backend driver may require.  Some backend drivers may not need to
+  use the driver_data field.
 
 Driver API:
 
-* create_replica: to be run on secondary to create the volume
-* enable_replica: to be run on primary to start replication
-* disable_replica: to be run on primary, stops the replication
-* delete_replica: to be run on secondary, deletes the replica target volume
-* replication_status_check: to be run on all hosts, updating the replication
-  status as observed from the back-end perspective
-* promote_replica: to be run on secondary, make secondary the primary
+* promote:  Promotes a replica that is in active or active-stopped state to
+            be the primary.
+* reenable: Reenables replication on a volume that is in inactive,
+            active-stopped or error status.
+
 
 Alternatives
 ------------
@@ -176,31 +322,30 @@ Also all recovery actions (failover, failback) will require both the
 the storage and cloud admins to work together.
 While replication in Cinder reduces the role of the storage admin to
 only the setup phase, and the cloud admin is responsible for failover
-and failback with (typically) not need for intervention from the clouds
+and failback with (typically) no need for intervention from the cloud
 admin.
 
 Data model impact
 -----------------
 
-* A new replication relationship table will be created.
-  (with its database migration support).
+* The volumes table will be updated:
+** Add replication_status column (string) for indicating the status of
+   replication for a give volume.  Possible values are:
+*** 'copying' - Data is being copied between volumes, the secondary is
+                inconsistent.
+*** 'disabled' - Volume replication is disabled.
+*** 'error' - Replication is in error state.
+*** 'active' - Data is being copied to the secondary and the secondary is
+               consistent.
+*** 'active-stopped' - Data is not being copied to the secondary (on hold),
+                       the secondary volume is consistent.
+*** 'inactive' - Data is not being copied to the secondary, the secondary
+                 copy is inconsistent.
+** Add replication_extended_status column to contain details with regards
+   to replication status of the primary and secondary volumes.
+** Add replication_driver_data column to contain additional details that
+   may be needed by a vendor's driver to implement replication on a backend.
 
-* On promote to primary, the ids of the primary and secondary volume entries
-  will change (switch).
-
-Replication relationship db table:
-
-* id = Column(String(36), primary_key=True)
-* deleted = Column(Boolean, default=False)
-* primary_id = Column(String(36), ForeignKey('volumes.id'), nullable=False)
-* secondary_id = Column(String(36), ForeignKey('volumes.id'), nullable=False)
-* primary_replication_unit_id = Column(String(255))
-* secondary_replication_unit_id = Column(String(255))
-* status = Column(Enum('error', 'creating', 'copying', 'active',
-                       'active-stopped', 'stopping', 'deleting', 'deleted',
-                       'inactive', name='replicationrelationship_status'))
-* extended_status = Column(String(255))
-* driver_data = Column(String(255))
 
 State diagram for replication (status)
 
@@ -208,171 +353,76 @@ State diagram for replication (status)
 
  <start>
                                           any error
- Create replica   +----------+             condition   +-------+
- +--------------> | creating |          +------------> | error |
-                  +----+-----+                         +---+---+
+                                          condition    +-------+
+ Create volume   +-----+                +------------> | error |
+                       |                               +---+---+
                        |                                   | Storage admin to
-                       | enable replication                | fix, and status
+                       |                                   | fix, and status
                        |                                   | check will update
-                  +----+-----+                             |
- +-------------> | copying  |           any state <--------+
- |               +----+-----+
+                 +-----+-----+                             |
+ +-------------> |  copying  |           any state <-------+
+ |               +-----+-----+
  |                    |
  |             status |
  |             check  |       status check
- |               +----++----+ +------> +--+--+-+--------+
+ |               +----+-----+ +------> +----------------+
  |               | active   |          | active-stopped |
- |               +----++----+ <------+ +--+--+-+--------+
+ |               +----+-----+ <------+ +----------------+
  |                    |       status check
  |                    |
  |                    | promote to primary
  |                    |
- |    sync       +----+--+--+
+ | re-enable     +----+-----+
  +------------+  | inactive |
-                 +-------+--+
+                 +----------+
+
  <end>
 
 REST API impact
 ---------------
 
-* Show replication relationship
+Create volume API will have "source-replica" added:
 
-  * Show information about a volume replication relationship.
-  * Method type: GET
-  * Normal Response Code: 200
-  * Expected error http response code(s)
+{
+    "volume":
+    {
+        "source-replica": "Volume uuid of primary to clone",
+    }
+}
 
-    * 404: replication relationship not found
-
-  * /v2/<tenant id>/os-volume-replication/<replication uuid>
-  * JSON schema definition for the response data::
-
-     {
-        'relationship':
-        {
-           'id': 'relationship id'
-           'primary_id': 'primary volume uuid'
-           'status': 'status of relationship'
-           'links': '{ ... }'
-        }
-      }
-
-* Show replication relationship with details
-
-  * Show detailed information about a volume replication relationship.
-  * Method type: GET
-  * Normal Response Code: 200
-  * Expected error http response code(s)
-
-    * 404: replication relationship not found
-
-  * /v2/<tenant id>/os-volume-replication/<replication uuid>/detail
-  * JSON schema definition for the response data::
-
-     {
-        'relationship':
-        {
-           'id': 'relationship id'
-           'primary_id': 'primary volume uuid'
-           'secondary_id': 'secondary volume uuid'
-           'status': 'status of relationship'
-           'extended_status': 'extended status'
-           'links': { ... }
-        }
-     }
-
-* List replication relationship with details
-
-  * List detailed information about a volume replication relationship.
-  * Method type: GET
-  * Normal Response Code: 200
-  * Expected error http response code(s)
-
-    * TBD
-
-  * /v2/<tenant id>/os-volume-replication/detail
-  * Parameters:
-
-    *status*
-       filter by replication relationship status
-    *primary_id*
-       Filter by primary volume id
-    *secondary_id*
-       Filter by secondary volume id
-
-  * JSON schema definition for the response data::
-
-     {
-        'relationship':
-        {
-           'id': 'relationship id'
-           'primary_id': 'primary volume uuid'
-           'secondary_id': 'secondary volume uuid'
-           'status': 'status of relationship'
-           'extended_status': 'extended status'
-           'links': { ... }
-        }
-     }
 
 * Promote volume to be the primary volume
 
-  * Switch between the uuids of the primary and secondary volumes, and
-    make the secondary volume the primary volume.
-  * Method type: PUT
-  * Normal Response Code: 202
-  * Expected error http response code(s)
-
-    * 404: replication relationship not found
-
-  * /v2/<tenant id>/os-volume-replication/<replication uuid>
-  * JSON schema definition for the body data::
-
-     {
-        'relationship':
-        {
-           'promote': None
-        }
-     }
-
-* Sync between the primary and secondary volume.
-
-  * Resync the replication between the primary and secondary volume.
-    Typically follows a promote operation on the replication.
-  * Method type: PUT
-  * Normal Response Code: 202
-  * Expected error http response code(s)
-
-    * 404: replication relationship not found
-
-  * /v2/<tenant id>/os-volume-replication/<replication uuid>
-  * JSON schema definition for the body data::
-
-     {
-        'relationship':
-        {
-           'sync': None
-        }
-     }
-
-* Test replication by make a copy of the secondary volume available
-
-  * Test the volume replication. Create a clone of the secondary volume
-    and make it accessible, so the promote process can be tested.
+  * Promote the secondary copy to be primary. the primary will become
+    secondary and Replication should become inactive.
   * Method type: POST
   * Normal Response Code: 202
   * Expected error http response code(s)
 
-    * 404: replication relationship not found
+    * 500: Replication is not enabled for volume
+    * 500: Replication status for volume must be active or active-stopped,
+      but current status is: <status>
+    * 500: Volume status for volume must be available, but current status
+      is: <status>
 
-  * /v2/<tenant id>/os-volume-replication/<replication uuid>/test
-  * JSON schema definition for the response data::
+  * V2/<tenant id>/volumes/os-promote-replica/<volume uuid>
+  * This API has no body
 
-     {
-        'relationship':
-        {
-           'volume_id': 'volume id of the cloned secondary'
-        }
-     }
+
+* Re-enable replication between the primary and secondary volume.
+
+  * Re-enable the replication between the primary and secondary volume.
+    Typically follows a promote operation on the replication.
+  * Method type: POST
+  * Normal Response Code: 202
+  * Expected error http response code(s)
+
+    * 500: Replication is not enabled
+    * 500: Replication status for volume must be inactive, active-stopped,
+      or error, but current status is: <status>
+
+  * /v2/<tenant id>/volumes/os-reenable-replica/<volume uuid>
+  * This API has no body
 
 Security impact
 ---------------
@@ -403,25 +453,20 @@ Security impact
 Notifications impact
 --------------------
 
-Will add notification for enabling replication, promoting, syncing and
-dropping replication.
+Will add notification for promoting and re-enabling replication for
+volumes.
 
 Other end user impact
 ---------------------
 
-* End-user to use volume types to enable/disable replication.
+* End-user to use volume types to enable replication.
 
-* Cloud admin to use the *promote*, *sync* and *test* commands
-  in the python-cinderclient to execute failover, failback and test.
+* Cloud admin to use the *replication-promote*, *replication-reenable* and
+  *create --source-replica* commands in the python-cinderclient to execute
+  failover, failback and test.
 
 Performance Impact
 ------------------
-
-* Scheduler now needs to choose two hosts instead of one based on
-  additional input from the driver and volume type.
-
-* The periodic task will query the driver and back-end for status
-  of all replicated volumes - running on the primary and secondary.
 
 * Extra db calls identifying if replication exists are added to retype,
   snapshot operations, etc will add a small latency to these functions.
@@ -440,10 +485,10 @@ Other deployer impact
 Developer impact
 ----------------
 
-* Change to the driver API is noted above. Basically new functions are
-  needed to support using replication.
+* Change to the driver API is noted above. Third party backends that wish
+  to enable replication will need to add replication support to their driver.
 
-* The API will expand to include consistency groups following merging
+* The API will expand to include consistency groups following the merge of
   consistency group support to Cinder.
 
 
@@ -457,20 +502,17 @@ Primary assignee:
   ronenkat
 
 Other contributors:
-  None
+  Jay Bryant - E-Mail: jsbryant@us.ibm.com   IRC: jungleboyj
 
 Work Items
 ----------
 
 * Cinder public (admin) APIs for replication
-* DB schema for replication
-* Cinder scheduler support for replication
+* DB schema updates for replication
 * Cinder driver API additions for replication
 * Cinder manager update for replication
 * Testing
 
-Note: Code is based on https://review.openstack.org/#/c/64026/ which was
-submitted in the Icehouse development cycle.
 
 Dependencies
 ============
@@ -499,10 +541,11 @@ Documentation Impact
 * Public (admin) API changes.
 * Details how replication is used by leveraging volume types.
 * Driver docs explaining how replication is setup for each driver.
+* Provide examples of volume replication implementation for
+  the Storwize backend.
 
 References
 ==========
-
-* Volume replication design session
-  https://etherpad.openstack.org/p/juno-cinder-volume-replication
+Etherpad on improvements needed in documentation:
+    https://etherpad.openstack.org/p/cinder-replication-redoc
 
