@@ -13,7 +13,7 @@ Include the URL of your launchpad blueprint:
 https://blueprints.launchpad.net/cinder/+spec/over-subscription-in-thin-provisioning
 
 This proposal is to introduce a mechanism to allow over subscription in thin
-provisioning and also introduce a used ratio to prevent over provisioning.
+provisioning and also use reserved percentage to prevent over provisioning.
 
 Problem description
 ===================
@@ -36,15 +36,14 @@ total_capacity: This is an existing parameter already reported by the driver.
 It is the total physical capacity.
 Example: Assume backend A has a total physical capacity of 100G.
 
-available_capacity: This is an existing parameter already reported by the
+free_capacity: This is an existing parameter already reported by the
 driver. It is the real physical capacity available to be used.
 Example: Assume backend A has a total physical capacity of 100G.
 There are 10G thick luns and 20G thin luns (10G out of the 20G thin luns
-are written). In this case, available_capacity = 100 - 10 -10 = 80G.
+are written). In this case, free_capacity = 100 - 10 -10 = 80G.
 
-used_capacity: This parameter is calculated by the difference between
-total_capacity and available_capacity. It is used below for calculating
-used ratio.
+free: This is calculated in the scheduler by substracting reserved space
+from free_capacity.
 
 volume_size: This is an existing parameter. It is the size of the volume to
 be provisioned.
@@ -75,22 +74,23 @@ Default ratio is 1.0, meaning provisioned capacity cannot exceed the
 total capacity. Note that this ratio is per backend or per pool depending
 on driver implementation.
 
-max_used_ratio: This is a new parameter. It is the float representation
-of the maximum allowed usage. It is a ratio of used capacity over total
-capacity before the backend is no longer considered a valid choice by
-the scheduler. Default is 0.95. Note this refers to the real capacity.
-Note that this ratio is per backend or per pool depending on driver
-implementation.
+reserved_percentage: This is an existing parameter. It represents the
+percentage of backend capacity that is reserved. It ranges from 0 to 100.
+Default is 0. Note this refers to the real capacity. This is per backend
+or per pool depending on driver implementation.
 
-apparent_available_capacity: This is a parameter calculated based on other
+reserved: This is a ratio of reserved_percentage over 100 calculated by the
+scheduler.
+
+virtual_free_capacity: This is a parameter calculated based on other
 parameters. It refers to how much space a user can still provision apparently.
-Note that this is different from available_capacity. available_capacity is
-about the real available physical capacity. apparent_available_capacity is
+Note that this is different from free_capacity. free_capacity is
+about the real available physical capacity. virtual_free_capacity is
 about apparent available virtual capacity.
 Example: Assume the total capacity of backend A is 100G. The max over
 subscription ratio is 2.0. If no volumes have been provisioned yet,
-the apparent_available_capacity is 100 x 2.0 = 200. If 50G volumes have
-already been provisioned, the apparent_available_capacity is 200 - 50 = 150.
+the virtual_free_capacity is 100 x 2.0 = 200. If 50G volumes have
+already been provisioned, the virtual_free_capacity is 200 - 50 = 150.
 
 Use Cases
 =========
@@ -100,15 +100,15 @@ Proposed change
 
 New parameters in get_volume_stats
 ----------------------------------
-Two new configuration options "max_over_subscription_ratio" and
-"max_used_ratio" will be added to cinder/volume/driver.py. These two
-configuration options will be added to cinder.conf. They can be configured
-for each backend when multiple-backend is enabled.
+One new configuration options "max_over_subscription_ratio" will be added
+to cinder/volume/driver.py. This configuration option will be added to
+cinder.conf. It can be configured for each backend when multiple-backend
+is enabled.
 
-Note: These two configuration options are provided as a reference
-implementation and will be used by the LVM driver. However, it is not a
-requirement for a driver to use these two options from cinder.conf. Driver
-can choose its own way if that makes more sense.
+Note: This configuration option is provided as a reference implementation
+and will be used by the LVM driver. However, it is not a requirement for a
+driver to use this option from cinder.conf. Driver can choose its own way
+if that makes more sense.
 
 In scheduler/host_manager.py, the following additional information sent by
 each backend will be saved and will be used later by the scheduler to make
@@ -118,17 +118,20 @@ backend (which is treated as one pool).
 
 * provisioned_capacity
 * max_over_subscription_ratio
-* max_used_ratio
 
-The two configuration options max_over_subscription_ratio and
-max_used_ratio added in cinder.conf are for configuring a backend.
+There is a change on how reserved_percentage is used. It was measured
+against free capacity in the past. Now it will be measured against
+total capacity.
+
+Note: The configuration option max_over_subscription_ratio added in
+cinder.conf is for configuring a backend.
 For a driver that supports multiple pools per backend, it can report
 these ratios for each pool in get_volume_stats.
 
-* Driver can get these two options in cinder.conf and report the same ratios
+* Driver can get this option in cinder.conf and report the same ratio
   for the pools that belonging to the same backend.
-* Alternatively driver can choose to report different ratios for each pool
-  in get_volume_stats, without using these two options in cinder.conf.
+* Alternatively driver can choose to report different ratio for each pool
+  in get_volume_stats, without using this option in cinder.conf.
 
 Capabilities
 ------------
@@ -145,8 +148,14 @@ Volume type extra specs
 If volume type is provided as part of the volume creation request, it can
 have the following extra specs defined:
 
-Key: "thin_provisioning_support", Value: True or False
-Key: "thick_provisioning_support", Value: True or False
+'capabilities:thin_provisioning_support': '<is> True' or '<is> False'
+'capabilities:thick_provisioning_support': '<is> True' or '<is> False'
+
+Note: 'capabilities' scope key before 'thin_provisioning_support' and
+'thick_provisioning_support' is not required. So the following works too:
+
+'thin_provisioning_support': '<is> True' or '<is> False'
+'thick_provisioning_support': '<is> True' or '<is> False'
 
 The above extra specs are used by the scheduler to find a backend that
 supports thin provisioning, thick provisioning, or both to match the needs
@@ -154,7 +163,8 @@ of a specific volume type.
 
 If an extra spec scope key "provisioning:type" is defined, it can be used
 by the driver to detemine whether the lun to be provisioned is thin or thick.
-The value of this extra spec is either "thin" or "thick".
+The value of this extra spec is either "thin" or "thick". Note this extra
+spec is not used by the scheduler to find a backend.
 
 Capacity filter
 ---------------
@@ -165,30 +175,26 @@ If (provisioned_capacity + volume_size) / total_capacity >=
 max_over_subscription_ratio, the backend will not be chosen to provision
 the volume.
 Note: This formula will be executed only if "thin_provisioning_support"
-is True.
+is True and max_over_subscription_ratio >= 1.
 
-If available_capacity < volume_size, the backend will not be chosen
-to provision the volume. Note this check is already in the capacity filter.
-
-If (available_capacity * max_over_subscription_ratio) < volume_size,
-the backend will not be chosen to provision the volume.
+If ((free_capacity - total_capacity * reserved) * max_over_subscription_ratio)
+< volume_size, the backend will not be chosen to provision the volume.
 Note: This formula will be executed only if "thin_provisioning_support"
-is True.
+is True and max_over_subscription_ratio >= 1.
 
-Taking a conservative approach, we assume that the new volume will be
-fully written even for "thin" luns:
-used = (total_capacity - available_capacity - volume_size) / total_capacity
-If used > max_used_ratio, this backend will not be chosen to provision the
-volume.
+If (free_capacity - total_capacity * reserved) < volume_size, the backend will
+not be chosen to provision the volume. Note this check was already in the
+capacity filter, but the formula is changed to use total_capacity * reserved
+instead of free_capacity * reserved.
 
 Capacity weigher
 ----------------
-In the capacity weigher, apparent available capacity should be used in
-addition to real free capacity for ranking.
-apparent_available_capacity = total_capacity * max_over_subscription_ratio -
-provisioned_capacity
-Note: apparent_available_capacity should only be used if
-"thin_provisioning_support" is True.
+In the capacity weigher, virtual_free_capacity should be used for ranking
+if "thin_provisioning_support" is True. Otherwise, real free_capacity
+will be used as before. A change is made to measured reserved space
+against the total_capacity.
+virtual_free_capacity = total_capacity * max_over_subscription_ratio -
+provisioned_capacity - total_capacity * reserved
 
 LVM driver
 ----------
@@ -200,13 +206,11 @@ scheduler.
   It makes calls to the LVM class in brick to retrieve volume information
   including capacities.
 
-* The LVM driver will also report max_over_subscription_ratio and
-  max_used_ratio. Those will be from the configuration parameters set in
-  cinder.conf.
+* The LVM driver will also report max_over_subscription_ratio. This will be
+  from the configuration parameters set in cinder.conf.
 
-* While other drivers need to report max_over_subscription_ratio and
-  max_used_ratio, they are not required to read those ratios from
-  cinder.conf.
+* While other drivers need to report max_over_subscription_ratio, they are
+  not required to read those ratios from cinder.conf.
 
 Changes will also be made in the following LVM driver functions to make sure
 over provisioning will not happen even when a request didn't go through the
@@ -220,8 +224,7 @@ The following will be evaluated in the above LVM driver functions:
 * If the ratio of the apparent provisioned capacity over real total capacity
   has exceeded the over subscription ratio, the operation will fail.
 
-* If the ratio of real used capacity over total physical capacity has exceeded
-  the used ratio, the operation will fail.
+* If the free space is smaller than the volume size, the operation will fail.
 
 Use cases
 ---------
@@ -293,8 +296,7 @@ side for this.
 Other end user impact
 ---------------------
 
-There are two new parameters in cinder.conf that end user
-needs to be aware of.
+There is a new parameter in cinder.conf that end user needs to be aware of.
 
 Performance Impact
 ------------------
@@ -304,29 +306,29 @@ N/A
 Other deployer impact
 ---------------------
 
-New parameters over_subscription_ratio and used_ratio will be
-added to cinder.conf.
-
-Volume type extra specs for "provisioning:type" should be added
-for thin or thick.
+New parameters over_subscription_ratio will be added to cinder.conf.
 
 Developer impact
 ----------------
 
-Drivers should report provisioning_capabilities (thin, thick, or both).
+Drivers should report provisioning capabilities (thin_provisioning_support
+and thick_provisioning_support).
 
 Drivers supporting thin provisioning should report provisioned capacity
-in addition to available capacity in get_volume_stats.
+in addition to free capacity in get_volume_stats.
 
-For drivers supporting thick provisioning only, available capacity will be
+For drivers supporting thick provisioning only, free capacity will be
 used just as before.
 
 For drivers supporting both thin and thick provisioning, provisioned capacity
-and available capacity should both be reported.
+and free capacity should both be reported.
 
 If there is a range regarding capacity and you are not sure how to report,
 please be conservative. For example, if the available capacity is in the
 range of 80 to 100 GB, be conservative and report the lower bound 80 GB.
+
+Driver developers can take a look of _update_volume_stats in the LVM driver
+as a reference implementation.
 
 Note: This work is also needed for Cinder to use ThinLVM as the default driver
 in Kilo.
@@ -345,24 +347,23 @@ Other contributors:
 Work Items
 ----------
 
-1. Add max_over_subscription_ratio and max_used_ratio in driver.py.
+1. Add max_over_subscription_ratio in driver.py.
 
 2. Modify host_manager.py to update provisioned capacity, over
-   subscription ratio, and used ratio reported by the backends.
+   subscription ratio by the backends.
 
 3. Modify capacity filter to check whether over subscription ratio
-   or used ratio has been exceeded in a backend.
+   has been exceeded in a backend.
 
-4. New parameters max_over_subscription_ratio and max_used_ratio will be
-   added to cinder.conf.
+4. New parameters max_over_subscription_ratio will be added to cinder.conf.
 
-5. LVM driver will be changed to report virtual capacity, over
-   subscrption ratio, and used ratio.
+5. LVM driver will be changed to report virtual capacity and over
+   subscrption ratio.
 
 6. LVM class in brick will be updated to calculate provisioned capacity.
 
 7. LVM driver functions will be changed to check whether over
-   subscription ratio or used ratio has been exceeded.
+   subscription ratio has been exceeded.
 
 
 Dependencies
@@ -383,11 +384,9 @@ Documentation Impact
 ====================
 
 Documentation changes are needed for the following:
-New parameters max_over_subscription_ratio and max_used_ratio will be
-added to cinder.conf.
-Driver needs to add provisioning_capabilities (thick, thin, or both).
-Volume type extra specs need a key "provisioning:type" and value
-"thin" or "thick".
+New parameter max_over_subscription_ratio will be added to cinder.conf.
+Driver needs to add provisioning capabilities (thick_provisioning_suppot,
+thin_provisioning_support) and report provisioned_capacity.
 
 
 References
