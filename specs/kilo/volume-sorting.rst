@@ -34,18 +34,16 @@ this order, the APIs must accept multiple sort keys/directions.
 Proposed change
 ===============
 
-The /volumes and /volumes/detail APIs will support the following parameters
-being repeated on the request:
+The /volumes and /volumes/detail APIs will align with the API working group
+guidelines (see References section) for sorting and support the following
+parameter on the request:
 
-* sort_key: Key used to determine sort order
-* sort_dir: Direction for with the associated sort key ("asc" or "desc")
+* sort: Comma-separated list of sort keys, each key is optionally appended
+  with <:dir>, where 'dir' is the direction for the corresponding sort key
+  (supported values are 'asc' for ascending and 'desc' for descending)
 
-The caller can specify these parameters multiple times in order to generate
-a list of sort keys and sort directions. The first key listed is the primary
-key, the next key is the secondary key, etc.
-
-For example: /volumes?sort_key=status&sort_dir=desc&sort_key=display_name&
-&sort_dir=desc&sort_key=created_at&sort_dir=desc
+For example:
+``/volumes?sort=status:asc,display_name:asc,created_at:desc``
 
 Note: The "created_at" and "id" sort keys are always appended at the end of
 the key list if they are not already specified on the request.
@@ -63,22 +61,13 @@ models.Volume class.
 Alternatives
 ------------
 
-Repeating parameter key/values was chosen because glance already did it:
+Multiple sort keys and directions could be passed using repeated 'sort_key'
+and 'sort_dir' query parameters. For example:
 
-https://github.com/openstack/glance/blob/master/glance/api/v2/images.py#L526
+``/volumes?sort_key=status&sort_dir=asc&sort_key=display_name&sort_dir=asc&
+sort_key=created_at&sort_dir=desc``
 
-And nova already approved this design in a similar blueprint:
-
-https://blueprints.launchpad.net/nova/+spec/nova-pagination
-
-However, the list of sort keys and directions could be built by splitting the
-associated parameter values.
-
-For example:
-/volumes?sort_key=status,display_name,created_at&sort_dir=desc,desc,desc
-
-The downside of this approach is that it would require pre-defined token
-characters.
+However, this is not aligned with the API sorting guidelines.
 
 Also, this additional sorting could be conditionally enabled based on the
 existence of a new extension; however, since sorting by a single key is
@@ -106,15 +95,21 @@ design is finalized, then the same approach could be applied to other APIs.
 The existing API documentation needs to be updated to include the following
 new Request Parameters:
 
-+-----------+-------+--------+---------------------------------------------+
-| Parameter | Style | Type   | Description                                 |
-+===========+=======+========+=============================================+
-| sort_key  | query | string | Sort key (repeated for multiple), keys      |
-|           |       |        | default to 'created_at' and 'id'            |
-+-----------+-------+--------+---------------------------------------------+
-| sort_dir  | query | string | Sort direction, either 'asc' or 'desc'      |
-|           |       |        | (repeated for multiple), defaults to 'desc' |
-+-----------+-------+--------+---------------------------------------------+
++-----------+-------+--------+------------------------------------------------+
+| Parameter | Style | Type   | Description                                    |
++===========+=======+========+================================================+
+| sort      | query | string | Comma-separated list of sort keys and optional |
+|           |       |        | sort directions in the form of key<:dir>,      |
+|           |       |        | where 'dir' is either 'asc' for ascending      |
+|           |       |        | order or 'desc' for descending order. Defaults |
+|           |       |        | to the 'created_at' and 'id' keys in           |
+|           |       |        | descending order.                              |
++-----------+-------+--------+------------------------------------------------+
+
+Currently, the volumes query supports the 'sort_key' and 'sort_dir' parameters;
+these will be deprecated. The API will raise a "badRequest" error response
+(code 400) if both the new 'sort' parameter and a deprecated 'sort_key' or
+'sort_dir' parameter is specified.
 
 Neither the API response format nor the return codes will be modified, only
 the order of the volumes that are returned.
@@ -136,20 +131,9 @@ None
 Other end user impact
 ---------------------
 
-The cinderclient should be updated to accept sort keys and sort directions, new
-parameters:
-
-+-------------+----------------------------------------------------------+
-| Parameter   | Description                                              |
-+=============+==========================================================+
-| --sort-keys | Comma-separated list of sort keys used to specify volume |
-|             | ordering. Each key must be paired with a sort direction  |
-|             | value.                                                   |
-+-------------+----------------------------------------------------------+
-| --sort-dirs | Comma-separated list of sort directions used to specify  |
-|             | volume ordering. Each key Must be paired with a sort key |
-|             | value. Valid values are 'asc' and 'desc'.                |
-+-------------+----------------------------------------------------------+
+The cinderclient should be updated to accept sort keys and sort directions,
+using the 'sort' parameter being proposed in the cross-project spec:
+https://review.openstack.org/#/c/145544/
 
 Performance Impact
 ------------------
@@ -284,7 +268,8 @@ Dependencies
 
 * Related (but independent) change being proposed in nova:
   https://blueprints.launchpad.net/nova/+spec/nova-pagination
-
+* CLI Sorting Argument Guidelines cross project spec:
+  https://review.openstack.org/#/c/145544/
 
 Testing
 =======
@@ -315,4 +300,6 @@ the choice of the sort key, noting which keys are indexed.
 References
 ==========
 
-None
+API Working group sorting guidelines:
+https://github.com/openstack/api-wg/blob/master/guidelines/
+pagination_filter_sort.rst
