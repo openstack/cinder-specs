@@ -36,7 +36,9 @@ the volume has been created from an image, besides, the additional properties
 may also needed to make it available in the scheduler (detailed in the below
 sections). So, There should be a way to support change/update image metadata.
 
-* use cases
+Use Cases
+=========
+
 Here are some types of metadata properties that if set will affect runtime
 characteristics of how Nova handles the booted volume. Many of them very
 well could be a user deciding to basically build a new image using a volume,
@@ -85,9 +87,6 @@ looking up rich information about the metadata from the definition catalog
 to display information to users and admins. This can include metadata about
 software on the volume.
 
-Use Cases
-=========
-
 Proposed change
 ===============
 
@@ -122,10 +121,9 @@ REST API impact
 
 Since only image metadata is used by nova for VM scheduling or setting
 device driver options, we proposed to add new REST APIs into Cinder for
-the operations on image metadata of volume and snapshot respectively.
+the operations on image metadata of volume.
 
 * update image metadata referenced with volume
-* update image metadata referenced with snapshot
 
 
 **Common http response code(s)**
@@ -152,22 +150,7 @@ the operations on image metadata of volume and snapshot respectively.
             "key": "v2"
         }
     }
-    To unset a image metadata key value, specify only the key name.
-    To set a image metadata key value, specify the key and value pair.
 
-**Update snapshot image metadata**
-  * Method type
-    PUT
-
-  * API version
-    PUT /v2/{project_id}/snapshots/{snapshot_id}/image_metadata
-
-  * JSON schema definition
-    {
-       "image_metadata": {
-            "key": "v2"
-        }
-    }
     To unset a image metadata key value, specify only the key name.
     To set a image metadata key value, specify the key and value pair.
 
@@ -187,13 +170,12 @@ Other end user impact
 
 * We intend to expose this via Horizon and are working on related blueprints.
 * Glance also need share its properties protection code to Cinder
-  and some code cleanups in Glance
+  and some code cleanups in Glance's IMPL.
 * Provide Cinder API to allow a user to update an image property.
   CLI-python API that triggers the update.
+
   # Sets or deletes volume image metadata
   cinder image-metadata  <volume-id> set <property-name = value>
-  # Sets or deletes snapshot image metadata
-  cinder snapshot-image-metadata  <snapshot_id> set <property-name = value>
 
 Performance Impact
 ------------------
@@ -236,28 +218,28 @@ Work Items
 ----------
 
 Changes to Cinder:
+
 #. Define property protections config files in Cinder
    (Deployer need to keep the files in sync with Glance's)
 #. Sync the properties protection code from Glance into Cinder
    (The common protection code will be shared in Cinder)
 #. Extend existing volume_image_metadatas(VolumeImageMetadataController)
    controller extension to add update capability.
-#. Define snapshot_image_metadatas(SnapshotImageMetadataController)
-   extension if needed to add update capability.
-#. Add update_volume_image_metadata and update_snapshot_image_metadata
-   method to volume API.
+#. Reuse update_volume_metadata method in volume API for updating image
+   metadata and differentiate user/image metadata by introducing a new
+   constant "meta_type"
+#. Add update_volume_image_metadata method to volume API.
 #. Check against property protections config files
    (property-protections-policies.conf or property-protections-roles.conf)
    if the property has update protection.
 #. Update DB API and driver to allow image metadata updates.
 
 Changes to Cinder python client:
+
 #. Provide Cinder API to allow a user to update an image property.
    CLI-python API that triggers the update.
    # Sets or deletes volume image metadata
    cinder image-metadata  <volume-id> set <property-name = value>
-   # Sets or deletes snapshot image metadata
-   cinder snapshot-image-metadata  <snapshot_id> set <property-name = value>
 
 Dependencies
 ============
@@ -288,13 +270,19 @@ that is property-protections-roles.conf and property-protections-policies.conf.
 
 * property-protections-policies.conf
 This is a template file when using policy rule for property protections.
+
 Example: Limit all property interactions to admin only using policy
 rule context_is_admin defined in policy.json.
+
 +-------------------------------------------------------------------+
 | [.*]                                                              |
++===================================================================+
 | create = context_is_admin                                         |
++-------------------------------------------------------------------+
 | read = context_is_admin                                           |
++-------------------------------------------------------------------+
 | update = context_is_admin                                         |
++-------------------------------------------------------------------+
 | delete = context_is_admin                                         |
 +-------------------------------------------------------------------+
 
@@ -302,11 +290,16 @@ rule context_is_admin defined in policy.json.
 This is a template file when property protections is based on user's role.
 Example: Allow both admins and users with the billing role to read and modify
 properties prefixed with x_billing_code_.
+
 +-------------------------------------------------------------------+
 | [^x_billing_code_.*]                                              |
++===================================================================+
 | create = admin,billing                                            |
++-------------------------------------------------------------------+
 | read = admin, billing                                             |
++-------------------------------------------------------------------+
 | update = admin,billing                                            |
++-------------------------------------------------------------------+
 | delete = admin,billing                                            |
 +-------------------------------------------------------------------+
 
@@ -331,10 +324,11 @@ images, flavors, host aggregates)
 `Youtube summit recap of Graffiti Juno POC demo.
 <https://www.youtube.com/watch?v=Dhrthnq1bnw>`_
 
-`IRC discussions and mailing list.
+`Discussions in the mailing list.
 <http://openstack.10931.n7.nabble.com/cinder-glance-Update-volume
--image-metadata-proposal-tt44371.html#a44523>
+-image-metadata-proposal-tt44371.html#a44523>`_
 
+`Discussions in the IRC.
 <http://eavesdrop.openstack.org
 /meetings/glance/2014/glance.2014-06-26-20.03.log.html>`_
 
