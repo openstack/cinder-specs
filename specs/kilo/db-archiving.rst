@@ -98,7 +98,19 @@ Other deployer impact
 Developer impact
 ----------------
 
-None
+Developers should care about migrations for shadow tables as well, as for
+original tables:
+
+* table creation or deletion requires creating or deleting corresponding
+  shadow tables
+
+* when a table is modified, the shadow tables have to get modified
+
+* when one or more columns are moved to a new table, columns from shadow table
+  should also moved to a new shadow table with data migration
+
+* downgrades should be implemented for shadow tables too: new tables
+  have to get removed and the migrated columns will have to get reverted
 
 
 Implementation
