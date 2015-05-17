@@ -10,156 +10,69 @@ Retrieve Supported Volume Type Extra Specs
 
 https://blueprints.launchpad.net/cinder/+spec/get-volume-type-extra-specs
 
-The purpose of this spec is to modify the driver's ``get_volume_stats`` method
-to include in its return value a dictionary of volume type extra spec keys that
-each driver supports.  The dictionary will be used to improve the volume types
-extra spec management process in Horizon.
+Provide an interface to obtain a volume driver's *capabilities*.
+
+Definitions
+===========
+
+* *Volume Type:* A group of volume policies.
+* *Extra Specs:* The definition of a volume type. This is a group of policies
+  e.g. provision type, QOS that will be used to define a volume at creation
+  time.
+* *Capabilities:* What the current deployed backend in Cinder is able to do.
+  These correspond to extra specs.
 
 Problem description
 ===================
 
-The current implementation of volume type extra specs management process in
-Horizon is error-prone. Administrators must manage extra specs without having
-any interactive guidance on what possible keys are available and what their
-values are. Having the ability to obtain the permissible volume type extra
-specs while creating or editing the extra specs will make this task easier and
-more user-friendly.
+The current implementation of *volume type* *extra specs* management process in
+Horizon and the cinder client are error-prone. Operators manage extra specs
+without having guidance on what capabilities are possible with a backend.
+Without knowing the capabilities, the operator doesn't know what the possible
+*extra spec* key/values are.
+
+Today operators have to make sure they're reading the right documentation that
+corresponds to the version of their storage backend. Documentation can
+become out of date with their volume driver.
+
+It would be more convenient, and a better user experience if the operator was
+able to ask Cinder for the capabilities of the current deployed storage
+backends, instead of having to guess.
 
 Use Cases
 =========
 
+As an operator, I want to get a list of the capabilities for my deployed
+storage backends in Cinder.
+
+With these capabilities, I have keys and possible values that can be used
+within a volume type's extra specs.
+
+Potentially with the API endpoint, Horizon could use it to improve the GUI for
+managing extra specs.
+
 Proposed change
 ===============
 
-The driver's ``get_volume_stats`` method will be modified to also return a
-dictionary of supported volume type extra spec keys. The dictionary will
-include information about those keys such as key description, possible values,
-value range, and value type. Once the get_volume_stats() method was modified,
-Horizon could call the existing ``scheduler_stats`` API call to get the
-dictionary and use it in the extra specs creating or editing process. The new
-``extra_specs`` dictionary will be included within the existing
-``capabilities`` dictionary:
+Cinder volume drivers will implement a new method ``get_capabilities``, which
+will return a dictionary of supported capabilities from the storage backend.
 
-Current json response of the ``scheduler_stats`` API call::
+The dictionary will include some brief information about the backend, and
+capabilities that correspond to extra spec keys and values.
 
-  {
-    "pools": [
-      {
-        "name": "ubuntu@lvm#backend_name",
-        "capabilities": {
-          "pool_name": "backend_name",
-          "QoS_support": false,
-          "location_info": "LVMVolumeDriver:ubuntu:stack-volumes:default:0",
-          "timestamp": "2014-11-21T18:15:28.141161",
-          "allocated_capacity_gb": 0,
-          "volume_backend_name": "backend_name",
-          "free_capacity_gb": 7.01,
-          "driver_version": "2.0.0",
-          "total_capacity_gb": 10.01,
-          "reserved_percentage": 0,
-          "vendor_name": "Open Source",
-          "storage_protocol": "iSCSI"
-        }
-      }
-    ]
-  }
-
-
-New json response of the ``scheduler_stats`` API call::
-
-  {
-    "pools": [
-      {
-        "name": "ubuntu@lvm#backend_name",
-        "capabilities": {
-          "QoS_support": false,
-          "allocated_capacity_gb": 0,
-          "driver_version": "2.0.0",
-          "free_capacity_gb": 7.01,
-          "location_info": "LVMVolumeDriver:ubuntu:stack-volumes:default:0",
-          "pool_name": "backend_name",
-          "reserved_percentage": 0,
-          "storage_protocol": "iSCSI",
-          "timestamp": "2014-11-21T18:15:28.141161",
-          "total_capacity_gb": 10.01,
-          "vendor_name": "Open Source",
-          "volume_backend_name": "backend_name",
-          "extra_specs": [
-            {
-              "description": "HP 3PAR Fibre Channel driver",
-              "display_name": "HP3PARFCDriver",
-              "namespace": "OS::Cinder::HP3PARFCDriver",
-              "properties": {
-                "hp3par:persona": {
-                  "default": "2",
-                  "description": "HP 3PAR Persona",
-                  "enum": {
-                    "1": "Generic",
-                    "10": "ONTAP-legacy",
-                    "11": "VMware",
-                    "12": "OpenVMS",
-                    "13": "HPUX",
-                    "15": "WindowsServer",
-                    "2": "Generic-ALUA",
-                    "6": "Generic-legacy",
-                    "7": "HPUX-legacy",
-                    "8": "AIX-legacy",
-                    "9": "EGENERA"
-                  },
-                  "title": "persona",
-                  "type": "string"
-                },
-                "hp3par:snap_cpg": {
-                  "description": "Overrides the 'hp3par_snap' setting",
-                  "title": "snap_cpg",
-                  "type": "string"
-                }
-              }
-            },
-            {
-              "description": "HP LeftHand iSCSI driver",
-              "display_name": "HPLeftHandISCSIDriver",
-              "namespace": "OS::Cinder::HPLeftHandISCSIDriver",
-              "properties": {
-                "hplh:provisioning": {
-                  "default": "thin",
-                  "description": "Provisioning",
-                  "enum": [
-                    "full",
-                    "thin"
-                  ],
-                  "title": "provisioning",
-                  "type": "string"
-                },
-                "hplh:vvs": {
-                  "default": "1",
-                  "description": "VVS",
-                  "title": "vvs",
-                  "type": "integer"
-                }
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
-
-
-The properties attributes are defined using simple JSON schema notation. Please
-refer to the `JSON Schema documentation`_ for a complete definition.
-
+Features like create volume, create snapshots, etc are considered minimum
+features [1]. Unlike ``well defined`` keys, minimum features are required to
+implement. With ``well defined`` keys, drivers just need to report if the
+capability is not supported.
 
 Alternatives
 ------------
 
-The alternative of this proposal is the current Horizon process of managing the
-volume type extra specs which does not provide any helpful information to
-administrators regarding possible extra specs keys and values. They have to
-know the exact spellings of the key/value pair that they want to set for each
-volume type ahead of time. Most of the time they have to look through the
-driver documentation or even the code to see what keys could be used in their
-situation.
+Operators could continue to guess what extra specs they should be setting in
+volume types. Operators could attempt to find documentation for volume type
+extra specs. As a last resort, operators could dig through different Cinder
+volume driver code to figure out the possible extra types. These aren't
+reliable solutions.
 
 Data model impact
 -----------------
@@ -169,12 +82,132 @@ None
 REST API impact
 ---------------
 
-None
+New endpoint GET /v2/tenant/get_capabilities/ubuntu@lvm1_pool::
+
+ {
+   "namespace": "OS::Storage::Capabilities::ubuntu@lvm1_pool",
+   "volume_backend_name": "lvm",
+   "pool_name": "pool",
+   "driver_version": "2.0.0",
+   "storage_protocol": "iSCSI",
+   "display_name": "Capabilities of Cinder LVM driver",
+   "description": "These are volume type options provided by Cinder LVM driver, blah, blah.",
+   "visibility": "public",
+   "properties": {
+    "cinder_thin_provisioning": {
+       "title": "Thin Provisioning",
+       "description": "Sets thin provisioning.",
+       "type": "boolean"
+     },
+     "cinder_compression": {
+       "title": "Compression",
+       "description": "Enables compression.",
+       "type": "boolean"
+     },
+     "compression_type": {
+       "title": "Compression type",
+       "description": "Specifies compression type.",
+       "type": "string",
+       "enum": [
+         "lossy", "lossless", "special"
+       ]
+     },
+     "cinder_replication": {
+       "title": "Replication",
+       "description": "Enables replication.",
+       "type": "boolean"
+     },
+     "cinder_qos": {
+       "title": "QoS",
+       "description": "Enables QoS.",
+       "type": "boolean"
+     },
+     "minIOPS": {
+       "title": "Minimum IOPS QoS.",
+       "description": "Sets minimum IOPS if QoS is enabled.",
+       "type": "integer"
+     },
+     "maxIOPS": {
+       "title": "Maximum IOPS QoS.",
+       "description": "Sets maximum IOPS if QoS is enabled.",
+       "type": "integer"
+     },
+     "minIOPS": {
+       "title": "Burst IOPS QoS.",
+       "description": "Sets burst IOPS if QoS is enabled.",
+       "type": "integer"
+     },
+     "persona": {
+       "title": "Persona",
+       "description": "I am something..." ,
+       "default": "Generic",
+       "enum": [
+         "Generic",
+         "ONTAP-legacy",
+         "VMware",
+         "OpenVMS",
+         "HPUX",
+         "WindowsServer",
+         "Generic-ALUA",
+         "Generic-legacy",
+         "HPUX-legacy",
+         "AIX-legacy",
+         "EGENERA"]
+     }
+   }
+ }
+
+The ``well_defined`` keys are indicated with a prefix of 'cinder_'. These are
+fairly standard base keys for Cinder backends. We expect most devices to report
+at least a boolean True/False for these keys.
+
+Let's look at cinder_compression here:
+  This is a well defined key, we expect devices to report True or False
+  regarding whether they support it or not. In the case where not only does
+  a device support it, but it can be configured, the option keys are listed
+  under the "options" portion. This is simply the <key-name> of the option,
+  and a list of valid values that can be specified for it. NOTE, if the options
+  key is empty ({}) that means there are NO options that can be set on that
+  capability key.
+
+The fireproof capability:
+  This is a vendor-unique capability, and is indicated by not being prefixed
+  with 'cinder_'. Also, note that the default is True and that there are NO
+  options.  The example indicates that this device is ALWAYS fireproof, you
+  can't change that, it just is, what it is.
+
+The cinder_thin_provisioning capability:
+  This is a well_defined capability which is not supported by this particular
+  vendor. As a result, it defaults to False, and provides no options.
+
+The cinder_qos capability describes some corner cases
+for us:
+  This key is a well_defined key, that's very customizable via options. Well
+  defined portion is whether the capability is supported or not (again
+  True/False), again, some devices may allow deploying volumes with or without
+  QoS on the same device, so you can specify that with
+  <capability-key-name>=true|false.
+
+  If a device doesn't support this (ie always true), then this entry is omitted.
+
+  The other key piece is vendor_keys. For those that allow additional special
+  keys to set QoS those key names are provided in list format as valid keys
+  that can be specified and set as related to Quality of Service.
+
+The persona key is another good example of a vendor_unique capability:
+  This is very much like QoS, and again, note that we're just providing what
+  the valid values are.
+
+  You'll notice that the data-structure follows the settings you would put in
+  your extra-specs. This particular case doesn't have any options other than
+  the base key itself, so the structure is rather simple.
 
 Security impact
 ---------------
 
-None
+The endpoint mentioned in the API Impact will only be available through the
+``admin_api`` policy. Operators or other OpenStack services will have the
+ability to query this information.
 
 Notifications impact
 --------------------
@@ -184,18 +217,83 @@ None
 Other end user impact
 ---------------------
 
-Horizon will be updated to include the displaying of the supported extra spec
-keys so users can select and set the values while creating or editing the
-volume type extra specs. Horizon will use the information about each key to set
-constraints for the value input field, which will help to screen out invalid
-values at a certain level.
+Cinder Client Example:
+
+The operator wants to define new volume types for their OpenStack cloud. The
+operator would fetch a list of capabilities for a particular backend's pool:
+
+First get list of services::
+
+  $ cinder service-list
+  +------------------+-----------------+------+---------+-------+----------------------------+-----------------+
+  |      Binary      |    Host         | Zone |  Status | State |         Updated_at         | Disabled Reason |
+  +------------------+-----------------+------+---------+-------+----------------------------+-----------------+
+  | cinder-scheduler | controller      | nova | enabled |   up  | 2014-10-18T01:30:54.000000 |       None      |
+  | cinder-volume    | block1@lvm#pool | nova | enabled |   up  | 2014-10-18T01:30:57.000000 |       None      |
+  +------------------+-----------------+------+---------+-------+----------------------------+-----------------+
+
+With one of the listed pools, pass that to capabilities-list::
+
+  $ cinder capabilities-list block1@lvm#pool
+
+  host_name: block1
+  volume_backend_name: lvm
+  pool_name: pool
+  driver_version: 2.0.0
+  storage_protocol: iSCSI
+
+  capabilities:
+
+    cinder_compression:
+      default: true
+      options:
+        compression: true, false
+        compression_type: lossy, lossless, special
+
+    cinder_thin_provisioning:
+      default: false
+
+    cinder_qos:
+      default: true,
+      options:
+        cinder_qos: true, false
+        vendor_keys:
+          minIOPS,
+          maxIOPS,
+          burstIOPS
+
+    fireproof:
+      default: true
+      options: {}
+
+    persona:
+      default: Generic
+      options:
+        Generic
+        ONTAP-legacy
+        VMware
+        OpenVMS
+        HPUX
+        WindowsServer
+        Generic-ALUA
+        Generic-legacy
+        HPUX-legacy
+        AIX-legacy
+        EGENERA
+
+
+Horizon:
+
+Horizon will be updated to include the displaying of the supported capabilities
+so operators can select and set the values while creating or editing the
+volume type extra specs.
 
 If the volume type does not have any volume backend name associated with it,
 Horizon will not have any extra specs keys to display. Administrators can still
 enter in key/value pairs of their own. This is the same behavior as the current
 process.
 
-If a driver does not publish the ``extra_specs`` dictionary, which will be the
+If a driver does not publish the ``extra specs`` dictionary, which will be the
 case for any drivers that do not get updated, then no client-side filtering
 will be performed, and the behavior will basically revert to the current
 situation where the administrator in horizon will need to know and enter the
@@ -215,17 +313,49 @@ None
 Developer impact
 ----------------
 
-Driver developers will need to add a dictionary of volume type extra spec keys
-that their drivers support to the return value of the get_volume_stats()
-method. The dictionary will contain information about the keys as mentioned in
-the proposed change section.
+Driver maintainers would need to implement a method ``get_capabilities``. This
+should fetch from the storage backend a list of capabilities and translate it
+to the dictionary structure::
 
-It is completely up to the driver to decide how much information about its
-extra spec keys to provide in the dictionary. The driver can also choose not to
-provide any extra spec key at all, which means that there would be no extra
-specs for that particular driver to display in Horizon. But administrators
-would still be able to enter in key/value pairs of their own. This is the same
-behavior as the current process.
+ {
+   'driver_version:' '2.0.0',
+   'storage_protocol:' iSCSI,
+   'capabilities:' {
+     'cinder_compression': {
+       'default': True,
+       'options': {
+         'compression_type': ['lossy', 'lossless', 'special'],
+         'compression': [True, False]
+       }
+     },
+     'cinder_thin_provisioning': {
+       'default': True,
+       options: {
+         'thin_provisioning': [True, False]
+       }
+     },
+     'cinder_qos': {
+       'default': True,
+       options: {
+         'qos': [True, False],
+     }
+    }
+    'cinder_replication': {
+      'default': True,
+      options: {
+        replication: [True, False]
+      }
+    }
+  }
+
+There's nothing keeping a vendor reporting fewer or more keys, but the
+following are strictly enforced:
+
+* The data structure
+* The information in the capabilities
+* The ``well defined`` capabilities.
+* Driver version
+* Storage protocol
 
 Implementation
 ==============
@@ -238,33 +368,36 @@ Primary assignee:
 
 Other contributors:
   gary-smith (gary.w.smith@hp.com)
+  thingee (thingee@gmail.com)
 
 Work Items
 ----------
 
-* Add extra specs dictionary to all supported drivers' ``get_volume_stats``
-  method
+* Add new endpoint to Cinder API.
+* Add RPC call.
+* Add new volume manager method for get_capabilities.
+* Update LVM reference implementation with get_capabilities method.
 
 Dependencies
 ============
 
-Horizon blueprint that will depend on this spec:
-
-* https://blueprints.launchpad.net/horizon/+spec/vol-type-extra-specs-describe
+The decision on what the ``well defined`` capabilities will be:
+https://review.openstack.org/#/c/150511
 
 Testing
 =======
 
-Unit tests for all changed files
+* Unit tests
+* Eventually, tempest tests once all drivers are supporting it.
 
 Documentation Impact
 ====================
 
-None
+Update the Cinder developer documentation for driver maintainers to reference
+how to push capabilities from their volume driver.
 
 References
 ==========
 
-`JSON Schema documentation`_
-
-.. _JSON Schema documentation: http://json-schema.org/documentation.html
+[1] - http://docs.openstack.org/developer/cinder/devref/drivers.html#minimum-features
+* Related horizon spec: https://blueprints.launchpad.net/horizon/+spec/vol-type-extra-specs-describe
