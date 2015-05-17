@@ -4,6 +4,22 @@
 Volume Service Specifications (cinder)
 ======================================
 
+Liberty approved specs:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/liberty/*
+
+Kilo approved specs:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/kilo/*
+
 Juno approved specs:
 
 .. toctree::
