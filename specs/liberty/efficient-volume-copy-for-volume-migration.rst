@@ -215,7 +215,7 @@ Documentation Impact
 ====================
 
 * Need to update openstack cloud administrator guide.
-  http://docs.openstack.org/admin-guide-cloud/content/volume-migration.html
+  http://docs.openstack.org/admin-guide/blockstorage_volume_migration.html
 
 References
 ==========

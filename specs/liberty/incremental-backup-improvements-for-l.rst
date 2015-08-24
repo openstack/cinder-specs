@@ -146,7 +146,7 @@ Unit tests are needed to ensure response is working correctly.
 Documentation Impact
 ====================
 1. Cloud admin documentations will be updated to introduce the changes:
-http://docs.openstack.org/admin-guide-cloud/content/volume-backup-restore.html
+http://docs.openstack.org/admin-guide/blockstorage_volume_backups.html
 
 2. API ref will be also updated for backups:
 http://developer.openstack.org/api-ref-blockstorage-v2.html

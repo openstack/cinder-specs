@@ -151,7 +151,7 @@ Documentation Impact
 Cloud Administration Guide will be updated to introduce new cinder-manage
 command:
 
-* http://docs.openstack.org/admin-guide-cloud/content/managing-volumes.html
+* http://docs.openstack.org/admin-guide/blockstorage-manage-volumes.html
 
 
 References
