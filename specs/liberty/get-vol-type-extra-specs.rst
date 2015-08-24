@@ -61,9 +61,11 @@ The dictionary will include some brief information about the backend, and
 capabilities that correspond to extra spec keys and values.
 
 Features like create volume, create snapshots, etc are considered minimum
-features [1]. Unlike ``well defined`` keys, minimum features are required to
-implement. With ``well defined`` keys, drivers just need to report if the
+features [1]. Unlike ``well defined`` keys [2], minimum features are required
+to implement. With ``well defined`` keys, drivers just need to report if the
 capability is not supported.
+If the backend has some vendor unique capabilities, the backend driver can
+also define ``vendor unique`` keys for supported capabilities.
 
 Alternatives
 ------------
@@ -94,17 +96,17 @@ New endpoint GET /v2/tenant/get_capabilities/ubuntu@lvm1_pool::
    "description": "These are volume type options provided by Cinder LVM driver, blah, blah.",
    "visibility": "public",
    "properties": {
-    "cinder_thin_provisioning": {
+    "thin_provisioning": {
        "title": "Thin Provisioning",
        "description": "Sets thin provisioning.",
        "type": "boolean"
      },
-     "cinder_compression": {
+     "compression": {
        "title": "Compression",
        "description": "Enables compression.",
        "type": "boolean"
      },
-     "compression_type": {
+     "vendor:compression_type": {
        "title": "Compression type",
        "description": "Specifies compression type.",
        "type": "string",
@@ -112,32 +114,32 @@ New endpoint GET /v2/tenant/get_capabilities/ubuntu@lvm1_pool::
          "lossy", "lossless", "special"
        ]
      },
-     "cinder_replication": {
+     "replication": {
        "title": "Replication",
        "description": "Enables replication.",
        "type": "boolean"
      },
-     "cinder_qos": {
+     "qos": {
        "title": "QoS",
        "description": "Enables QoS.",
        "type": "boolean"
      },
-     "minIOPS": {
-       "title": "Minimum IOPS QoS.",
+     "vendor:minIOPS": {
+       "title": "Minimum IOPS QoS",
        "description": "Sets minimum IOPS if QoS is enabled.",
        "type": "integer"
      },
-     "maxIOPS": {
-       "title": "Maximum IOPS QoS.",
+     "vendor:maxIOPS": {
+       "title": "Maximum IOPS QoS",
        "description": "Sets maximum IOPS if QoS is enabled.",
        "type": "integer"
      },
-     "minIOPS": {
-       "title": "Burst IOPS QoS.",
+     "vendor:minIOPS": {
+       "title": "Burst IOPS QoS",
        "description": "Sets burst IOPS if QoS is enabled.",
        "type": "integer"
      },
-     "persona": {
+     "vendor:persona": {
        "title": "Persona",
        "description": "I am something..." ,
        "default": "Generic",
@@ -157,12 +159,18 @@ New endpoint GET /v2/tenant/get_capabilities/ubuntu@lvm1_pool::
    }
  }
 
-The ``well_defined`` keys are indicated with a prefix of 'cinder_'. These are
-fairly standard base keys for Cinder backends. We expect most devices to report
-at least a boolean True/False for these keys.
+The ``well defined`` keys are indicated without a prefix like the "qos".
+These are fairly standard base keys for Cinder backends. We expect most
+devices to report at least a boolean True/False for these keys.
 
-Let's look at cinder_compression here:
-  This is a well defined key, we expect devices to report True or False
+The ``vendor unique`` keys are optional and are indicated with a prefix
+of vendor name + colon(:). (ex. abcd:minIOPS)
+Vendor driver can use anything for the ``vendor unique`` keys, but the
+vendor name prefix shouldn't contain colon because of the separator and
+it will be automatically replaced by underscore(_). (abc:d -> abc_d)
+
+Let's look at compression here:
+  This is a ``well defined`` key, we expect devices to report True or False
   regarding whether they support it or not. In the case where not only does
   a device support it, but it can be configured, the option keys are listed
   under the "options" portion. This is simply the <key-name> of the option,
@@ -170,31 +178,31 @@ Let's look at cinder_compression here:
   key is empty ({}) that means there are NO options that can be set on that
   capability key.
 
-The fireproof capability:
-  This is a vendor-unique capability, and is indicated by not being prefixed
-  with 'cinder_'. Also, note that the default is True and that there are NO
-  options.  The example indicates that this device is ALWAYS fireproof, you
-  can't change that, it just is, what it is.
+The vendor:fireproof capability:
+  This is a ``vendor unique`` key, and is indicated by being prefixed with
+  "vendor name" + ":". Also, note that the default is True and that there
+  are NO options. The example indicates that this device is ALWAYS fireproof,
+  you can't change that, it just is, what it is.
 
-The cinder_thin_provisioning capability:
-  This is a well_defined capability which is not supported by this particular
+The thin_provisioning capability:
+  This is a ``well defined`` key which is not supported by this particular
   vendor. As a result, it defaults to False, and provides no options.
 
-The cinder_qos capability describes some corner cases
-for us:
-  This key is a well_defined key, that's very customizable via options. Well
-  defined portion is whether the capability is supported or not (again
+The qos capability describes some corner cases for us:
+  This key is a ``well defined`` key, that's very customizable via options.
+  Well defined portion is whether the capability is supported or not (again
   True/False), again, some devices may allow deploying volumes with or without
   QoS on the same device, so you can specify that with
   <capability-key-name>=true|false.
 
   If a device doesn't support this (ie always true), then this entry is omitted.
 
-  The other key piece is vendor_keys. For those that allow additional special
-  keys to set QoS those key names are provided in list format as valid keys
-  that can be specified and set as related to Quality of Service.
+  The other key piece is ``vendor unique`` keys. For those that allow
+  additional special keys to set QoS those key names are provided in list
+  format as valid keys that can be specified and set as related to Quality of
+  Service.
 
-The persona key is another good example of a vendor_unique capability:
+The vendor:persona key is another good example of a ``vendor unique`` capability:
   This is very much like QoS, and again, note that we're just providing what
   the valid values are.
 
@@ -244,29 +252,32 @@ With one of the listed pools, pass that to capabilities-list::
 
   capabilities:
 
-    cinder_compression:
+    compression:
       default: true
       options:
         compression: true, false
         compression_type: lossy, lossless, special
 
-    cinder_thin_provisioning:
+    thin_provisioning:
       default: false
 
-    cinder_qos:
+    replication:
+      default: false
+
+    qos:
       default: true,
       options:
-        cinder_qos: true, false
+        qos: true, false
         vendor_keys:
-          minIOPS,
-          maxIOPS,
-          burstIOPS
+          vendor:minIOPS,
+          vendor:maxIOPS,
+          vendor:burstIOPS
 
-    fireproof:
+    vendor:fireproof:
       default: true
       options: {}
 
-    persona:
+    vendor:persona:
       default: Generic
       options:
         Generic
@@ -321,26 +332,26 @@ to the dictionary structure::
    'driver_version:' '2.0.0',
    'storage_protocol:' iSCSI,
    'capabilities:' {
-     'cinder_compression': {
+     'compression': {
        'default': True,
        'options': {
          'compression_type': ['lossy', 'lossless', 'special'],
          'compression': [True, False]
        }
      },
-     'cinder_thin_provisioning': {
+     'thin_provisioning': {
        'default': True,
        options: {
          'thin_provisioning': [True, False]
        }
      },
-     'cinder_qos': {
+     'qos': {
        'default': True,
        options: {
          'qos': [True, False],
      }
     }
-    'cinder_replication': {
+    'replication': {
       'default': True,
       options: {
         replication: [True, False]
@@ -364,11 +375,12 @@ Assignee(s)
 -----------
 
 Primary assignee:
-  jgravel (julie.gravel@hp.com)
+  * jgravel (julie.gravel@hp.com)
 
 Other contributors:
-  gary-smith (gary.w.smith@hp.com)
-  thingee (thingee@gmail.com)
+  * gary-smith (gary.w.smith@hp.com)
+  * thingee (thingee@gmail.com)
+  * mtanino (mitsuhiro.tanino@hds.com)
 
 Work Items
 ----------
@@ -381,8 +393,7 @@ Work Items
 Dependencies
 ============
 
-The decision on what the ``well defined`` capabilities will be:
-https://review.openstack.org/#/c/150511
+The decision on what the ``well defined`` capabilities will be [2].
 
 Testing
 =======
@@ -399,5 +410,6 @@ how to push capabilities from their volume driver.
 References
 ==========
 
-[1] - http://docs.openstack.org/developer/cinder/devref/drivers.html#minimum-features
+* [1] - http://docs.openstack.org/developer/cinder/devref/drivers.html#minimum-features
+* [2] - https://review.openstack.org/#/c/150511
 * Related horizon spec: https://blueprints.launchpad.net/horizon/+spec/vol-type-extra-specs-describe
