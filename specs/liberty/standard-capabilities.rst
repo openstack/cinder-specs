@@ -18,6 +18,11 @@ push capabilities of their pools [1]. Eventually we would want some common
 capabilities to graduate into becoming a ``well defined`` capability. The
 point of this spec is to agree on the initial ``well defined`` capabilities.
 
+Use Cases
+=========
+
+Having the ``well defined`` capabilities will allow the deployer to see what
+common capabilities are shared beyond their deployed backends in Cinder.
 
 Proposed change
 ===============
@@ -38,12 +43,6 @@ Alternatives
 ------------
 
 None
-
-Use Cases
----------
-
-Having the ``well defined`` capabilities will allow the deployer to see what
-common capabilities are shared beyond their deployed backends in Cinder.
 
 Data model impact
 -----------------

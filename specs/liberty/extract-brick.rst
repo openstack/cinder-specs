@@ -27,6 +27,8 @@ inside of Cinder, which means that only Cinder can use it.
 Use Cases
 =========
 
+Use the same library code both in Nova and Cinder.
+
 Proposed change
 ===============
 
@@ -46,7 +48,7 @@ Alternatives
 
 We could simply keep brick inside of Cinder and not share it's code.  The
 problem with this is that any changes/fixes to brick will then need to be
-backported into the same code in Nova.   This is the existing problem.
+backported into the same code in Nova. This is the existing problem.
 
 Data model impact
 -----------------

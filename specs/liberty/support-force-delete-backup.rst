@@ -129,8 +129,8 @@ None
 
 Testing
 =======
-Need to test the force delete with an in-progress backup and ensure that it deletes
-successfully and cleans up correctly.
+Need to test the force delete with an in-progress backup and ensure that it
+deletes successfully and cleans up correctly.
 
 
 Documentation Impact

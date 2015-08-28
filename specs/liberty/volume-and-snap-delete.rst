@@ -68,7 +68,8 @@ A volume delete operation should handle this by default.
 
 Phase 1:
 
-This is the generic/"non-optimized" case which will work with any volume driver.
+This is the generic/"non-optimized" case which will work with any volume
+driver.
 
 When a volume delete request is received:
    1. Look for snapshots belonging to the volume, set them all to "deleting"

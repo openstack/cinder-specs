@@ -17,7 +17,7 @@ threads and configuration, among other things, to developers, operators,
 and tech support.
 
 
-Problem Description
+Problem description
 ===================
 
 Currently Cinder does not have a way to gather runtime data from active
@@ -33,13 +33,16 @@ information to any service. Report generation is triggered by sending a special
 (USR1) signal to a service. Reports are generated on stderr, that can be piped
 into system log, if needed.
 
+Use Cases
+=========
+
 Guru reports are extensible, meaning that we will be able to add more
 information to those reports in case we see it needed.
 
 Guru reports has been supported by Nova.
 
 
-Proposed Change
+Proposed change
 ===============
 
 First, a new oslo-incubator module (reports.*) should be synchronized into
@@ -47,17 +50,17 @@ cinder tree. Then, each service entry point should be extended to register
 reporting functionality before proceeding to its real main().
 
 
-Data Model Impact
+Data model impact
 -----------------
 None.
 
 
-REST API Impact
+REST API impact
 ---------------
 None.
 
 
-Security Impact
+Security impact
 ---------------
 In theory, the change could expose service internals to someone who is able to
 send the needed signal to a service. That said, we can probably assume that the
@@ -69,12 +72,12 @@ is channeled into safe place.
 Because this report is triggered by user, there is no need to add config option
 to turn on/off this feature.
 
-Notifications Impact
+Notifications impact
 --------------------
 None.
 
 
-Other End User Impact
+Other end user impact
 ---------------------
 None.
 
@@ -93,13 +96,13 @@ IPv6 Impact
 None.
 
 
-Other Deployer Impact
+Other deployer impact
 ---------------------
 Deployers may be interested in making sure those reports are collected
 somewhere (e.g. stderr should be captured by syslog).
 
 
-Developer Impact
+Developer impact
 ----------------
 None.
 

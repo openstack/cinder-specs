@@ -15,7 +15,7 @@ is_incremental  and has_dependent_backups flags to indicate the type of backup
 and enriching the notification system via adding parent_id to report.
 
 
-Problem Description
+Problem description
 ===================
 
 In Kilo release we supported incremental backup, but there are still some
@@ -27,8 +27,8 @@ It's important that Cinder doesn't allow this backup to be deleted since
 'Incremental backups exist for this backup'. Currently, they must have a try to
 know it. So if there is a flag to indicate the backup can't be deleted or not,
 it will bring more convenience to user and reduce API call.
-3.Enriching the notification system via reporting to Ceilometer, add parent_id
-to report
+3. Enriching the notification system via reporting to Ceilometer,
+add parent_id to report
 
 Use Cases
 =========
@@ -37,24 +37,28 @@ It's useful for 3rd party billing system to distinguish the full backup and
 incremental backup, as using different size of storage space, they could have
 different fee for full and incremental backups.
 
-Proposed Change
+Proposed change
 ===============
 
-1.When show single backup detail, cinder-api needs to judge if this backup is
+1. When show single backup detail, cinder-api needs to judge if this backup is
 a full backup or not checking backup['parent_id'].
-2.If it's an incremental backup, judge if this backup has dependent backups
+2. If it's an incremental backup, judge if this backup has dependent backups
 like we do in process of delete backup.
-3.Then add 'is_incremental=True' and 'has_dependent_backups=True/False' to
+3. Then add 'is_incremental=True' and 'has_dependent_backups=True/False' to
 response body.
-4.Add parent_id to notification system.
+4. Add parent_id to notification system.
+
+Alternatives
+------------
+None.
 
 
-Data Model Impact
+Data model impact
 -----------------
 None.
 
 
-REST API Impact
+REST API impact
 ---------------
 The response body of show incremental backup detail is changed like this:
 
@@ -73,16 +77,16 @@ If there is full backup, the is_incremental flag will be False.
 And has_dependent_backups will be True if the full backup has dependent
 backups.
 
-Security Impact
+Security impact
 ---------------
 None
 
-Notifications Impact
+Notifications impact
 --------------------
 Add parent_id to backup notification.
 
 
-Other End User Impact
+Other end user impact
 ---------------------
 End user can get more info about incremental backup. Enhance user experience.
 
@@ -99,12 +103,12 @@ IPv6 Impact
 None.
 
 
-Other Deployer Impact
+Other deployer impact
 ---------------------
 None.
 
 
-Developer Impact
+Developer impact
 ----------------
 None.
 
@@ -141,7 +145,7 @@ Unit tests are needed to ensure response is working correctly.
 
 Documentation Impact
 ====================
-1. Cloud admin documentations will be updated to introduce the changes: 
+1. Cloud admin documentations will be updated to introduce the changes:
 http://docs.openstack.org/admin-guide-cloud/content/volume-backup-restore.html
 
 2. API ref will be also updated for backups:

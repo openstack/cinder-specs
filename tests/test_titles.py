@@ -11,6 +11,7 @@
 # under the License.
 
 import glob
+import os
 import re
 
 import docutils.core
@@ -98,7 +99,9 @@ class TestTitles(testtools.TestCase):
             self.assertEqual(len(trailing_spaces), 0, msg)
 
     def test_template(self):
-        releases = ['juno', 'kilo']
+        # NOTE (e0ne): adding 'template.rst' to ignore dirs to exclude it from
+        # os.listdir output
+        ignored_dirs = {'template.rst', 'api'}
 
         files = ['specs/template.rst']
 
@@ -107,6 +110,7 @@ class TestTitles(testtools.TestCase):
         # to test them.
         # files.extend(glob.glob('specs/api/*/*'))
 
+        releases = set(os.listdir('specs')) - ignored_dirs
         for release in releases:
             specs = glob.glob('specs/%s/*' % release)
             files.extend(specs)

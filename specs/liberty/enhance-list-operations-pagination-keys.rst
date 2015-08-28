@@ -33,9 +33,12 @@ The next link generation is already available in volume list, so it is
 straightforward to implement it for other cinder concepts. Please refer to
 the _get_collection_links function in the cinder.api.common.ViewBuilder class.
 
-Here is one use case to prove the necessity of the pagination keys and the next
-link generation: Suppose the maximum page size 1000 and there are more than
-1000 volume snapshots. If there is no pagination key marker implemented for
+
+Use Cases
+=========
+
+Suppose the maximum page size 1000 and there are more than 1000 volume
+snapshots. If there is no pagination key marker implemented for
 snapshot, the maximum snapshots the user can query from the API is 1000. The
 only way to query more than 1000 snapshots is to increase the default maximum
 page size, which is a limitation to the cinder list operations. If no next link

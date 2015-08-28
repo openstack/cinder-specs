@@ -34,8 +34,8 @@ Proposed change
 All cinder volume drivers needs to get updated with the following approach::
 
     class FooDriver(driver.RetypeVD, driver.TransferVD, driver.ExtendVD,
-                    driver.CloneableVD, driver.CloneableImageVD, driver.SnapshotVD,
-                    driver.BaseVD)
+                    driver.CloneableVD, driver.CloneableImageVD,
+                    driver.SnapshotVD, driver.BaseVD)
 
 A drivers must inherit from BaseVD and implement the basic functions. In order
 to mark that a driver does implement further feature sets it must inherit from

@@ -12,8 +12,11 @@ https://blueprints.launchpad.net/cinder/+spec/get-volume-type-extra-specs
 
 Provide an interface to obtain a volume driver's *capabilities*.
 
+Problem description
+===================
+
 Definitions
-===========
+-----------
 
 * *Volume Type:* A group of volume policies.
 * *Extra Specs:* The definition of a volume type. This is a group of policies
@@ -21,9 +24,6 @@ Definitions
   time.
 * *Capabilities:* What the current deployed backend in Cinder is able to do.
   These correspond to extra specs.
-
-Problem description
-===================
 
 The current implementation of *volume type* *extra specs* management process in
 Horizon and the cinder client are error-prone. Operators manage extra specs
@@ -93,7 +93,8 @@ New endpoint GET /v2/tenant/get_capabilities/ubuntu@lvm1_pool::
    "driver_version": "2.0.0",
    "storage_protocol": "iSCSI",
    "display_name": "Capabilities of Cinder LVM driver",
-   "description": "These are volume type options provided by Cinder LVM driver, blah, blah.",
+   "description":
+    "These are volume type options provided by Cinder LVM driver, blah, blah.",
    "visibility": "public",
    "properties": {
     "thin_provisioning": {
@@ -195,14 +196,16 @@ The qos capability describes some corner cases for us:
   QoS on the same device, so you can specify that with
   <capability-key-name>=true|false.
 
-  If a device doesn't support this (ie always true), then this entry is omitted.
+  If a device doesn't support this (ie always true), then this entry is
+  omitted.
 
   The other key piece is ``vendor unique`` keys. For those that allow
   additional special keys to set QoS those key names are provided in list
   format as valid keys that can be specified and set as related to Quality of
   Service.
 
-The vendor:persona key is another good example of a ``vendor unique`` capability:
+The vendor:persona key is another good example of a ``vendor unique``
+capability:
   This is very much like QoS, and again, note that we're just providing what
   the valid values are.
 
@@ -233,12 +236,6 @@ operator would fetch a list of capabilities for a particular backend's pool:
 First get list of services::
 
   $ cinder service-list
-  +------------------+-----------------+------+---------+-------+----------------------------+-----------------+
-  |      Binary      |    Host         | Zone |  Status | State |         Updated_at         | Disabled Reason |
-  +------------------+-----------------+------+---------+-------+----------------------------+-----------------+
-  | cinder-scheduler | controller      | nova | enabled |   up  | 2014-10-18T01:30:54.000000 |       None      |
-  | cinder-volume    | block1@lvm#pool | nova | enabled |   up  | 2014-10-18T01:30:57.000000 |       None      |
-  +------------------+-----------------+------+---------+-------+----------------------------+-----------------+
 
 With one of the listed pools, pass that to capabilities-list::
 

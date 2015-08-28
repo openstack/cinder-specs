@@ -25,7 +25,8 @@ This spec proposes a use of our entire tool-box to implement replication.
 2. Types/Extra-Specs - provide mechanism for vendor-unique custom info and
    help level out some of the unique aspects among the different back-ends.
 
-3. API Calls - provide some general API calls for things like enable, disable etc
+3. API Calls - provide some general API calls for things like enable,
+   disable etc
 
 It would also be preferrable to simplify the state management a bit if we can.
 
@@ -40,6 +41,9 @@ base.
 The existing design is great for some backends, but is challenging for many
 devices to fit in to.
 
+Use Cases
+=========
+TBD.
 
 Proposed change
 ===============
@@ -57,9 +61,11 @@ to indicate pairing.  This could look something like this in the conf file:
 
     [driver-foo]
     volume_driver=xxxx
-    valid_replication_devices='backend=backend_name-a','backend=backend_name-b'....
+    valid_replication_devices='backend=backend_name-a',
+      'backend=backend_name-b'....
 
-Alternatively the replication target can potentially be a device unknown to Cinder
+Alternatively the replication target can potentially be a device unknown
+to Cinder
 
     [driver-foo]
     volume_driver=xxxx
@@ -69,7 +75,8 @@ Or a combination of the two even
 
     [driver-foo]
     volume_driver=xxxx
-    valid_replication_devices='remote_device={'some unique access meta}','backend=backend_name-b'....
+    valid_replication_devices='remote_device={'some unique access meta}',
+      'backend=backend_name-b'....
 
 NOTE That the remote_device access would have to be handled via the
 configured driver.
@@ -89,20 +96,23 @@ from the create call.  The flow would be something like this:
   enable_replication(volume)
   disable_replication(volume)
   failover_replicated_volume(volume)
-  udpate_replication_targets() [mechanism to add tgts external to the conf file * optional]
-  get_replication_targets() [mechanism for an admin to query what a backend has configured]
+  udpate_replication_targets()
+    [mechanism to add tgts external to the conf file * optional]
+  get_replication_targets()
+    [mechanism for an admin to query what a backend has configured]
 
 
 Special considerations
 -----------------
 * volume-types
-  There should not be a requirement of an exact match of volume-types between the
-  primary and secondary volumes in the replication set.  If a backend "can" match
-  these exactly, then that's fine, if they can't, that's ok as well.
+  There should not be a requirement of an exact match of volume-types between
+  the primary and secondary volumes in the replication set.  If a backend "can"
+  match these exactly, then that's fine, if they can't, that's ok as well.
 
   Ideally, if the volume fails over the type specifications would match, but if
-  this isn't possible it's probably acceptable, and if it needs to be handled by
-  the driver via a retype/modification after the failover, that's fine as well.
+  this isn't possible it's probably acceptable, and if it needs to be handled
+  by the driver via a retype/modification after the failover, that's fine as
+  well.
 
 * async vs sync
   This spec assumes async replication only for now.  It can easily be
@@ -211,11 +221,13 @@ We would need to add the API calls mentioned above:
   enable_replication(volume)
   disable_replication(volume)
   failover_replicated_volume(volume)
-  udpate_replication_targets() [mechanism to add tgts external to the conf file * optional]
-  get_replication_targets() [mechanism for an admin to query what a backend has configured]
+  udpate_replication_targets()
+    [mechanism to add tgts external to the conf file * optional]
+  get_replication_targets()
+    [mechanism for an admin to query what a backend has configured]
 
-I think augmenting the existing calls is better than reusing them, but we can look at that
-more closely in the submission stage.
+I think augmenting the existing calls is better than reusing them, but we can
+look at that more closely in the submission stage.
 
 Security impact
 ---------------

@@ -27,7 +27,8 @@ Details of the overhead are covered in [#rw_bp].
 
 Use Cases
 =========
-This will eliminate bottleneck in large number of concurrent executed operations.
+This will eliminate bottleneck in large number of concurrent executed
+operations.
 
 Proposed change
 ===============
@@ -88,26 +89,26 @@ required to be run with root privileges. Current state of rootwrap daemon
 in Neutron shows over 10x speedup comparing to usual ``sudo rootwrap`` call.
 Total speedup for Cinder shows impressive results too [#rw_perf]:
 test scenario CinderVolumes.create_and_delete_volume
-Current performance:
-+----------------------+-----------+-----------+-----------+---------------+---------------+---------+-------+
-| action               | min (sec) | avg (sec) | max (sec) | 90 percentile | 95 percentile | success | count |
-+----------------------+-----------+-----------+-----------+---------------+---------------+---------+-------+
-| cinder.create_volume | 2.779     | 5.76      | 14.375    | 12.458        | 13.417        | 100.0%  | 8     |
-| cinder.delete_volume | 13.535    | 24.958    | 32.959    | 32.949        | 32.954        | 100.0%  | 8     |
-| total                | 16.314    | 30.718    | 35.96     | 35.957        | 35.959        | 100.0%  | 8     |
-+----------------------+-----------+-----------+-----------+---------------+---------------+---------+-------+
+Current performance :
++----------------------+-----------+-----------+-----------+-------+
+| action               | min (sec) | avg (sec) | max (sec) | count |
++----------------------+-----------+-----------+-----------+-------+
+| cinder.create_volume | 2.779     | 5.76      | 14.375    | 8     |
+| cinder.delete_volume | 13.535    | 24.958    | 32.959    | 8     |
+| total                | 16.314    | 30.718    | 35.96     | 8     |
++----------------------+-----------+-----------+-----------+-------+
 Load duration: 131.423681974
 Full duration: 135.794852018
 
 With use_rootwrap_daemon enabled:
 
-+----------------------+-----------+-----------+-----------+---------------+---------------+---------+-------+
-| action               | min (sec) | avg (sec) | max (sec) | 90 percentile | 95 percentile | success | count |
-+----------------------+-----------+-----------+-----------+---------------+---------------+---------+-------+
-| cinder.create_volume | 2.49      | 2.619     | 3.086     | 2.826         | 2.956         | 100.0%  | 8     |
-| cinder.delete_volume | 2.183     | 2.226     | 2.353     | 2.278         | 2.315         | 100.0%  | 8     |
-| total                | 4.673     | 4.845     | 5.3       | 5.06          | 5.18          | 100.0%  | 8     |
-+----------------------+-----------+-----------+-----------+---------------+---------------+---------+-------+
++----------------------+-----------+-----------+-----------+-------+
+| action               | min (sec) | avg (sec) | max (sec) | count |
++----------------------+-----------+-----------+-----------+-------+
+| cinder.create_volume | 2.49      | 2.619     | 3.086     | 8     |
+| cinder.delete_volume | 2.183     | 2.226     | 2.353     | 8     |
+| total                | 4.673     | 4.845     | 5.3       | 8     |
++----------------------+-----------+-----------+-----------+-------+
 Load duration: 19.7548749447
 Full duration: 22.2729279995
 

@@ -25,9 +25,9 @@ OpenStack is moving towards support for hierarchical ownership of projects.
 In this regard, Keystone will change the organizational structure of
 OpenStack, creating nested projects.
 
-The existing Quota Driver in Cinder called ``DbQuotaDriver`` is useful to enforce
-quotas at both the project and the project-user level provided that all the
-projects are at the same level (i.e. hierarchy level cannot be greater
+The existing Quota Driver in Cinder called ``DbQuotaDriver`` is useful to
+enforce quotas at both the project and the project-user level provided that all
+the projects are at the same level (i.e. hierarchy level cannot be greater
 than 1).
 
 The proposal is to develop a new Quota Driver called ``NestedQuotaDriver``,
@@ -47,7 +47,7 @@ tree below.
 
 
 Use Cases
----------
+=========
 
 **Actors**
 
@@ -85,7 +85,8 @@ Xing and Eric respectively.
 1. Mike needs to be able to set the quotas for both CMS and ATLAS, and also
    manage quotas across the entire projects including the root project,
    ProductionIT.
-2. Jay should be able to set and update the quota of Visualisation and Computing.
+2. Jay should be able to set and update the quota of Visualisation and
+   Computing.
 3. Jay should be able to able to view the quota of CMS, Visualisation and
    Computing.
 4. Jay should not be able to update the quota of CMS, although he is the
@@ -155,7 +156,8 @@ projects this can be an useful addition to Cinder.
 Proposed change
 ===============
 
-1. The default quota (hard limit) for any newly created sub-project is set to 0.
+1. The default quota (hard limit) for any newly created sub-project is set
+   to 0.
    The neutral value of zero ensures consistency of data in the case of race
    conditions when several projects are created by admins at the same time.
    Suppose the default value of number of volumes allowed per project is 100,
@@ -392,8 +394,8 @@ operations, the token is scoped to the parent.
 Data model impact
 -----------------
 
-Create a new column ``allocated`` in table ``quotas`` with default value 0. This
-can be done by adding a migration script to do the same.
+Create a new column ``allocated`` in table ``quotas`` with default value 0.
+This can be done by adding a migration script to do the same.
 
 
 REST API impact
@@ -526,7 +528,8 @@ added since Kilo release.
 References
 ==========
 
-* `Hierarchical Projects Wiki <https://wiki.openstack.org/wiki/HierarchicalMultitenancy>`_
+* `Hierarchical Projects Wiki
+   <https://wiki.openstack.org/wiki/HierarchicalMultitenancy>`_
 
 * `Hierarchical Projects
   <http://specs.openstack.org/openstack/keystone-specs/specs/juno/hierarchical_multitenancy.html>`_

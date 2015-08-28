@@ -65,6 +65,9 @@ more aptly named 'force_rollforward_attach', but it seems that simply forcing
 a detach of a volume will put the volume back in a state where the attach can
 be attempted again.
 
+Use Cases
+=========
+
 UseCase1: Cinder DB 'attaching', storage back end 'available', Nova DB
 does not show block device for this volume.
 An attempt was made to attach a volume using 'nova volume-attach <instance>
@@ -149,7 +152,8 @@ accomplished via manual intervention (i.e. 'cinder force-detach....'
 Cinder force-detach API currently calls:
     volume_api.terminate_connection(...)
     self.volume_api.detach(...)
-This will be modified to call into the VolumeManager with a new force_detach(...)
+This will be modified to call into the VolumeManager with a new
+force_detach(...)
 
 api/contrib/volume_actions.py: force_detach(...)
     try:
