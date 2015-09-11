@@ -20,7 +20,6 @@ instruct Nova how to attach a volume.
 This spec aims to add the assist to support enabling discard for cinder
 volumes.
 
-
 Problem description
 ===================
 
@@ -101,11 +100,23 @@ See https://en.wikipedia.org/wiki/Trim_(computing) for more info.
 Other deployer impact
 ---------------------
 
-Deployers will also have to add a setting to nova.conf to make this work as
-well.
+Deployers will need to add some properties to Glance images to make
+this work.  Once an instance is booted from the modified image the
+discard capability reported by the driver will be activated.
 
-[libvirt]
-hw_disk_discard = unmap
+hw_scsi_model=virtio-scsi
+hw_disk_bus=scsi
+
+glance image-update --property hw_scsi_model=virtio-scsi
+                    --property hw_disk_bus=scsi <image-uuid>
+
+This causes the correct controller to be created on the instance
+via code changes here https://review.openstack.org/#/c/70263/.
+Once the correct controller is in place the unmap functionality
+specified by the Cinder backend will be utilized.
+
+A secondary volume attachment will be treated separately and will
+honor the discard settings provided at connection time.
 
 Developer impact
 ----------------
@@ -141,7 +152,8 @@ None
 Testing
 =======
 
-Tempest tests will not be needed for this spec.
+Tempest tests will not be needed for this spec. Pure Storage CI will test
+this code path with existing tempest tests.
 
 
 Documentation Impact
