@@ -4,9 +4,9 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-==========================================
-Generic image cache functionality
-==========================================
+==============================================
+Support clone_image from Glance cinder backend
+==============================================
 
 https://blueprints.launchpad.net/cinder/+spec/clone-image-in-glance-cinder-backend
 
