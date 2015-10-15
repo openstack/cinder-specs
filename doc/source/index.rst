@@ -4,6 +4,14 @@
 Volume Service Specifications (cinder)
 ======================================
 
+Mitaka approved specs:
+
+.. toctree::
+   :glob:
+   :maxdepth 1:
+
+   specs/mitaka/*
+
 Liberty approved specs:
 
 .. toctree::
