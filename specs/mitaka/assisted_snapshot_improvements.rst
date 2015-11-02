@@ -27,8 +27,7 @@ should be reworked as more drivers are interested in supporting
 assisted snapshots.
 
 This work will also assist in supporting proper transitions between
-different phases of the snapshot create/delete process as we move
-toward a state machine in Liberty.
+different phases of the snapshot create/delete process.
 
 Use Cases
 =========
@@ -75,8 +74,7 @@ snapshot and/or snapshot_admin_metadata by the volume manager.
 
 This will move some database accesses currently done in the driver
 to the volume manager, as well as better allowing support for defined
-state transitions between the Nova and Cinder phases for tracking the
-process via the new state machine work targeted for Liberty.
+state transitions between the Nova and Cinder phases.
 
 
 Alternatives
@@ -125,7 +123,7 @@ None
 Other deployer impact
 ---------------------
 
-Cinder will remain backward compatible with Juno Nova for the APIs
+Cinder will remain backward compatible with Liberty Nova for the APIs
 being modified here.
 
 
@@ -170,7 +168,7 @@ Testing
 =======
 
 This will be covered by CI for GlusterFS, the NFS driver (once snapshots
-are added to it in Liberty), and CI for other RemoteFS drivers.
+are added to it in Mitaka), and CI for other RemoteFS drivers.
 
 
 Documentation Impact
