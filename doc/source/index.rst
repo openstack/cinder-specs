@@ -8,7 +8,7 @@ Mitaka approved specs:
 
 .. toctree::
    :glob:
-   :maxdepth 1:
+   :maxdepth: 1
 
    specs/mitaka/*
 
