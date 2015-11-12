@@ -28,7 +28,7 @@ This spec proposes a use of our entire tool-box to implement replication.
 3. API Calls - provide some general API calls for things like enable,
    disable etc
 
-It would also be preferrable to simplify the state management a bit if we can.
+It would also be preferable to simplify the state management a bit if we can.
 
 
 Problem description
@@ -129,7 +129,7 @@ Special considerations
 * Cinder does not need to be aware of both backend devices but CAN be
   This spec is intended to provide flexibility, that means that if an
   admin wishes to configure a backend device that is unknown to Cinder
-  that absolutley fine.  The opposite is true as well of course, that
+  that absolutely fine.  The opposite is true as well of course, that
   detail is outlined in this spec.
 
 * Tenant visibility
