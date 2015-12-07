@@ -99,10 +99,10 @@ Use Cases
   the capabilities of a standard physical node.
 
 Note that the need for concurrent backup and restore operations,
-especially to the same backend, may be artificially suppressed today
-because of the lack of support for *live* backups.  We anticipate that
-when backups of *in-use* volumes are supported [3], this need will
-significantly increase.
+especially to the same backend, may be artificially suppressed
+historically because of the lack of support for *live* backups.  We
+anticipate that now that backups of *in-use* volumes are supported
+([3] [5]) this need will significantly increase.
 
 Proposed change
 ===============
@@ -125,6 +125,22 @@ this means that the direct load of volume manager and volume driver
 can be eliminated in the backup service itself and the backup service
 can therefore run on a different node than the node for the backend's
 volume service.
+
+Now that backups of *in-use* volumes are supported, volume drivers
+can supply an ``attach_snapshot`` method, which is then used as
+optimization instead of attaching a temporary volume copy of the
+source volume.  In the initial implementation [6], an ``attach_snapshot``
+method was added that only allows for local attaches and the reference
+``lvm driver`` explicitly uses ``local_path`` when getting volumes
+for backup operations [5].  As part of the work implementing this
+blueprint spec, we will need to revisit snapshot attachment to allow
+for remote attaches.  Drivers like ``lvm driver`` that cannot support
+remote attach for snapshots will need to fall back to using temporary
+volumes instead [5].
+* Create a temporary volume from the original volume.
+* Backup the temporary volume.
+* Clean up the temporary volume.
+
 
 Alternatives
 ------------
@@ -189,19 +205,39 @@ concurrently, and on separate nodes.  At startup, a backup service
 needs to distinguish betwen in-flight operations that are owned by
 another backup-service instance and orphaned operations.
 
-When a backup service starts up it can query the database for all
-active backup services and select all whose ``host`` field is other
-than itself.  (If in the future multiple services are running on a
-single node, we can enrich the ``host`` field to distinguish among
-them.)  The service can then check the ``host`` field of the
-backup object for all in-flight or orphaned backup objects to
-distinguish whether they and their associated volume or snapshot
-objects belong to an active backup service or not.  If no other backup
-service owns the backup object (i.e., the ``host`` field corresponds
-to no active backup service or to one's own host), then the backup
-service can clean up the backups and over rpc to associated volume
-backend host clean up associated volumes, temporary volumes and
-snapshots.
+Eventually, it will make sense for a backup service process to
+cleanup stuff left behind either by earlier incarnations of itself
+or by other abnormally terminated backup processes.  A solution to
+this general problem, however, requires a reliable capability
+to auto-fence oneself on connection loss as being developed as
+part of the solution for Active-Active HA for the cinder volume
+service [7].
+
+
+Here we will align with the community decision at the Mitaka design
+summit to defer the auto-fencing capability and start on Active-Active
+HA for the cinder volume service without automatic cleanup, by
+restricting backup service initialization cleanup to leftovers from
+the same backup service.
+
+The ``host`` field for a backup object will be set to the host for the
+backup service to which the backup operation is cast. The status update
+of the backup and host update will be handled in an transaction. Cleanup
+at initialization can then be restricted to leftover objects that
+chain through their corresponding backup object to a ``host`` field
+matching oneself. Compare-and-swap DB operation will be used to prevent
+race conditions.
+
+For an example of how the ``host`` field will be set, consider
+a volume with a backend handled by volume service on node A where
+backup service processes are running on node B and node C.  When
+a backup is created using the service on node B, the ``host`` field
+for the backup object will be set to B.  When restoring from that
+backup using the backup service on node C, the ``host`` field for
+the backup object will be set to C.
+
+Cleanup of associated volumes, temporary volumes, and temporary
+snapshots will be done via rpc to the appropriate volume service host.
 
 Note that the backup object contains a ``volume_id`` field for the
 volume it backs up, as well as ``temp_volume_id`` and
@@ -209,18 +245,6 @@ volume it backs up, as well as ``temp_volume_id`` and
 currently keep the id of volumes to which it is restoring backups.  We
 will need to add this field in order to determine orphaned
 restore-operation volumes.
-
-In this approach the ``host`` field for a backup object is set by API
-(or, down the road, a scheduler) when the backup or restore rpc is
-cast to a backup host and cleared by the backup service itself at
-completion of the operation.  When doing ``init_host`` cleanup, the
-backup service will *claim* the in-flight operation by putting its own
-``host`` value in the ``backup host`` field, and then clearing that
-field at the completion of the cleanup operation for that orphaned
-backup or restore.
-
-We will use database transaction (compare and set) to avoid race
-conditions in the sequence just described.
 
 Special Volume Driver Backup/Restore Considerations
 ---------------------------------------------------
@@ -246,11 +270,6 @@ some such for volume drivers of this sort.
 
 Data model impact
 -----------------
-
-None.
-
-Cross-project impact
---------------------
 
 None.
 
@@ -293,7 +312,8 @@ Performance Impact
 Other deployer impact
 ---------------------
 
-None
+Backup service can now run on multiple nodes and no longer has to run
+on the same node as the volume service handling a volume's backend.
 
 Developer impact
 ----------------
@@ -312,8 +332,8 @@ Primary assignee:
 * Tom Barron (tbarron, tpb@dyncloud.net)
 
 Other contributors:
-xs
 * LisaLi (lixiaoy11, xiaoyan.li@intel.com)
+* Huang Zhiteng (winston-d, winston.d@gmail.com)
 
 Work Items
 ----------
@@ -321,7 +341,7 @@ Work Items
 * Write the code.  A POC is available now [1].
 
 * Determine and address any impact on existing volume drivers that
-  have backup or restore methods.
+  have their own backup or restore methods.
 
 * Run/test the new code with multiple backup processes running on
   multiple nodes, other than the node or nodes where the volume
@@ -346,12 +366,15 @@ Testing
 * Existing tempest tests should provide sufficient coverage to ensure
   that current functionality does not regress.  Potentially new
   multi-node tempest tests could be added to verify distributed
-  interactions.
+  interactions.  We should take advantage of opportunities to extend
+  current tempest coverage for backup and add functional tests for
+  backup when this is feasible.
+
 
 Documentation Impact
 ====================
 
-None
+Update with new deployment options.
 
 References
 ==========
@@ -360,3 +383,6 @@ References
 * [2]: https://etherpad.openstack.org/p/cinder-scaling-backup-service
 * [3]: https://blueprints.launchpad.net/cinder/+spec/non-disruptive-backup
 * [4]: https://github.com/openstack/cinder/blob/master/cinder/volume/drivers/vmware/vmdk.py#L1573
+* [5]: https://review.openstack.org/#/c/193937
+* [6]: https://review.openstack.org/#/c/201249
+* [7]: https://review.openstack.org/#/c/237076
