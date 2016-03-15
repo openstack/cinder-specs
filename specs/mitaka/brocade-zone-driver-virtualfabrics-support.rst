@@ -73,27 +73,28 @@ service to traverse through the fabrics configured in cinder.conf to identify
 the targets connected to a host and returns a map of initiator and target port
 WWNs for each fabric.
 
-Sample map object returned by the look up service:
+Sample map object returned by the look up service::
 
-            {
-                <Fabric1>: {
-                    'initiator_port_wwn_list':
-                    ('200000051e55a100', '200000051e55a121'..)
-                    'target_port_wwn_list':
-                    ('100000051e55a100', '100000051e55a121'..)
-                }
-                <Virtual_Fabric_2>: {
-                    'initiator_port_wwn_list':
-                    ('300000051e55a100', '300000051e55a121'..)
-                    'target_port_wwn_list':
-                    ('400000051e55a100', '400000051e55a121'..)
-                }
-            }
+  {
+      <Fabric1>: {
+          'initiator_port_wwn_list':
+          ('200000051e55a100', '200000051e55a121'..)
+          'target_port_wwn_list':
+          ('100000051e55a100', '100000051e55a121'..)
+      }
+      <Virtual_Fabric_2>: {
+          'initiator_port_wwn_list':
+          ('300000051e55a100', '300000051e55a121'..)
+          'target_port_wwn_list':
+          ('400000051e55a100', '400000051e55a121'..)
+      }
+  }
 
 The volume driver will process this information to extract initiator and
 target map for each fabric and builds a new initiator_target_map object.
 
-Sample initiator_target_map object:
+Sample initiator_target_map object::
+
         {
             'host WWPN 1': ['target WWPN 1', 'target WWPN 2']
             'host WWPN 2': ['target WWPN 3', 'target WWPN 4']

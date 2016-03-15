@@ -118,7 +118,7 @@ A version response would look as follows for GET http://<cinder_URL>:8776
 
 ::
 
-{
+ {
     "versions": [
         {
             "id": "v2.0",
@@ -177,7 +177,7 @@ A version response would look as follows for GET http://<cinder_URL>:8776
             "version": "2.1"
         }
     ]
-}
+ }
 
 This specifies the min and max version that the server can
 understand. min_version will start at 2.0 representing the v2.0 API.
@@ -456,13 +456,13 @@ Primary assignee:
 Work Items
 ----------
 
-Port Manila code for api-microversions
+* Port Manila code for api-microversions
   Status: Done (see https://review.openstack.org/#/c/224910/)
-Add examples of increments and decorators (scottda)
+* Add examples of increments and decorators (scottda)
   Status: Done (see https://github.com/scottdangelo/TestCinderAPImicroversions)
-Implement changes for python-cinderclient (scottda)
-test with python-cinderclient changes (scottda)
-Cinder Doc changes (scottda)
+* Implement changes for python-cinderclient (scottda)
+* test with python-cinderclient changes (scottda)
+* Cinder Doc changes (scottda)
 
 
 Dependencies
@@ -497,4 +497,5 @@ References
 * Manila code for api-microversions: https://review.openstack.org/#/c/207228/8
 * WIP implementation code: https://review.openstack.org/#/c/224910/
 * Test Cases and code: https://github.com/scottdangelo/TestCinderAPImicroversions
+
 ..  _OpenStack API Change Guidelines: http://specs.openstack.org/openstack/api-wg/guidelines/evaluating_api_changes.html

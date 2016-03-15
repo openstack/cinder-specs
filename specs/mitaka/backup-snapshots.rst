@@ -47,6 +47,7 @@ Proposed change
 ===============
 
 In summary, the following changes will happen:
+
 * A field "snapshot_id" will be added to the request body of the
   existing backup API.
 * A new column "snapshot_id" will be added to the backups table.
@@ -231,6 +232,7 @@ Documentation Impact
 Documentation will be modified to describe how to use this feature. We
 will make sure both the existing use cases and the new use cases are
 clearly documented to avoid confusion. The following should be covered:
+
 * Do a full backup of a volume with status being 'available' or 'in-use'.
 * Do an incremental backup of a volume with status being 'available' or
   'in-use'.

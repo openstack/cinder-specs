@@ -74,12 +74,12 @@ New methods in HostState
 
 * get_capacity()
   - call get_pools()
-  - calculate the capacity info for pool and then sum for each
-    backend
+  - calculate the capacity info for pool and then sum for each backend
 
 Alternatives
 ------------
 Another alternative could be:
+
 * create a new data table which describe capacity info into database
   in scheduler.
 * provide a cinder api to retrieve the capacity info from database.

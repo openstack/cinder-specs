@@ -34,7 +34,8 @@ Proposed change
 * Add DB query filter using volume_glance_metadata in api of sqlaclchemy.
 
 * User can use glance metadata to filter volume detail in cinder api.
-  The query url is like this:
+  The query url is like this::
+
       "volumes/detail?glance_metadata={"image_name":"xxx"}"
 
 Alternatives

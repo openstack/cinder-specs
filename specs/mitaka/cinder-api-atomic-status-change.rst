@@ -104,7 +104,8 @@ checking the ``status`` of a volume and raise a message if it is not
 then raise a different exception or the same exception with a different
 message.
 
-Skeleton of the procedure:
+Skeleton of the procedure::
+
  result = resource.conditional_update(values, conditions)
  if not result:
      resource = db.get_resource(resource.id)
@@ -124,7 +125,8 @@ call without having changed the DB, which is a problem.  That is why we need a
 loop in the conditional update, to make sure we either succeed on the update or
 we raise the error regardless of racing conditions on the data.
 
-Updated skeleton of the procedure:
+Updated skeleton of the procedure::
+
  while not resource.conditional_update(values, conditions):
      resource = db.get_resource(resource.id)
      raise_right_validation_error(resource)

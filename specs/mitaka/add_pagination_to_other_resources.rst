@@ -52,8 +52,9 @@ None
 REST API impact
 ---------------
 
-According the API-wg guideline about pagination, filter and sort[2].
-* GET /v2/{project_id}/{resource}?limit=xxx&marker=xxx&sort=xxx&{filter}=xxx
+According the API-wg guideline about pagination, filter and sort[2]::
+
+  GET /v2/{project_id}/{resource}?limit=xxx&marker=xxx&sort=xxx&{filter}=xxx
   RESP BODY: {"resource_links": [{xxx}],
               "resource": [{xxx}, {xxx}, ..., {xxx}]
              }

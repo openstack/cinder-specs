@@ -43,6 +43,7 @@ API<->Volume service interaction
 
 Establish a snapshot_admin_metadata table which is similar to the
 volume_admin_metadata table::
+
     id : Integer, primary key,
     key : string,
     value : string,
@@ -63,6 +64,7 @@ call for each stage, rather than only a single delete_snapshot call.
 The driver will have a property indicating it supports assisted
 snapshots, which triggers use of the following methods in the manager
 instead of the manager calling the driver's create_snapshot::
+
     create_snapshot_assisted_begin(snapshot_ref)
     create_snapshot_assisted_complete(snapshot_ref)
 

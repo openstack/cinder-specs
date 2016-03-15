@@ -66,9 +66,9 @@ is not documenting the ways the volume driver fetch the storage system value.
 It is up to the volume driver to implement a mechanism to retrieve the
 storage system value.
 
-Connection Info samples:
+Connection Info samples::
 
-{
+ {
     'driver_volume_type': 'fibre_channel'
       'data': {
          **'storage_system': 'AMCE_Array',**
@@ -78,9 +78,11 @@ Connection Info samples:
          'target_wwn': '1234567890123',
          'access_mode': 'rw'
       }
-}
-or
-{
+ }
+
+or::
+
+ {
     'driver_volume_type': 'fibre_channel'
       'data': {
          **'storage_system': 'AMCE_Array',**
@@ -90,7 +92,7 @@ or
          'target_wwn': ['1234567890123', '0987654321321'],
          'access_mode': 'rw'
       }
-}
+ }
 
 On attach/detach, Zone Manager will be initialized with **connection_info**
 which is provided by volume driver. Zone Manager in turn will extract the host
@@ -186,11 +188,11 @@ Work Items
 
 - Enhance the zone manager to pass connection_info object to zone driver.
 - Implement Brocade Zone Driver to create zones as per new format
-using the host name and storage system in the connector object.
+  using the host name and storage system in the connector object.
 - Implement Cisco Zone Driver to create zones as per new format using
-the host name and storage system in the connector object.
+  the host name and storage system in the connector object.
 - Volume drivers are expected to add storage system information to
-connector object.
+  connector object.
 - Unit test the zone driver and client code.
 
 
