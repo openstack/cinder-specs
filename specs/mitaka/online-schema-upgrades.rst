@@ -129,6 +129,11 @@ Now on upgrade we will have M and N release versions. N's versioned objects:
 This way we maintain compatibility M->N (N is writing in place M is reading)
 and N->M (M is writing in place N is reading).
 
+As N is reading from new place, before starting any N's service we need to make
+sure that all the CGs are migrated. To enforce that, as a first N's migration
+we should merge a dummy one that will block subsequent ones if there are items
+that weren't migrated yet.
+
 Please note that we still have old representation in SQLAlchemy model, so we
 would be unable to drop the column even if we managed to switch N services to
 write only to the new place.
@@ -145,7 +150,7 @@ remove it from O's versioned object - it will now read and write data only to
 the new place.
 
 After the upgrade we have everything writing and reading only from the new
-place. Moreover - SQLAlchemy models in N's services doesn't have a notion of
+place. Moreover - SQLAlchemy models in O's services doesn't have a notion of
 `volume_type_id` column. Therefore we can have a post-upgrade migration script
 that finally drops the column (or we can simply add it as migration in P
 release if we want to limit number of steps needed to do upgrades.
@@ -174,7 +179,7 @@ We don't expect impact to the data model itself, but to the way we're doing
 migrations of the data model.
 
 Changes in the model would need to be reviewed carefully to make sure they
-follow this guidline.
+follow this guideline.
 
 REST API impact
 ---------------
