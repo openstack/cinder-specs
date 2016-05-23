@@ -97,7 +97,7 @@ Questions which need to be addressed by this section include:
 * What database migrations will accompany this change.
 
 * How will the initial set of new data objects be generated, for example if you
-  need to take into account existing instances, or modify other existing data
+  need to take into account existing volumes, or modify other existing data
   describe how that will work.
 
 REST API impact
@@ -118,10 +118,10 @@ Each API method which is either added or changed should have the following
 
     * A description for each possible error code should be included
       describing semantic errors which can cause it such as
-      inconsistent parameters supplied to the method, or when an
-      instance is not in an appropriate state for the request to
+      inconsistent parameters supplied to the method, or when a
+      volume is not in an appropriate state for the request to
       succeed. Errors caused by syntactic problems covered by the JSON
-      schema defintion do not need to be included.
+      schema definition do not need to be included.
 
   * URL for the resource
 
