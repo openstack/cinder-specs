@@ -139,7 +139,7 @@ Documentation Impact
 The cinder client documentation will need to be updated to reflect the new
 command.
 
-http://docs.openstack.org/admin-guide-cloud/content/managing-volumes.html
+http://docs.openstack.org/admin-guide/blockstorage-manage-volumes.html
 
 The cinder API documentation will need to be updated to reflect the REST API
 changes.
