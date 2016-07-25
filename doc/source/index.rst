@@ -4,6 +4,14 @@
 Volume Service Specifications (cinder)
 ======================================
 
+Ocata approved specs:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/ocata/*
+
 Newton approved specs:
 
 .. toctree::
