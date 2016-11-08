@@ -14,7 +14,7 @@ https://blueprints.launchpad.net/cinder/+spec/replication-v2
 
 This spec proposes Version 2 of replication.  The goal is to take
 some of the lessons we've learned from the first version of
-replication that was added in teh Juno release and see if we can
+replication that was added in the Juno release and see if we can
 improve it a bit and make it something that is more widely usable
 by other backend devices.
 
