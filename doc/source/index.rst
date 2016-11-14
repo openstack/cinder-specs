@@ -4,6 +4,14 @@
 Volume Service Specifications (cinder)
 ======================================
 
+Pike approved specs:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/pike/*
+
 Ocata approved specs:
 
 .. toctree::
