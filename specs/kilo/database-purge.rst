@@ -24,7 +24,7 @@ Problem description
 ===================
 
 Very long lived Openstack installations will carry around database rows
-for years and years. To date, there is no "mechanism" to programatically
+for years and years. To date, there is no "mechanism" to programmatically
 purge the deleted data. The archive rows feature doesn't solve this.
 
 Use Cases
