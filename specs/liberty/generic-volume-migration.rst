@@ -35,7 +35,7 @@ Use Cases
 Proposed change
 ===============
 
-By using a file-like object abstraction similiar to the backup volume driver
+By using a file-like object abstraction similar to the backup volume driver
 approach, we can allow the volume driver to determine how best to attach its
 volume locally.  For most drivers, this will continue to be iSCSI.  And for
 Ceph, a RBD object that support file semantics is returned.  In both cases, the
