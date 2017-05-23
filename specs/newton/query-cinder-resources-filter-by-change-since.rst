@@ -4,9 +4,9 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-========================================================
-Support to query cinder resources filter by change_since
-========================================================
+=========================================================
+Support to query cinder resources filter by changes-since
+=========================================================
 
 https://blueprints.launchpad.net/cinder/+spec/supprot-to-query-cinder-resources-filter-by-change-since
 
@@ -37,7 +37,7 @@ all resources every time to see which was changed.
 Proposed change
 ===============
 
-* Introduce a new change_since filter for retrieving resources. It
+* Introduce a new changes-since filter for retrieving resources. It
   accepts a timestamp and projects will return resources whose update_at fields
   are later than this timestamp.
 
@@ -58,10 +58,10 @@ None
 REST API impact
 ---------------
 
-List API will accept new query string parameter change_since. Users can pass
+List API will accept new query string parameter changes-since. Users can pass
 time to the list API url to retrieve resources operated since a specific time.
 
-* GET /v3/{project_id}/volumes/{detail}?change_since=2016-01-01T01:00:00
+* GET /v3/{project_id}/volumes/{detail}?changes-since=2016-01-01T01:00:00
 
 Security impact
 ---------------
@@ -125,7 +125,7 @@ None
 Testing
 =======
 
-1. Unit test to test if change_since filter can be correctly applied.
+1. Unit test to test if changes-since filter can be correctly applied.
 2. Tempest test if change filter work correctly from API perspective.
 
 Documentation Impact
@@ -137,4 +137,6 @@ Documentation Impact
 References
 ==========
 
-None
+[1]: Nova: http://specs.openstack.org/openstack/nova-specs/specs/newton/approved/add-pagination-and-change-since-for-migration-list.html
+[2]: Glance V2 related spec: http://git.openstack.org/cgit/openstack/glance-specs/tree/specs/liberty/v2-additional-filtering.rst
+[3]: Neutron: http://git.openstack.org/cgit/openstack/neutron-specs/tree/specs/mitaka/add-port-timestamp.rst
