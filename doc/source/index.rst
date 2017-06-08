@@ -4,6 +4,14 @@
 Volume Service Specifications (cinder)
 ======================================
 
+Queens approved specs:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+    specs/queens/*
+
 Pike approved specs:
 
 .. toctree::
