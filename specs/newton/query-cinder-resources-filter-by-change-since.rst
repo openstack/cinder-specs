@@ -8,7 +8,7 @@
 Support to query cinder resources filter by changes-since
 =========================================================
 
-https://blueprints.launchpad.net/cinder/+spec/supprot-to-query-cinder-resources-filter-by-change-since
+https://blueprints.launchpad.net/cinder/+spec/support-to-query-cinder-resources-filter-by-change-since
 
 Support users can query resources by specifying the time that resources
 are changed since, and cinder will return the all which matches condition.

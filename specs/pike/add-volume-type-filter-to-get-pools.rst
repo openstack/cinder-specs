@@ -8,8 +8,7 @@
 Support retrieve pools filtered by volume-type
 ==============================================
 
-https://blueprints.launchpad.net/cinder/+spec/add-volume-type-filter-to-
-get-pool
+https://blueprints.launchpad.net/cinder/+spec/add-volume-type-filter-to-get-pool
 
 Add feature that administrators can get back-end storage pools filtered by
 volume-type, cinder will return the pools filtered by volume-type's

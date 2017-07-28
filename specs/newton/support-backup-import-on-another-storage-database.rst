@@ -10,8 +10,7 @@ Support backup import on another Storage database
 
 URL of launchpad blueprint:
 
-https://blueprints.launchpad.net/cinder/+spec/Support-backup-import-on-
-another-Storage-database
+https://blueprints.launchpad.net/cinder/+spec/support-backup-import-on-another-storage-database
 
 * This backup service can use a backup extra metadata in order
   to import a backup on a different Block Storage.
