@@ -133,7 +133,7 @@ Alternatives
   left up to a driver backend to store data, or with another external database
   somewhere. Some drawbacks to this approach include having different
   databases to maintain, update, and keep in sync which would be a less than
-  desireable user experience for a cloud admin, having multiple ways of doing
+  desirable user experience for a cloud admin, having multiple ways of doing
   synchronization/locking in drivers can and will introduce bugs and
   maintenance problems, and makes it more difficult for new driver developers
   to make a good choice on where to store data.

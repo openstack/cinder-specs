@@ -42,7 +42,7 @@ Example: Assume backend A has a total physical capacity of 100G.
 There are 10G thick luns and 20G thin luns (10G out of the 20G thin luns
 are written). In this case, free_capacity = 100 - 10 -10 = 80G.
 
-free: This is calculated in the scheduler by substracting reserved space
+free: This is calculated in the scheduler by subtracting reserved space
 from free_capacity.
 
 volume_size: This is an existing parameter. It is the size of the volume to

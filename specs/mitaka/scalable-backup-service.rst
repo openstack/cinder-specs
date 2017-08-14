@@ -202,7 +202,7 @@ volumes that were being backed up or restored.
 
 This assumption is not safe if multiple backup processes can run
 concurrently, and on separate nodes.  At startup, a backup service
-needs to distinguish betwen in-flight operations that are owned by
+needs to distinguish between in-flight operations that are owned by
 another backup-service instance and orphaned operations.
 
 Eventually, it will make sense for a backup service process to
@@ -257,14 +257,14 @@ these with methods that apparently have a bit more "special sauce"
 than just preparing their volume for presentation as a block device.
 
 We will need to analyze the codebase to root out any of these and
-determine how to accomodate any special needs.
+determine how to accommodate any special needs.
 
 An example is the vmware volume driver [4], where a "backing" and
 temporary vmdk file are created for the cinder volume and the
 temporary vmdk file is used as the backup source.  We will have to
 determine whether all this can be done in the volume driver's
 ``initialize_connection`` method during ``attach``, or whether we will
-require an additonal rpc hook to a *prepare_backup_volume* method or
+require an additional rpc hook to a *prepare_backup_volume* method or
 some such for volume drivers of this sort.
 
 

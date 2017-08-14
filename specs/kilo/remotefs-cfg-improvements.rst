@@ -58,7 +58,7 @@ drivers operate.
 Alternatives
 ------------
 
-Leave things as they are today.  (Not desireable.)
+Leave things as they are today.  (Not desirable.)
 
 Data model impact
 -----------------

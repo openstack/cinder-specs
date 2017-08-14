@@ -23,7 +23,7 @@ Volume Num Weighter is that scheduler could choose volume backend based on
 volume number in volume backend, which could provide another mean to help
 improve volume-backends' IO balance and volumes' IO performance.
 
-Explain the benifit from volume number weighter by this use case.
+Explain the benefit from volume number weighter by this use case.
 
 Assume we have volume-backend-A with 300G and volume-backend-B with 100G.
 Volume-backend-A's IO capabilities is the same volume-backend-B IO
@@ -49,7 +49,7 @@ Proposed change
 ===============
 
 Implement a volume number weighter:VolumeNumberWeighter.
- 1. _weigh_object fucntion return volume-backend's non-deleted volume number by
+ 1. _weigh_object function return volume-backend's non-deleted volume number by
     using db api volume_get_all_by_host.
  2. Add a new config item volume_num_weight_multiplier and its default value is
     -1, which means to spread volume among volume backend according to
@@ -66,7 +66,7 @@ VolumeNumberWeighter, whichi provides a mean to help improve
 volume-backends' IO balance and volumes' IO performance,
 could not replace CapacityWeigher/AllocatedCapacityWeigher,
 because CapacityWeigher/AllocatedCapacityWeigher could be used to provide
-balance of volume-backends' free storage space when user foucs more on free
+balance of volume-backends' free storage space when user focus more on free
 space balance between volume-bakends.
 
 

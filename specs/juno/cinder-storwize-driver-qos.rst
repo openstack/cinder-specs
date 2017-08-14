@@ -128,7 +128,7 @@ Work Items
 * Add the QoS enablement check and set the I/O throttling in create volume.
 * Add the QoS enablement check and set the I/O throttling in create volume
   from snapshot.
-* Set the I/O throttling to the new volume acording to the original volume
+* Set the I/O throttling to the new volume according to the original volume
   in create clone volume.
 * Copy the QoS attributes to the snapshot in create snapshot.
 * Change the I/O throttling of the volume if the volume type is changed.

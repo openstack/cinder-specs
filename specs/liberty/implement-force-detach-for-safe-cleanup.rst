@@ -161,7 +161,7 @@ api/contrib/volume_actions.py: force_detach(...)
     except: #catch and add debug message
         raise #something
 
-    self._reset_status(..) #fix DB if backend cleanup is sucessful
+    self._reset_status(..) #fix DB if backend cleanup is successful
 
 volume/manager.py: force_detach(...)
    self.driver.force_detach(..)
@@ -170,7 +170,7 @@ Individual drivers will implement force_detach as needed by the driver, most
 likely calling terminate_connection(..) and possibly other cleanup. The
 force_detach(..) api should be idempotent: It should succeed if the volume is
 not attached, and succeed if the volume starts off connected and can be
-sucessfuly detached.
+sucessfully detached.
 
 Alternatives
 ------------

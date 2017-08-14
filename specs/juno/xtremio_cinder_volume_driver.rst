@@ -62,7 +62,7 @@ Proposed change
 ===============
 
 2 new volume drivers for iSCSI and FC should be developed, bridging Open stack
-commands to XtremIO managment system (XMS) using XMS Rest API.
+commands to XtremIO management system (XMS) using XMS Rest API.
 The drivers should support the following Open stack actions:
 
  * Volume Create/Delete

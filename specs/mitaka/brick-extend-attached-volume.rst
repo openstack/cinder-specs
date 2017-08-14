@@ -124,7 +124,7 @@ Dependencies
 
 * There will also need to be some Nova work done to initiate the call into
   os-brick's new API to do the work, and then notify the VM after it's
-  successfull.
+  successful.
 
 Testing
 =======

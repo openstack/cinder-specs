@@ -42,9 +42,9 @@ it would be able to perform the following:
 * Attach/Detach Volume
 * Get Volume Stats
 
-Additionaly a ZFS Storage Appliance workflow (cinder.akwf) is provided
+Additionally a ZFS Storage Appliance workflow (cinder.akwf) is provided
 to help the admin to setup a user and role in the appliance with enought
-priviledges to do cinder operations.
+privileges to do cinder operations.
 Also, cinder.conf has to be configured properly with zfssa specific
 properties for the driver to work.
 

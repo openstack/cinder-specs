@@ -66,7 +66,7 @@ actually do want the options set in DEFAULT.
 Use Cases
 =========
 
-The main use-case here is for shared configs relevent to multiple backends
+The main use-case here is for shared configs relevant to multiple backends
 in cinder.conf. Also to help lessen some of the confusion about shared config
 options in DEFAULT.
 

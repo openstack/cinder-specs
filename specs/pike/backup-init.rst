@@ -114,7 +114,7 @@ Other contributors:
 Work Items
 ----------
 
-* Implement 'do_setup' method in a base backup driver wich won't do anything
+* Implement 'do_setup' method in a base backup driver which won't do anything
 
 * Implement 'do_setup' in each backup driver.
 

@@ -120,7 +120,7 @@ This change introduces new config variable ``use_rootwrap_daemon`` that
 switches on new behavior. Note that by default ``use_rootwrap_daemon`` will be
 turned off so to get the speedup one will have to turn it on. With it
 turned on ``cinder-rootwrap-daemon`` is used to run commands that require root
-priviledges.
+privileges.
 
 This change also introduces new binary ``cinder-rootwrap-daemon`` that should
 be deployed beside ``cinder-rootwrap``.

@@ -125,7 +125,7 @@ backup.
 
 Data model impact
 -----------------
-No percieved data model changes
+No perceived data model changes
 
 REST API impact
 ---------------
@@ -163,7 +163,7 @@ python-cinderclient will be modified to accept "--incr" option. It may
 include some validation code to validate if the full backup container path
 is valid
 
-Currenly backup functionality is not integrated with OpenStack dashboard. When
+Currently backup functionality is not integrated with OpenStack dashboard. When
 it happens, the dashboard will provide an option for user to choose incremental
 backup
 

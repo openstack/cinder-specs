@@ -174,7 +174,7 @@ for the moment before the undergoing migration is done.
 Performance Impact
 ------------------
 
-As we know, driver assisted migration is mostly more efficent than host
+As we know, driver assisted migration is mostly more efficient than host
 copy, assuming that there is no read-through along with the migration.
 
 If we attach the migrating volume and do read-through operations on the

@@ -103,7 +103,7 @@ will be null if the backup is from a volume::
 
     snapshot_id = Column(String(36))
 
-Add the folowing new column to the backups table to record the timestamp of
+Add the following new column to the backups table to record the timestamp of
 the data::
 
     data_timestamp = Column(DateTime)

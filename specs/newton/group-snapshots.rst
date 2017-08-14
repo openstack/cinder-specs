@@ -73,7 +73,7 @@ Use Cases
 Group snapshot supports two capabilities, that is
 consistent_group_snapshot_enabled and group_snapshot_enabled. A group snapshot
 with consistent_group_snapshot_enabled spec set to True is equivalent to
-cgsnapshot that is existing today in Cinder and it can gurantee point-in-time
+cgsnapshot that is existing today in Cinder and it can guarantee point-in-time
 consistency at the storage level. A group snapshot with group_snapshot_enabled
 spec set to True is a group of snapshots that does not guarantee consistency
 at the storage level.

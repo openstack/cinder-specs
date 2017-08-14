@@ -380,7 +380,7 @@ Phase 4. Horizon and CLI implementations to view notifications in more
 formatted manner.
 
 Phase 5. Handling of some special cases where generation of notifications
-requires seperate handling like rabbitMQ related implementations for showing
+requires separate handling like rabbitMQ related implementations for showing
 notifications in case rabbitMQ is in failed state or rabbitMQ recipient is
 in inactive state.
 

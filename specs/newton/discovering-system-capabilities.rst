@@ -221,7 +221,7 @@ including the service itself.
 
   Normal http response code(s): 200
 
-  Reponse is a list of capabilities. Each capability is a simple noun or
+  Response is a list of capabilities. Each capability is a simple noun or
   hyphenated compound noun. E.g:
 
 .. code-block:: rest

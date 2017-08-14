@@ -106,7 +106,7 @@ When a volume delete request is received:
        that the volume itself is intact, but snapshot operations failed.
     4. Volume manager now moves all snapshots and the volume from 'deleting'
        to deleted.  (volume_destroy/snapshot_destroy)
-    5. If an exception occured, set the volume and all snapshots to
+    5. If an exception occurred, set the volume and all snapshots to
        'error_deleting'.  We don't have enough information to do anything
        else safely.
     6. The driver returns a list of dicts indicating the new statuses of
