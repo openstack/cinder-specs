@@ -57,7 +57,7 @@ Proposed change
 
 We will add a new Cinder driver that uses socket API interact with Huawei
 SDShypervisor storage. SDShypervisor data panel using private Key value
-protocal, so we also add a new connector to realize attach/detach volume.
+protocol, so we also add a new connector to realize attach/detach volume.
 
 The following diagram shows the command and data paths.
 
@@ -184,7 +184,7 @@ Add unit test code for Huawei SDShypervisor cinder driver and connector.
 Dependencies
 ============
 
-Because Huawei SDShypervisor data panel using private Key-Value protocal,
+Because Huawei SDShypervisor data panel using private Key-Value protocol,
 we will create a new libvirt volume driver in Nova to realize
 attach/detach volume to instance. Nova BP page is
 https://blueprints.launchpad.net/nova/+spec/huawei-sdshypervisor-volume-driver

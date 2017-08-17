@@ -67,7 +67,7 @@ We can do nothing, and ask that each driver maintainer be more careful about
 doing any creating of exports inside of initialize_connection if they already
 exist.  This basically makes create_export useless and a noop for all of those
 drivers.  I'd rather see every driver use each method as they were intended, so
-to make reviewing drivers more consistent accross all of Cinder.
+to make reviewing drivers more consistent across all of Cinder.
 
 
 Data model impact

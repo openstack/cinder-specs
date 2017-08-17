@@ -16,7 +16,7 @@ rows, or archive them to a 'shadow' table. I believe this is unmaintainable
 as we move towards more upgradable releases. Today, most users depend on
 manual DB queries to delete this data, but this opens up to human errors.
 
-The goal is to have this be an extention to the `cinder-manage db` command.
+The goal is to have this be an extension to the `cinder-manage db` command.
 Similar specs are being submitted to all the various projects that touch
 a database.
 

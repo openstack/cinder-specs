@@ -170,7 +170,7 @@ Individual drivers will implement force_detach as needed by the driver, most
 likely calling terminate_connection(..) and possibly other cleanup. The
 force_detach(..) api should be idempotent: It should succeed if the volume is
 not attached, and succeed if the volume starts off connected and can be
-sucessfully detached.
+successfully detached.
 
 Alternatives
 ------------
