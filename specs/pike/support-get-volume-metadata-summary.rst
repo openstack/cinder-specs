@@ -111,7 +111,7 @@ Work Items
 ----------
 
 * Add a new microversion.
-* Add volumes'metadata to the volume-summary API's response body.
+* Add volumes' metadata to the volume-summary API's response body.
 * Add client side support.
 
 Dependencies

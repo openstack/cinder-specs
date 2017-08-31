@@ -230,7 +230,7 @@ Add a new revert action to volume action collections, the 'volume_id' and
     Error responses:
 
     1. 404, if the volume is not found.
-    2. 409, if volume and snapshot's status are not 'available'or
+    2. 409, if volume and snapshot's status are not 'available' or
        the sizes of volume and snapshot are not equal.
     3. 400, if the snapshot is not found or not belongs to the specified
        volume or is not the latest one.
