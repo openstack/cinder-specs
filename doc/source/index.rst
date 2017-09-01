@@ -10,7 +10,7 @@ Queens approved specs:
    :glob:
    :maxdepth: 1
 
-    specs/queens/*
+   specs/queens/*
 
 Pike approved specs:
 
