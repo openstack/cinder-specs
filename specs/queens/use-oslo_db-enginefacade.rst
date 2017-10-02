@@ -144,7 +144,7 @@ Assignee(s)
 -----------
 
 Primary assignee:
-  javeme
+  Hanxi_Liu <hanxi.liu@easystack.cn>
 
 
 Work Items
@@ -153,20 +153,23 @@ Work Items
 * Enable use of the new api in Cinder
 
 * Migrate api bundles along functional lines:
-    * Volume,
-    * VolumeMetadata, VolumeAdminMetadata, VolumeGlanceMetadata
-    * VolumeAttachment
-    * VolumeTypes, VolumeTypeProjects, VolumeTypeExtraSpecs
-    * Quota, QuotaClass, QuotaUsage, Reservation
-    * Snapshot, SnapshotMetadata
-    * Backup
-    * QualityOfServiceSpecs
-    * Encryption
-    * Transfer
-    * DriverInitiatorData
-    * ImageVolumeCacheEntry
+    * Backup, BackupMetadata
+    * Cluster
     * ConsistencyGroup, Cgsnapshot
+    * DriverInitiatorData
+    * Encryption
+    * Group, GroupSnapshot, GroupTypes, GroupTypeSpecs,
+      GroupTypeProjects, GroupVolumeTypeMapping
+    * ImageVolumeCacheEntry
+    * Message
+    * QualityOfServiceSpecs
+    * Quota, QuotaClass, QuotaUsage, Reservation
     * Service
+    * Snapshot, SnapshotMetadata
+    * Transfer
+    * VolumeAttachment, AttachmentSpecs
+    * Volume, VolumeMetadata, VolumeAdminMetadata, VolumeGlanceMetadata
+    * VolumeTypes, VolumeTypeProjects, VolumeTypeExtraSpecs
 
 
 Dependencies
@@ -197,3 +200,7 @@ https://blueprints.launchpad.net/oslo.db/+spec/make-enginefacade-a-facade
 * Use the new oslo_db enginefacade in Nova:
 
 https://blueprints.launchpad.net/nova/+spec/new-oslodb-enginefacade
+
+* Use the new oslo_db enginefacade in Neutron:
+
+https://blueprints.launchpad.net/neutron/+spec/enginefacade-switch
