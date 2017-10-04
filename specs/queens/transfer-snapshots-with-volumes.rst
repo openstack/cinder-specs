@@ -65,16 +65,16 @@ Add a new field "with_snapshots(boolean)" in transfer model.
 REST API impact
 ---------------
 
-*New microversion in Cinder API.
+* New microversion in Cinder API.
 
-*Add an optional argumet "no_snapshots"::
+* Add an optional argumet "no_snapshots"::
 
-  POST /v3/{project_id}/os-volume-transfer
-  RESP BODY: {"transfer": {
-                           ...
-                           no_snapshots: [True/False],
-                          }
-             }
+    POST /v3/{project_id}/os-volume-transfer
+    RESP BODY: {"transfer": {
+                             ...
+                             no_snapshots: [True/False],
+                            }
+               }
 
 
 Security impact

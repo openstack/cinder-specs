@@ -65,7 +65,7 @@ REST API impact
 Add backend_state: up/down into response body of service list and also need
 a microversions for this feature:
 
-    *GET /v3/{project_id}/os-services
+    * GET /v3/{project_id}/os-services
 
      RESP BODY: {"services": [{"host": "host@backend1",
                                ...,

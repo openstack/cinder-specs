@@ -20,8 +20,8 @@ For example, a device utilizing shared targets, may have a single iSCSI
 connection shared for multiple volumes attached to a Nova compute node.
 
 This can be troublesome because extra care needs to be taken by consumers to
-make sure that the target it's not being used by another volumes on a system when
-a delete/detach call is made.
+make sure that the target it's not being used by another volumes on a system
+when a delete/detach call is made.
 
 Problem description
 ===================
@@ -48,8 +48,8 @@ This improves the existing use case of detaching volumes correctly and
 efficiently.  The basic condition is that you have a device that utilizes
 shared-targets, and you have a single volume (V-A) from that device attached to
 a compute node.  A user issues a detach call and at the same time another user
-issues an attach of a different volume (V-B) from the same backend that will land on
-the same compute node.
+issues an attach of a different volume (V-B) from the same backend that will
+land on the same compute node.
 
 It's possible that the connection response for V-B is completed under the
 assumption that the target exists (due to V-B) but then the V-A detach process
@@ -125,6 +125,7 @@ API calls, however it does add additional fields to the Volume Get response.
 
 When the appropriate micro-version is selected, we'll add two additional fields
 to the detailed volume response view:
+
     shared_targets
     backend_name
 

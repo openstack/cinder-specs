@@ -147,7 +147,7 @@ Work Items
 Dependencies
 ============
 
-Depends on generic backup implementation `[4]`_
+Depends on generic backup implementation `[1]`_
 
 Testing
 =======
