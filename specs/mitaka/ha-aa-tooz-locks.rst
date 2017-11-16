@@ -84,7 +84,7 @@ Cinder deployments use these drivers. Also some non-RemoteFS-based drivers are
 using local locks too.
 
 We could also replace current locks with some DB-based locking. This was
-proposed by gegulieo in specs to remove local locks from the maanger_ and from
+proposed by gegulieo in specs to remove local locks from the manager_ and from
 drivers_, but increased the complexity of the solution and potentially required
 more testing than relying on a broadly used DLM software.
 

@@ -80,7 +80,7 @@ Using a volume created based on "cirros-0.3.0-x86_64-disk" to show
 the time-consuming between solution A and solution B.
 * [Common]Create a volume based on image "cirros-0.3.0-x86_64-disk".
 
-    ::
+.. code-block:: bash
 
     root@devaio:/home# cinder list
     +--------------------------------------+-----------+------+------+
@@ -88,11 +88,12 @@ the time-consuming between solution A and solution B.
     +--------------------------------------+-----------+------+------+
     | 3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8 | available | None |  1   |
     +--------------------------------------+-----------+------+------+
+
 * [Solution-A-step-1]Copy
   volumes/volume-3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8 from "volumes" pool to
   "images" pool.
 
-    ::
+.. code-block:: bash
 
     root@devaio:/home# time rbd cp
     volumes/volume-3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8 images/test
@@ -106,7 +107,7 @@ the time-consuming between solution A and solution B.
 * [Solution-B-step-1]Create a snapshot of volume
   3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8 and protect it.
 
-    ::
+.. code-block:: bash
 
     root@devaio:/home# time rbd snap create --pool volumes --image
     volume-3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8 --snap image_test
@@ -125,7 +126,7 @@ the time-consuming between solution A and solution B.
 * [Solution-B-step-2]Do clone operation on
   volumes/volume-3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8@image_test.
 
-    ::
+.. code-block:: bash
 
     root@devaio:/home# time rbd clone
     volumes/volume-3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8@image_test
@@ -137,7 +138,7 @@ the time-consuming between solution A and solution B.
 
 * [Solution-B-step-3]Flatten the clone image images/snapshot_clone_image_test.
 
-    ::
+.. code-block:: bash
 
     root@devaio:/home# time rbd flatten images/snapshot_clone_image_test
 
@@ -150,7 +151,7 @@ the time-consuming between solution A and solution B.
 * [Solution-B-step-4]Unprotect the snap
   volumes/volume-3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8@image_test.
 
-    ::
+.. code-block:: bash
 
     root@devaio:/home# time rbd snap unprotect
     volumes/volume-3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8@image_test
@@ -162,7 +163,7 @@ the time-consuming between solution A and solution B.
 * [Solution-B-step-5]Delete the no dependency snap
   volumes/volume-3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8@image_test.
 
-    ::
+.. code-block:: bash
 
     root@devaio:/home# time rbd snap rm
     volumes/volume-3d6e5781-e3ac-4106-bfed-0aa0dd3af1f8@image_test

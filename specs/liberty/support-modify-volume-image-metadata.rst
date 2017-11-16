@@ -129,27 +129,42 @@ the operations on image metadata of volume.
 **Common http response code(s)**
 
 * Modify Success: `200 OK`
+
 * Failure: `400 Bad Request` with details.
-* Forbidden: `403 Forbidden`       e.g. no permission to update the
-                                        specific metadata
-* Not found: `501 Not Implemented` e.g. The server doesn't recognize
-                                        the request method
-* Not found: `405 Not allowed` e.g. HEAD is not allowed on the resource
+
+* Forbidden: `403 Forbidden`
+
+  e.g. no permission to update the specific metadata
+
+* Not found: `501 Not Implemented`
+
+  e.g. The server doesn't recognize the request method
+
+* Not found: `405 Not allowed`
+
+  e.g. HEAD is not allowed on the resource
 
 
 **Update volume image metadata**
+
   * Method type
     PUT
 
   * API version
-    PUT /v2/{project_id}/volumes/{volume_id}/image_metadata
+
+    .. code-block:: console
+
+      PUT /v2/{project_id}/volumes/{volume_id}/image_metadata
 
   * JSON schema definition
-    {
-       "image_metadata": {
-            "key": "v2"
-        }
-    }
+
+    .. code-block:: python
+
+      {
+         "image_metadata": {
+             "key": "v2"
+         }
+      }
 
     To unset a image metadata key value, specify only the key name.
     To set a image metadata key value, specify the key and value pair.
@@ -174,8 +189,10 @@ Other end user impact
 * Provide Cinder API to allow a user to update an image property.
   CLI-python API that triggers the update.
 
-  # Sets or deletes volume image metadata
-  cinder image-metadata  <volume-id> set <property-name = value>
+  .. code-block:: console
+
+    # Sets or deletes volume image metadata
+    cinder image-metadata  <volume-id> set <property-name = value>
 
 Performance Impact
 ------------------
@@ -221,23 +238,30 @@ Changes to Cinder:
 
 #. Define property protections config files in Cinder
    (Deployer need to keep the files in sync with Glance's)
+
 #. Sync the properties protection code from Glance into Cinder
    (The common protection code will be shared in Cinder)
+
 #. Extend existing volume_image_metadatas(VolumeImageMetadataController)
    controller extension to add update capability.
+
 #. Reuse update_volume_metadata method in volume API for updating image
    metadata and differentiate user/image metadata by introducing a new
    constant "meta_type"
+
 #. Add update_volume_image_metadata method to volume API.
+
 #. Check against property protections config files
    (property-protections-policies.conf or property-protections-roles.conf)
    if the property has update protection.
+
 #. Update DB API and driver to allow image metadata updates.
 
 Changes to Cinder python client:
 
 #. Provide Cinder API to allow a user to update an image property.
    CLI-python API that triggers the update.
+
    # Sets or deletes volume image metadata
    cinder image-metadata  <volume-id> set <property-name = value>
 
@@ -269,39 +293,40 @@ We propose to define two samples config file in favor of Property Protections,
 that is property-protections-roles.conf and property-protections-policies.conf.
 
 * property-protections-policies.conf
-This is a template file when using policy rule for property protections.
+  This is a template file when using policy rule for property protections.
 
-Example: Limit all property interactions to admin only using policy
-rule context_is_admin defined in policy.json.
+  Example: Limit all property interactions to admin only using policy
+  rule context_is_admin defined in policy.json.
 
-+-------------------------------------------------------------------+
-| [.*]                                                              |
-+===================================================================+
-| create = context_is_admin                                         |
-+-------------------------------------------------------------------+
-| read = context_is_admin                                           |
-+-------------------------------------------------------------------+
-| update = context_is_admin                                         |
-+-------------------------------------------------------------------+
-| delete = context_is_admin                                         |
-+-------------------------------------------------------------------+
+  +-------------------------------------------------------------------+
+  | [.*]                                                              |
+  +===================================================================+
+  | create = context_is_admin                                         |
+  +-------------------------------------------------------------------+
+  | read = context_is_admin                                           |
+  +-------------------------------------------------------------------+
+  | update = context_is_admin                                         |
+  +-------------------------------------------------------------------+
+  | delete = context_is_admin                                         |
+  +-------------------------------------------------------------------+
 
 * property-protections-roles.conf
-This is a template file when property protections is based on user's role.
-Example: Allow both admins and users with the billing role to read and modify
-properties prefixed with x_billing_code_.
 
-+-------------------------------------------------------------------+
-| [^x_billing_code_.*]                                              |
-+===================================================================+
-| create = admin,billing                                            |
-+-------------------------------------------------------------------+
-| read = admin, billing                                             |
-+-------------------------------------------------------------------+
-| update = admin,billing                                            |
-+-------------------------------------------------------------------+
-| delete = admin,billing                                            |
-+-------------------------------------------------------------------+
+  This is a template file when property protections is based on user's role.
+  Example: Allow both admins and users with the billing role to read and modify
+  properties prefixed with ``x_billing_code_``.
+
+  +-------------------------------------------------------------------+
+  | [^x_billing_code_.*]                                              |
+  +===================================================================+
+  | create = admin,billing                                            |
+  +-------------------------------------------------------------------+
+  | read = admin, billing                                             |
+  +-------------------------------------------------------------------+
+  | update = admin,billing                                            |
+  +-------------------------------------------------------------------+
+  | delete = admin,billing                                            |
+  +-------------------------------------------------------------------+
 
 Please refer to here, http://docs.openstack.org/developer/glance/property-protections.html
 for the details explanation of the format.

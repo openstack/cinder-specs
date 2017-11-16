@@ -50,11 +50,17 @@ corresponding to some existing CG APIs.
 
 The missing pieces to support the existing CG feature using the generic
 volume contructs are as follows.
+
 * A group_snapshots table (for cgsnapshots table)
+
 * Create group snapshot API (for create cgsnapshot)
+
 * Delete group snapshot API (for delete cgsnapshot)
+
 * List group snapshots API (for list cgsnapshots)
+
 * Show group snapshot API (for show cgsnapshot)
+
 * Create group from source group or source group snapshot API (for
   create CG from cgsnapshot or source CG)
 
@@ -158,7 +164,11 @@ Proposed change
     type spec, the manager will call create_group in the driver first and will
     call create_consistencygroup in the driver if create_group is not
     implemented.
+
+    .. code-block:: python
+
         {'consistent_group_snapshot_enabled': <is> True}
+
     Same applies to delete_group, update_group, create_group_snapshot,
     delete_group_snapshot, and create_group_from_src. This way the new APIs
     will work with existing driver implementation of CG functions.

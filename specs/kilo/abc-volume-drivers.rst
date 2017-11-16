@@ -32,7 +32,9 @@ Proposed change
 ===============
 
 Build a base VolumeDriver class and subclasses that describe feature sets,
-like::
+like:
+
+.. code-block:: console
 
                           +-------------------------+
          +----------------+     BaseVolumeDriver    +---------------+
@@ -40,10 +42,10 @@ like::
          |                +-----------^-------------+               |
          |                            |                             |
          |                            |                             |
-+--------+-------------+  +-----------+-------------+  +------------+---------+
-|  VolumeDriverBackup  |  |   VolumeDriverSnapshot  |  |  VolumeDriverImport  |
-|      {abstract}      |  |      {abstract}         |  |      {abstract}      |
-+----------------------+  +-------------------------+  +----------------------+
+ +-------+-------------+  +-----------+-------------+  +------------+---------+
+ | VolumeDriverBackup  |  |   VolumeDriverSnapshot  |  |  VolumeDriverImport  |
+ |     {abstract}      |  |      {abstract}         |  |      {abstract}      |
+ +---------------------+  +-------------------------+  +----------------------+
 
 
 If a driver implements the backup functionality and supports volume import it

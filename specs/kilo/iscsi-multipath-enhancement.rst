@@ -88,6 +88,8 @@ a list of secondary iqn's and lun's corresponding to each portal address.
 
 For example:
 
+.. code-block:: python
+
   {"connection_info": {"driver_volume_type": "iscsi", ...
                        "data": {"target_portals": ["10.0.1.2:3260",
                                                    "10.0.2.2:3260"],

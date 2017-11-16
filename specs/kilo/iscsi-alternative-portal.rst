@@ -83,6 +83,8 @@ parameters 'target_alternative_portals' and 'target_alternative_iqns', which
 contain a list of portal IP address:port pairs, a list of alternative iqn's and
 lun's corresponding to each portal address. For example:
 
+.. code-block:: python
+
   {"connection_info": {"driver_volume_type": "iscsi", ...
                        "data": {"target_portal": "10.0.1.2:3260",
                                 "target_alternative_portals": [

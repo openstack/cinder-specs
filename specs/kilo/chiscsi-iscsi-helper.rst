@@ -88,7 +88,7 @@ Other deployer impact
 ---------------------
 
 * No new config options are required besides an extra allowed value for
- 'iscsi_helper' that would need to be explicitly set to 'chiscsi'.
+  'iscsi_helper' that would need to be explicitly set to 'chiscsi'.
 * chiscsi target needs to be installed before it can be used.
 
 Developer impact

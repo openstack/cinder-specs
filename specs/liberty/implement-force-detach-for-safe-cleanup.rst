@@ -22,8 +22,8 @@ connected/exported to the compute host and nova instance. If the volume state
 is reset to 'available' and 'detached', it can be attached to a second
 instance (note that this is not multi-attach) and lead to data corruption.
 This spec proposes to plumb cinder APIs that allow an admin to set the state to
- 'available' and 'detached' in a safe way, meaning that the backend storage and
- cinder db are synchronized.
+'available' and 'detached' in a safe way, meaning that the backend storage and
+cinder db are synchronized.
 An attempt was made to merge a Nova spec to add a '--force' option, but it has
 stalled and will likely be replaced with some Nova code changes. See:
 https://review.openstack.org/#/c/84048/44
@@ -78,9 +78,9 @@ Current Fix: Using python-cinderclient 'reset-state' to set the Cinder DB to
 Proposed Fix: An attempt to detach from Nova will fail, since Nova does not
 know about this volume.
 Implementing Cinder force_detach and exposing to the cinderclient will allow
- cinder to call the backend to cleanup (default implementation is
+cinder to call the backend to cleanup (default implementation is
 terminate_connection and detach, but can be overridden) and then set Cinder DB
- state to 'available' and 'detached'.
+state to 'available' and 'detached'.
 
 UseCase2: Cinder DB 'attaching', storage back end 'attached', Nova DB
 shows block device for this volume.
@@ -90,11 +90,11 @@ Current Fix: Using python-cinderclient 'reset-state' to set the Cinder DB to
 attached. Nova will not allow this volume to be re-attached.
 Proposed Fix: An attempt to detach from Nova will cleanup on the Nova side
 (after proposed Nova changes) but fail in Cinder since the state is
- 'attaching'.
+'attaching'.
 Implementing Cinder force_detach and exposing to the cinderclient will allow
- cinder to call the backend to cleanup (default implementation is
+cinder to call the backend to cleanup (default implementation is
 terminate_connection and detach, but can be overridden) and then set Cinder DB
- state to 'available' and 'detached'.
+state to 'available' and 'detached'.
 
 UseCase3: Cinder DB 'detaching', storage back end 'available', Nova DB
 does not show block device for this volume.
@@ -106,9 +106,9 @@ Current Fix: Using python-cinderclient 'reset-state' to set the Cinder DB to
 Proposed Fix: An attempt to detach from Nova will fail, since Nova does not
 know about this volume.
 Implementing Cinder force_detach and exposing to the cinderclient will allow
- cinder to call the backend to cleanup (default implementation is
+cinder to call the backend to cleanup (default implementation is
 terminate_connection and detach, but can be overridden) and then set Cinder DB
- state to 'available' and 'detached'.
+state to 'available' and 'detached'.
 
 UseCase4: Cinder DB 'detaching', storage back end 'attached', Nova DB
 has a block device for this volume.
@@ -120,11 +120,11 @@ Current Fix: Using python-cinderclient 'reset-state' to set the Cinder DB to
 attached. Nova will not allow this volume to be re-attached.
 Proposed Fix: An attempt to detach from Nova will cleanup on the Nova side
 (after proposed Nova changes) but fail in Cinder since the state is
- 'attaching'.
+'attaching'.
 Implementing Cinder force_detach and exposing to the cinderclient will allow
- cinder to call the backend to cleanup (default implementation is
+cinder to call the backend to cleanup (default implementation is
 terminate_connection and detach, but can be overridden) and then set Cinder DB
- state to 'available' and 'detached'.
+state to 'available' and 'detached'.
 
 UseCase5: During an attach, initialize_connection() times out. Cinder DB is
 'available', volume is attached, Nova DB does not show the block device.
@@ -150,12 +150,19 @@ accomplished via manual intervention (i.e. 'cinder force-detach....'
 (Links to proposed Nova changes will be provided ASAP)
 
 Cinder force-detach API currently calls:
+
+.. code-block:: python
+
     volume_api.terminate_connection(...)
     self.volume_api.detach(...)
+
 This will be modified to call into the VolumeManager with a new
 force_detach(...)
 
 api/contrib/volume_actions.py: force_detach(...)
+
+.. code-block:: python
+
     try:
         volume_rpcapi.force_detach(...)
     except: #catch and add debug message
@@ -164,6 +171,9 @@ api/contrib/volume_actions.py: force_detach(...)
     self._reset_status(..) #fix DB if backend cleanup is successful
 
 volume/manager.py: force_detach(...)
+
+.. code-block:: python
+
    self.driver.force_detach(..)
 
 Individual drivers will implement force_detach as needed by the driver, most

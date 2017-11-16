@@ -139,7 +139,8 @@ None
 Testing
 =======
 
-* With volume_copy_bps_limit = 100MB/s for a fake backend driver,
+* With volume_copy_bps_limit = 100MB/s for a fake backend driver:
+
  * start a volume copy, then the bps limit is set to 100MB/s
  * start a second volume copy, then the limit is updated to 50MB/s for both
  * finish one of the copies, then the limit is resumed to 100MB/s

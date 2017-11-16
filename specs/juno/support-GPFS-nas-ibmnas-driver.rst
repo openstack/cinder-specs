@@ -4,9 +4,9 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-==========================================
+=====================================================================
 Extending IBMNAS driver to support NAS based GPFS storage deployments
-==========================================
+=====================================================================
 
 https://blueprints.launchpad.net/cinder/+spec/add-gpfs-nas-to-ibmnas
 

@@ -73,7 +73,7 @@ in Active-Active environments.
 Proposed change
 ===============
 
-This spec suggests modifying behavior introduced by `Tooz locks for A/A spec`_
+This spec suggests modifying behavior introduced by `Tooz locks for A/A`_
 for the case where the drivers don't need distributed locks.  So we would use
 local file locks in the drivers (if they use any) and for the locks in the
 manager we would use a locking mechanism based on the ``workers`` table that
@@ -137,13 +137,16 @@ On a closer look at these 4 locks mentioned before we can classify them in 2
 categories:
 
 - Locks for the resource of the operation.
+
   - *${VOL_UUID}-detach_volume*  -  Used in ``detach_volume`` to prevent
     multiple simultaneous detaches
+
   - *${VOL_UUID}*  -  Used in ``attach_volume`` to prevent multiple
     simultaneous attaches
 
 - Locks that prevent deletion of the source of a volume creation (they are
   created by ``create_volume`` method):
+
   - *${VOL_UUID}-delete_volume*  -  Used in ``delete_volume``
   - *${SNAPSHOT_UUID}-delete_snapshot*  -  Used in ``delete_snapshot``
 

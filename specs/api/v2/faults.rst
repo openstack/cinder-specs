@@ -9,29 +9,46 @@ body returns additional information about the fault.
 The following table lists possible fault types with their associated
 error codes and descriptions.
 
-Fault type              Associated error code  Description
+=======================  =====================  ===============================
+Fault type               Associated error code  Description
+=======================  =====================  ===============================
+``badRequest``           400                    The user request contains one
+                                                or more errors.
+``unauthorized``         401                    The supplied token is not
+                                                authorized to access the
+                                                resources, either it's expired
+                                                or invalid.
+``forbidden``            403                    Access to the requested
+                                                resource was denied.
+``itemNotFound``         404                    The back-end services did not
+                                                find anything matching the
+                                                Request-URI.
+``badMethod``            405                    The request method is not
+                                                allowed for this resource.
+``overLimit``            413                    Either the number of entities
+                                                in the request is larger than
+                                                allowed limits, or the user has
+                                                exceeded allowable request rate
+                                                limits. See the ``details``
+                                                element for more specifics.
+                                                Contact your cloud provider if
+                                                you think you need higher
+                                                request rate limits.
+``badMediaType``         415                    The requested content type is
+                                                not supported by this service.
+``unprocessableEntity``  422                    The requested resource could
+                                                not be processed on at the
+                                                moment.
+``instanceFault``        500                    This is a generic server error
+                                                and the message contains the
+                                                reason for the error. This
+                                                error could wrap several error
+                                                messages and is a catch all.
+``notImplemented``       501                    The requested method or
+                                                resource is not implemented.
+``serviceUnavailable``   503                    Block Storage is not available.
+=======================  =====================  ===============================
 
-``badRequest``          400                    The user request contains one or more errors.
-
-``unauthorized``        401                    The supplied token is not authorized to access the resources, either it's expired or invalid.
-
-``forbidden``           403                    Access to the requested resource was denied.
-
-``itemNotFound``        404                    The back-end services did not find anything matching the Request-URI.
-
-``badMethod``           405                    The request method is not allowed for this resource.
-
-``overLimit``           413                    Either the number of entities in the request is larger than allowed limits, or the user has exceeded allowable request rate limits. See the ``details`` element for more specifics. Contact your cloud provider if you think you need higher request rate limits.
-
-``badMediaType``        415                    The requested content type is not supported by this service.
-
-``unprocessableEntity`` 422                    The requested resource could not be processed on at the moment.
-
-``instanceFault``       500                    This is a generic server error and the message contains the reason for the error. This error could wrap several error messages and is a catch all.
-
-``notImplemented``      501                    The requested method or resource is not implemented.
-
-``serviceUnavailable``  503                    Block Storage is not available.
 
 The following two ``instanceFault`` examples show errors when the server
 has erred or cannot perform the requested operation:
@@ -54,7 +71,7 @@ has erred or cannot perform the requested operation:
             performing the requested operation. </message>
     </instanceFault>
 
-| 
+|
 
 **Example 2.5. Example fault response: JSON**
 
@@ -74,7 +91,7 @@ has erred or cannot perform the requested operation:
        }
     }
 
-| 
+|
 
 The error code (``code``) is returned in the body of the response for
 convenience. The ``message`` element returns a human-readable message
@@ -83,7 +100,7 @@ is optional and may contain information that is useful for tracking down
 an error, such as a stack trace. The ``details`` element may or may not
 be appropriate for display to an end user, depending on the role and
 experience of the end user.
-
+`
 The fault's root element (for example, ``instanceFault``) may change
 depending on the type of error.
 
@@ -108,7 +125,7 @@ size is invalid:
             cannot be accepted. </message>
     </badRequest>
 
-| 
+|
 
 **Example 2.7. Example badRequest fault on volume size errors: JSON**
 
@@ -128,7 +145,7 @@ size is invalid:
        }
     }
 
-| 
+|
 
 The next two examples show ``itemNotFound`` errors:
 
@@ -149,7 +166,7 @@ The next two examples show ``itemNotFound`` errors:
         <message> The resource could not be found. </message>
     </itemNotFound>
 
-| 
+|
 
 **Example 2.9. Example itemNotFound fault: JSON**
 
@@ -169,5 +186,5 @@ The next two examples show ``itemNotFound`` errors:
        }
     }
 
-| 
+|
 

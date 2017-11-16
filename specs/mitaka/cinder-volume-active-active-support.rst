@@ -36,7 +36,7 @@ On API nodes given current code we are open to races in the code that affect
 resources on the database, and this will be exacerbated when working with
 Active/Active configurations.
 
-Manager Local Locks
+Local Manager Locks
 -------------------
 
 We have multiple local locks in the manager code of the volume nodes to prevent

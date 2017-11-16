@@ -23,13 +23,15 @@ made provides a much more realistic view of how users interact with services.
 Use Cases
 =========
 * Allows developers testing a new configuration option to change what the
-option is set to and test without having to restart all the Cinder services.
+  option is set to and test without having to restart all the Cinder services.
+
 * Allows developers to test new functionality implemented in a driver by
-enabling and disabling configuration options in cinder.conf without
-restarting Cinder services each time the option value is changed from
-'disabled' to 'enabled'.
+  enabling and disabling configuration options in cinder.conf without
+  restarting Cinder services each time the option value is changed from
+  'disabled' to 'enabled'.
+
 * Allows admins to manage ip addresses for various backends in cinder.conf
-and have the connections dynamically update.
+  and have the connections dynamically update.
 
 Proposed change
 ===============
@@ -50,25 +52,27 @@ this is a sizable issue that needs to be investigated.
 Alternatives
 ------------
 * Manual Approach: Continue to manually restart Cinder services when changes
-are made to settings in the cinder.conf file. This is the current approach and
-is what we are trying to get around.
+  are made to settings in the cinder.conf file. This is the current approach
+  and is what we are trying to get around.
+
 * Reload & Restart Approach: First each process would need to finish the
-actions that were ongoing. Next the db and RPC connections would need to
-be dropped and then all caches and all driver caches would need to be
-flushed before reloading. This approach adds a lot of complexity and lots of
-possibilities for failure since each cache has to be flushed- things could get
-missed or not flushed properly.
+  actions that were ongoing. Next the db and RPC connections would need to
+  be dropped and then all caches and all driver caches would need to be
+  flushed before reloading. This approach adds a lot of complexity and lots of
+  possibilities for failure since each cache has to be flushed- things could
+  get missed or not flushed properly.
+
 * File Watcher: Code will be added to the cinder processes to watch for
-changes to the cinder.conf file. Once the processes see that changes have been
-made, the process will drain and take the necessary actions to reconfigure
-itself and then auto-restart. This capability could also be controlled by a
-configuration option so that if the user didn't want dynamic reconfiguration
-enabled, they could just disable it in the cinder.conf file. This approach is
-dangerous because it wouldn't account for configuration options that are saved
-into variables. To fix these cases, there would be a sizeable impact for
-developers finding and replacing all instances of configuration variables and
-in doing so a number of assumptions of deployment, configuration, tools, and
-packaging would be broken.
+  changes to the cinder.conf file. Once the processes see that changes have
+  been made, the process will drain and take the necessary actions to
+  reconfigure itself and then auto-restart. This capability could also be
+  controlled by a configuration option so that if the user didn't want dynamic
+  reconfiguration enabled, they could just disable it in the cinder.conf file.
+  This approach is dangerous because it wouldn't account for configuration
+  options that are saved into variables. To fix these cases, there would be a
+  sizeable impact for developers finding and replacing all instances of
+  configuration variables and in doing so a number of assumptions of
+  deployment, configuration, tools, and packaging would be broken.
 
 Data model impact
 -----------------
@@ -118,13 +122,14 @@ Secondary assignee:
 
 Work Items
 ----------
-*Implement handling of SIGHUP signal
-**Ensure caches are cleared
-**Dependent vars are updated
-**Connections are cleanly dropped
-*Write Unit tests
-*Testing on a variety of drivers
-*Update devref to describe SIGHUP/reload process
+
+* Implement handling of SIGHUP signal
+  - Ensure caches are cleared
+  - Dependent vars are updated
+  - Connections are cleanly dropped
+* Write Unit tests
+* Testing on a variety of drivers
+* Update devref to describe SIGHUP/reload process
 
 Dependencies
 ============

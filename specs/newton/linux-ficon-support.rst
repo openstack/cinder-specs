@@ -188,8 +188,8 @@ In ``os-brick/initiator/linuxfc.py``:
 
 * new class LinuxFibreChannelECKD
 
+.. code-block:: python
 
-  ::
     def configure_eckd_device(self, device_number):
         """Add the eckd volume to the Linux configuration. """
 

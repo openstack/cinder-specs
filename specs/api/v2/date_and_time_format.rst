@@ -17,7 +17,7 @@ May 19th, 2011 at 8:07:08 AM, GMT-5 has the following format:
 
     2011-05-19T08:07:08-05:00
 
-| 
+|
 
 The following table describes the date time format codes:
 

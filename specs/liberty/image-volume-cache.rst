@@ -50,7 +50,7 @@ level steps to take:
       this volume will henceforth be known as the 'image-volume'. This volume
       would be owned by a special tenant that is controlled by Cinder.
     * Update the cache to know about this new image-volume and its image
-    contents.
+      contents.
 * Clone the image-volume.
 
 This new behavior would be enabled via a new volume driver config option

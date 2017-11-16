@@ -380,13 +380,17 @@ New Group APIs
   * V3/<tenant id>/groups/<group uuid>/action
   * Method: POST (We need to use "POST" not "DELETE" here because the request
     body has a flag and therefore is not empty.)
-  * JSON schema definition for V3::
+  * JSON schema definition for V3:
+
+    .. code-block:: python
+
         {
             "delete":
             {
                 "delete-volumes": False
             }
         }
+
   * Set delete-volumes flag to True to delete a group with volumes in it.
     This will delete the group and all the volumes. Deleting an empty
     group does not need the flag to be True.

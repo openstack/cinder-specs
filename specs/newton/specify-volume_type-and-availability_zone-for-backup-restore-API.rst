@@ -91,12 +91,13 @@ Modify REST API to restore backup:
   * Add volume_type and availability_zone in request body
   * JSON request schema definition:
 
-'backup-restore': {
-    'volume_id': volume_id,
-    'volume_type': volume_type,
-    'availability_zone': availability_zone,
-    'name': name
-}
+    .. code-block:: python
+
+      'backup-restore': {
+          'volume_id': volume_id,
+          'volume_type': volume_type,
+          'availability_zone': availability_zone,
+          'name': name}
 
 Security impact
 ---------------

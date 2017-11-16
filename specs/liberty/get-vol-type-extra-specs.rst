@@ -206,6 +206,7 @@ The qos capability describes some corner cases for us:
 
 The vendor:persona key is another good example of a ``vendor unique``
 capability:
+
   This is very much like QoS, and again, note that we're just providing what
   the valid values are.
 

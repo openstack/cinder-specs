@@ -198,40 +198,44 @@ URL for the group action API from the Generic Volume Group design::
 
 * Enable replication
 
-  ** Method: POST
+  - Method: POST
 
-  ** JSON schema definition for V3::
+  - JSON schema definition for V3:
+
+  .. code-block:: python
 
         {
-            'enable_replication':
-            {
-            }
+            'enable_replication': {}
         }
 
-  ** Normal response codes: 202
+  - Normal response codes: 202
 
-  ** Error response codes: 400, 403, 404
+  - Error response codes: 400, 403, 404
 
 * Disable replication
 
-  ** Method: POST
+  - Method: POST
 
-  ** JSON schema definition for V3::
+  - JSON schema definition for V3:
+
+  .. code-block:: python
+
         {
-            'disable_replication':
-            {
-            }
+            'disable_replication': {}
         }
 
-  ** Normal response codes: 202
+  - Normal response codes: 202
 
-  ** Error response codes: 400, 403, 404
+  - Error response codes: 400, 403, 404
 
 * Failover replication
 
-  ** Method: POST
+  - Method: POST
 
-  ** JSON schema definition for V3::
+  - JSON schema definition for V3:
+
+  .. code-block:: python
+
         {
             'failover_replication':
             {
@@ -240,22 +244,26 @@ URL for the group action API from the Generic Volume Group design::
             }
         }
 
-  ** Normal response codes: 202
+  - Normal response codes: 202
 
-  ** Error response codes: 400, 403, 404
+  - Error response codes: 400, 403, 404
 
 * List replication targets
 
-  ** Method: POST
+  - Method: POST
 
-  ** JSON schema definition for V3::
+  - JSON schema definition for V3:
+
+  .. code-block:: python
+
         {
-            'list_replication_targets':
-            {
-            }
+            'list_replication_targets': {}
         }
 
-  ** Response example::
+  - Response example:
+
+  .. code-block:: python
+
        {
            'replication_targets': [
                {
@@ -271,7 +279,10 @@ URL for the group action API from the Generic Volume Group design::
             ]
        }
 
-  ** Response example for non-admin::
+  - Response example for non-admin:
+
+  .. code-block:: python
+
        {
            'replication_targets': [
                {

@@ -115,23 +115,25 @@ Data model impact
 A new table, called service_versions, would be created to track the RPC and
 object versions.  The schema would be as follows:
 
-service_versions = Table(
-    'service_versions', meta,
-    Column('created_at', DateTime(timezone=False)),
-    Column('updated_at', DateTime(timezone=False)),
-    Column('deleted_at', DateTime(timezone=False)),
-    Column('deleted', Boolean(create_constraint=True, name=None)),
-    Column('id', Integer, primary_key=True, nullable=False),
-    Column('service_id', String(length=255)),
-    Column('rpc_current_version', String(length=36)),
-    Column('rpc_available_version', String(length=36)),
-    Column('object_current_version', String(length=36)),
-    Column('object_available_version', String(length=36)),
-    mysql_engine='InnoDB'
-)
+.. code-block:: python
 
-The service_id is service name + host.  The *_current_version is the version
-a service is currently running and pinned at.  The *_available_version is the
+  service_versions = Table(
+      'service_versions', meta,
+      Column('created_at', DateTime(timezone=False)),
+      Column('updated_at', DateTime(timezone=False)),
+      Column('deleted_at', DateTime(timezone=False)),
+      Column('deleted', Boolean(create_constraint=True, name=None)),
+      Column('id', Integer, primary_key=True, nullable=False),
+      Column('service_id', String(length=255)),
+      Column('rpc_current_version', String(length=36)),
+      Column('rpc_available_version', String(length=36)),
+      Column('object_current_version', String(length=36)),
+      Column('object_available_version', String(length=36)),
+      mysql_engine='InnoDB'
+  )
+
+The service_id is service name + host.  The \*_current_version is the version
+a service is currently running and pinned at.  The \*_available_version is the
 version a service knows about and (if newer) could upgrade to.
 
 REST API impact
@@ -205,17 +207,17 @@ Work Items
 * Register each cinder service's RPC and object versions on startup.
 
 * Create RPC compatibility layer in each cinder component's rpcapi.py to
-massage the object and RPC interface before it is sent over RPC.
+  massage the object and RPC interface before it is sent over RPC.
 
 * Create a "cinder-manage version upgrade" CLI to switch each cinder service
-to use the latest versions.
+  to use the latest versions.
 
 
 Dependencies
 ============
 
 * oslo_versionobjects for volumes, backups, service, consistency_group,
-quota need to be merged so that objects can be made backwards compatible.
+  quota need to be merged so that objects can be made backwards compatible.
 
 
 Testing

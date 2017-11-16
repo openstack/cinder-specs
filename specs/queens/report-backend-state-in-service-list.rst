@@ -65,17 +65,23 @@ REST API impact
 Add backend_state: up/down into response body of service list and also need
 a microversions for this feature:
 
-    * GET /v3/{project_id}/os-services
+.. code-block:: console
 
-     RESP BODY: {"services": [{"host": "host@backend1",
-                               ...,
-                               "backend_status": "up",
-                              },
-                              {"host": "host@backend2",
-                               ...,
-                               "backend_status": "down",
-                              }]
-                }
+  GET /v3/{project_id}/os-services
+
+RESP BODY:
+
+.. code-block:: python
+
+  {"services": [{"host": "host@backend1",
+                 ...,
+                 "backend_status": "up",
+                },
+                {"host": "host@backend2",
+                 ...,
+                 "backend_status": "down",
+                }]
+  }
 
 Security impact
 ---------------

@@ -122,9 +122,12 @@ The proposed changes are:
     VOLUME_BACKUP_001_0002 : ({PROJECT}_{RESOURCE}_{ACTION_ID}_{MESSAGE_ID})
 
   We could have these benefits:
+
   1. We don't need to define that much events. (we only need to
      define less messages).
+
   2. It's also unique cross all of OpenStack.
+
   3. It's reading friendly and easy to classify or analysis.
 
 Alternatives

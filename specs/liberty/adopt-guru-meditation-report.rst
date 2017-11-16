@@ -157,8 +157,7 @@ support for the reporting feature.
 
 References
 ==========
-* oslo-incubator module: http://git.openstack.org/cgit/openstack/oslo-incubator/tree/openstack/commo
-n/report
-* blog about nova guru reports: https://www.berrange.com/posts/2015/02/19/nova-and-its-use-of-olso-i
-ncubator-guru-meditation-reports/
+* oslo-incubator module: http://git.openstack.org/cgit/openstack/oslo-incubator/tree/openstack/common/report
+* blog about nova guru reports: https://www.berrange.com/posts/2015/02/19/nova-and-its-use-of-olso-incubator-guru-meditation-reports/
 * oslo.reports repo: https://github.com/directxman12/oslo.reports
+

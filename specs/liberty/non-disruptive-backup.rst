@@ -98,7 +98,9 @@ Alternatives
 ------------
 
 There are a couple of alternatives:
+
 * Detach the volume and back it up.
+
 * Take a snapshot of the attached volume, create a volume from the
   snapshot and then back it up.
 
@@ -146,7 +148,9 @@ By default it is False. The force flag is not needed for
 * Create backup
   * V2/<tenant id>/backups
   * Method: POST
-  * JSON schema definition for V2::
+  * JSON schema definition for V2:
+
+    .. code-block:: python
 
         {
             "backup":
@@ -165,18 +169,24 @@ The following driver APIs will be added to support attach snapshot and
 detach snapshot.
 
 attach snapshot:
-* def _attach_snapshot(self, context, snapshot, properties,
-                       remote=False)
-* def create_export_snapshot(self, conext, snapshot)
-* def initialize_connection_snapshot(self, snapshot, properties,
-                                     ** kwargs)
+
+.. code-block:: python
+
+ def _attach_snapshot(self, context, snapshot, properties,
+                      remote=False)
+ def create_export_snapshot(self, conext, snapshot)
+ def initialize_connection_snapshot(self, snapshot, properties,
+                                    ** kwargs)
 
 detach snapshot:
-* def _detach_snapshot(self, context, attach_info, snapshot,
-                       properties, force=False, remote=False)
-* def terminate_connection_snapshot(self, snapshot, properties,
-                                    ** kwargs)
-* def remove_export_snapshot(self, context, snapshot)
+
+.. code-block:: python
+
+ def _detach_snapshot(self, context, attach_info, snapshot,
+                      properties, force=False, remote=False)
+ def terminate_connection_snapshot(self, snapshot, properties,
+                                   ** kwargs)
+ def remove_export_snapshot(self, context, snapshot)
 
 Alternatively we can use an is_snapshot flag for volume and snapshot
 to share common code without adding new functions, but it will make

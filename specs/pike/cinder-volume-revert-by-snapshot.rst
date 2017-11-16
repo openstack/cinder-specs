@@ -19,7 +19,7 @@ we are proposing in Ocata `[1]`_.
 
 The revert process will overwrite the current state and data of the volume.
 If the volume was extended after the snapshot, the request would be rejected
- (reason is described in proposed change section). It's assumed that the user
+(reason is described in proposed change section). It's assumed that the user
 doing a revert is discarding the actual state and data of the volume.
 
 The purpose of this feature is to give users the possibility of recover

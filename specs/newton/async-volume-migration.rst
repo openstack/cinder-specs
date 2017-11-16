@@ -20,8 +20,10 @@ is totally complete.
 
 Both the dd way or driver-specific way will fail if we attach a volume when
 it is migrating:
+
 * If we migrate the volume through dd way, the source or target volume is not
-   usable to server.
+  usable to server.
+
 * If we migrate the volume through driver-specific way, the migration task is
   issued to the source backend by scheduler and the volume is owned by the
   source backend during the whole migration. If we attach this volume to a
@@ -61,11 +63,12 @@ just add a new way for developers or users to choose.
 These features are:
 
 * One array can take over other array's LUN as a remote LUN if these two
-arrays are connected with FC or iSCSI fabric.
+  arrays are connected with FC or iSCSI fabric.
+
 * We can migrate a remote LUN to a local LUN and meanwhile the remote(source)
-LUN is writable and readable with the migration task is undergoing, after the
-migration is completed, the local(target) LUN is exactly the same as the
-remote(source) LUN and no data will be lost.
+  LUN is writable and readable with the migration task is undergoing, after the
+  migration is completed, the local(target) LUN is exactly the same as the
+  remote(source) LUN and no data will be lost.
 
 To enable one array to take over other array's volume, we should allow one
 driver to call other drivers' interfaces directly or indirectly. These two

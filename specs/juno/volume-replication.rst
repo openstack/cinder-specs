@@ -137,9 +137,9 @@ Create volume with replication enabled:
   When a replicated volume is created it is expected that the volume dictionary
   will be populated as follows:
 
-  ** volume['replication_status'] = 'copying'
-  ** volume['replication_extended_status'] = <driver specific value>
-  ** volume['driver_data'] = <driver specific value>
+    - volume['replication_status'] = 'copying'
+    - volume['replication_extended_status'] = <driver specific value>
+    - volume['driver_data'] = <driver specific value>
 
   The replica volume is hidden from the end user as the end user will
   never need to directly interact with the replica volume.  Any interaction
@@ -208,21 +208,28 @@ Re-type volume:
 
   The steps to implement this would look as follows:
   * Do a diff['extra_specs'] and see if 'replication' is included.
+
   * If replication was enabled for the original volume_type but is not
     not enabled for the new volume_type, then replication should be disabled.
+
   * The replica should be deleted.
+
   * The volume dictionary should be updated as follows:
-  ** volume['replication_status'] = 'disabled'
-  ** volume['replication_extended_status'] = None
-  ** volume['driver_data'] = None
+
+    - volume['replication_status'] = 'disabled'
+    - volume['replication_extended_status'] = None
+    - volume['driver_data'] = None
+
   * If replication was not enabled for the original volume_type but is
     enabled for the new volume_type, then replication should be enabled.
+
   * A volume replica should be created and the replication should
     be set up between the volume and the newly created replica.
+
   * The volume dictionary should be updated as follows:
-  ** volume['replication_status'] = 'copying'
-  ** volume['replication_extended_status'] = <driver specific value>
-  ** volume['driver_data'] = <driver specific value>
+    - volume['replication_status'] = 'copying'
+    - volume['replication_extended_status'] = <driver specific value>
+    - volume['driver_data'] = <driver specific value>
 
 Get Replication Status:
 
@@ -241,12 +248,14 @@ Get Replication Status:
   happen:
 
   * volume['replication_status'] = <error | copying | active | active-stopped |
-                                    inactive>
-  **  'error' if an error occurred with replication.
-  **  'copying' replication copying data to secondary (inconsistent)
-  **  'active' replication copying data to secondary (consistent)
-  **  'active-stopped' replication data copy on hold (consistent)
-  **  'inactive' if replication data copy is stopped (inconsistent)
+    inactive>
+
+    -  'error' if an error occurred with replication.
+    -  'copying' replication copying data to secondary (inconsistent)
+    -  'active' replication copying data to secondary (consistent)
+    -  'active-stopped' replication data copy on hold (consistent)
+    -  'inactive' if replication data copy is stopped (inconsistent)
+
   * volume['replication_extended_status'] = <driver specific value>
   * volume['driver_data'] = <driver specific value>
 
@@ -266,9 +275,12 @@ Promote replica:
 
   As with the functions above, the volume driver is expected to update the
   volume dictionary as follows:
+
   * volume['replication_status'] = <error | inactive>
-  **  'error' if an error occurred with replication.
-  **  'inactive' if replication data copy on hold (inconsistent)
+
+    -  'error' if an error occurred with replication.
+    -  'inactive' if replication data copy on hold (inconsistent)
+
   * volume['replication_extended_status'] = <driver specific value>
   * volume['driver_data'] = <driver specific value>
 
@@ -283,13 +295,16 @@ Re-enable replication:
 
   The backend driver is expected to update the following volume dictionary
   entries:
+
   * volume['replication_status'] = <error | copying | active | active-stopped |
-                                    inactive>
-  **  'error' if an error occurred with replication.
-  **  'copying' replication copying data to secondary (inconsistent)
-  **  'active' replication copying data to secondary (consistent)
-  **  'active-stopped' replication data copy on hold (consistent)
-  **  'inactive' if replication data copy is stopped (inconsistent)
+    inactive>
+
+    - 'error' if an error occurred with replication.
+    - 'copying' replication copying data to secondary (inconsistent)
+    - 'active' replication copying data to secondary (consistent)
+    - 'active-stopped' replication data copy on hold (consistent)
+    - 'inactive' if replication data copy is stopped (inconsistent)
+
   * volume['replication_extended_status'] = <driver specific value>
   * volume['driver_data'] = <driver specific value>
 
@@ -331,23 +346,32 @@ admin.
 Data model impact
 -----------------
 
-* The volumes table will be updated:
-** Add replication_status column (string) for indicating the status of
-   replication for a give volume.  Possible values are:
-*** 'copying' - Data is being copied between volumes, the secondary is
-                inconsistent.
-*** 'disabled' - Volume replication is disabled.
-*** 'error' - Replication is in error state.
-*** 'active' - Data is being copied to the secondary and the secondary is
-               consistent.
-*** 'active-stopped' - Data is not being copied to the secondary (on hold),
-                       the secondary volume is consistent.
-*** 'inactive' - Data is not being copied to the secondary, the secondary
-                 copy is inconsistent.
-** Add replication_extended_status column to contain details with regards
-   to replication status of the primary and secondary volumes.
-** Add replication_driver_data column to contain additional details that
-   may be needed by a vendor's driver to implement replication on a backend.
+The volumes table will be updated:
+
+* Add replication_status column (string) for indicating the status of
+  replication for a give volume.  Possible values are:
+
+  - 'copying' - Data is being copied between volumes, the secondary is
+    inconsistent.
+
+  - 'disabled' - Volume replication is disabled.
+
+  - 'error' - Replication is in error state.
+
+  - 'active' - Data is being copied to the secondary and the secondary is
+    consistent.
+
+  - 'active-stopped' - Data is not being copied to the secondary (on hold),
+    the secondary volume is consistent.
+
+  - 'inactive' - Data is not being copied to the secondary, the secondary
+    copy is inconsistent.
+
+  - Add replication_extended_status column to contain details with regards
+    to replication status of the primary and secondary volumes.
+
+  - Add replication_driver_data column to contain additional details that
+    may be needed by a vendor's driver to implement replication on a backend.
 
 
 State diagram for replication (status)
@@ -386,12 +410,14 @@ REST API impact
 
 Create volume API will have "source-replica" added:
 
-{
-    "volume":
-    {
-        "source-replica": "Volume uuid of primary to clone",
-    }
-}
+.. code-block:: python
+
+  {
+      "volume":
+      {
+          "source-replica": "Volume uuid of primary to clone",
+      }
+  }
 
 
 * Promote volume to be the primary volume

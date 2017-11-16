@@ -178,5 +178,8 @@ References
 ==========
 
 * http://eavesdrop.openstack.org/meetings/cinder/2015
+
   /cinder.2015-05-27-16.00.log.html
+
 * https://blueprints.launchpad.net/cinder/+spec/image-volume-cache
+

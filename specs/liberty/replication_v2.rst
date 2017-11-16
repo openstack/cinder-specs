@@ -59,6 +59,8 @@ could easily be extended to be included in future work. Backend devices
 (drivers) would be listed in the cinder.conf file and we add entries
 to indicate pairing.  This could look something like this in the conf file:
 
+.. code-block:: ini
+
     [driver-foo]
     volume_driver=xxxx
     valid_replication_devices='backend=backend_name-a',
@@ -67,11 +69,15 @@ to indicate pairing.  This could look something like this in the conf file:
 Alternatively the replication target can potentially be a device unknown
 to Cinder
 
+.. code-block:: ini
+
     [driver-foo]
     volume_driver=xxxx
     valid_replication_devices='remote_device={'some unique access meta}',...
 
 Or a combination of the two even
+
+.. code-block:: ini
 
     [driver-foo]
     volume_driver=xxxx
@@ -93,17 +99,19 @@ from the create call.  The flow would be something like this:
   scheduler.
 
 * Add the following API calls
-  enable_replication(volume)
-  disable_replication(volume)
-  failover_replicated_volume(volume)
-  udpate_replication_targets()
-    [mechanism to add tgts external to the conf file * optional]
-  get_replication_targets()
-    [mechanism for an admin to query what a backend has configured]
+  - enable_replication(volume)
+  - disable_replication(volume)
+  - failover_replicated_volume(volume)
+  - update_replication_targets()
+
+    + [mechanism to add tgts external to the conf file * optional]
+
+  - get_replication_targets()
+    + [mechanism for an admin to query what a backend has configured]
 
 
 Special considerations
------------------
+----------------------
 * volume-types
   There should not be a requirement of an exact match of volume-types between
   the primary and secondary volumes in the replication set.  If a backend "can"
@@ -154,10 +162,12 @@ Special considerations
 Workflow diagram
 -----------------
 Create call on the left:
-  No change to workflow
+  * No change to workflow
 
 Replication calls on the right:
-  Direct to manager then driver via host entry
+  * Direct to manager then driver via host entry
+
+.. code-block:: console
 
       +-----------+
  +--< +Volume API + >---------+        Enable routing directly to
@@ -218,12 +228,12 @@ REST API impact
 ---------------
 
 We would need to add the API calls mentioned above:
-  enable_replication(volume)
-  disable_replication(volume)
-  failover_replicated_volume(volume)
-  udpate_replication_targets()
+  * enable_replication(volume)
+  * disable_replication(volume)
+  * failover_replicated_volume(volume)
+  * udpate_replication_targets()
     [mechanism to add tgts external to the conf file * optional]
-  get_replication_targets()
+  * get_replication_targets()
     [mechanism for an admin to query what a backend has configured]
 
 I think augmenting the existing calls is better than reusing them, but we can

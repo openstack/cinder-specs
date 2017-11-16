@@ -52,7 +52,9 @@ it's reasonable to figure that a user shouldn't have to handle this).
 
 There are two losses of performance in requiring back and forth between
 cinder-volume and the backend to delete a volume and snapshots:
+
    A.  Extra time spent checking the status of X requests.
+
    B.  Time spent merging snapshot data into another snapshot or volume
        which is going to immediately be deleted.
 
@@ -95,20 +97,27 @@ This case is for volume drivers that wish to handle mass volume/snapshot
 deletion in an optimized fashion.
 
 When a volume delete request is received:
+
     Starting in the volume manager...
+
     1. Check for a driver capability of 'volume_with_snapshots_delete'.
        (Name TBD.)  This will be a new abc driver feature.
+
     2. If the driver supports this, call driver.delete_volume_and_snapshots().
        This will be passed the volume, and a list of all relevant
        snapshots.
+
     3. No exception thrown by the driver will indicate that everything
        was successfully deleted.  The driver may return information indicating
        that the volume itself is intact, but snapshot operations failed.
+
     4. Volume manager now moves all snapshots and the volume from 'deleting'
        to deleted.  (volume_destroy/snapshot_destroy)
+
     5. If an exception occurred, set the volume and all snapshots to
        'error_deleting'.  We don't have enough information to do anything
        else safely.
+
     6. The driver returns a list of dicts indicating the new statuses of
        the volume and each snapshot.  This allows handling cases where
        deletion of some things succeeded but the process did not complete.

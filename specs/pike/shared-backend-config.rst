@@ -208,7 +208,7 @@ Work Items
 
 * Add a warning when initializing c-vol without "enabled_backends"
 * Modify the driver config utility to look for this section first, and override
-values with backend specific ones if they are defined.
+  values with backend specific ones if they are defined.
 * Add some unit tests
 * Incorporate into multi-backend tempest test configuration
 

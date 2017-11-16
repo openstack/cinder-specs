@@ -124,20 +124,31 @@ Xing and Eric respectively.
   +----------------+----------------+----------+--------------+
 
   Consider following use-cases :-
+
   a. Suppose, Mike(admin of root project or cloud admin) increases the
      ``hard_limit`` of volumes in CMS to 400
+
   b. Suppose, Mike increases the ``hard_limit`` of volumes in CMS to 500
+
   c. Suppose, Mike delete the quota of CMS
+
   d. Suppose, Mike reduces the ``hard_limit`` of volumes in CMS to 350
+
   e. Suppose, Mike reduces the ``hard_limit``  of volumes in CMS to 200
+
   f. Suppose, Jay(Manager of CMS)increases the ``hard_limit`` of
      volumes in CMS to 400
+
   g. Suppose, Jay tries to view the quota of ATLAS
+
   h. Suppose, Duncan tries to reduce the ``hard_limit`` of volumes in CMS to
      400.
+
   i. Suppose, Mike tries to increase the ``hard_limit`` of volumes in
      ProductionIT to 2000.
+
   j. Suppose, Mike deletes the quota of Visualisation.
+
   k. Suppose, Mike deletes the project Visualisation.
 
 9. Suppose the company doesn't want a nested structure and want to
@@ -528,11 +539,9 @@ added since Kilo release.
 References
 ==========
 
-* `Hierarchical Projects Wiki
-   <https://wiki.openstack.org/wiki/HierarchicalMultitenancy>`_
+* `Hierarchical Projects Wiki <https://wiki.openstack.org/wiki/HierarchicalMultitenancy>`_
 
-* `Hierarchical Projects
-  <http://specs.openstack.org/openstack/keystone-specs/specs/juno/hierarchical_multitenancy.html>`_
+* `Hierarchical Projects <http://specs.openstack.org/openstack/keystone-specs/specs/juno/hierarchical_multitenancy.html>`_
 
-* `Hierarchical Projects Improvements
-  <https://blueprints.launchpad.net/keystone/+spec/hierarchical-multitenancy-improvements>`_
+* `Hierarchical Projects Improvements <https://blueprints.launchpad.net/keystone/+spec/hierarchical-multitenancy-improvements>`_
+

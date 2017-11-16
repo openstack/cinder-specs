@@ -72,7 +72,7 @@ Default
 
 100/minute
 
-| 
+|
 
 Rate limits are applied in order relative to the verb, going from least
 to most specific. For example, although the threshold for **POST** to
@@ -102,5 +102,5 @@ Maximum amount of block storage
 
 1 TB
 
-| 
+|
 

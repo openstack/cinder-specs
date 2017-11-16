@@ -112,24 +112,29 @@ The following existing v2 GET APIs will support the new sorting parameters:
 {items} will be replaced by the appropriate entities as follows:
 
 * For snapshots:
-  * /v2/{tenant_id}/snapshots
-  * /v2/{tenant_id}/snapshots/detail
+
+  - /v2/{tenant_id}/snapshots
+  - /v2/{tenant_id}/snapshots/detail
 
 * For volume transfers:
-  * /v2/{tenant_id}/os-volume-transfer
-  * /v2/{tenant_id}/os-volume-transfer/detail
+
+  - /v2/{tenant_id}/os-volume-transfer
+  - /v2/{tenant_id}/os-volume-transfer/detail
 
 * For consistency group:
-  * /v2/{tenant_id}/consistencygroups
-  * /v2/{tenant_id}/consistencygroups/detail
+
+  - /v2/{tenant_id}/consistencygroups
+  - /v2/{tenant_id}/consistencygroups/detail
 
 * For consistency group snapshots:
-  * /v2/{tenant_id}/cgsnapshots
-  * /v2/{tenant_id}/cgsnapshots/detail
+
+  - /v2/{tenant_id}/cgsnapshots
+  - /v2/{tenant_id}/cgsnapshots/detail
 
 * For backups:
-  * /v2/{tenant_id}/backups
-  * /v2/{tenant_id}/backups/detail
+
+  - /v2/{tenant_id}/backups
+  - /v2/{tenant_id}/backups/detail
 
 The existing API needs to support the following new Request Parameters for
 the above cinder concepts:
@@ -165,34 +170,49 @@ The next link will be put in the response returned from cinder if it is
 necessary.
 
 * For snapshots, it replies:
-{
-    "snapshots": [<List of snapshots>],
-    "snapshots_links": [{'href': '<next_link>', 'rel': 'next'}]
-}
+
+  .. code-block:: python
+
+    {
+        "snapshots": [<List of snapshots>],
+        "snapshots_links": [{'href': '<next_link>', 'rel': 'next'}]
+    }
 
 * For volume transfers, it replies:
-{
-    "transfers": [<List of transfers>],
-    "transfers_links": [{'href': '<next_link>', 'rel': 'next'}]
-}
+
+  .. code-block:: python
+
+    {
+        "transfers": [<List of transfers>],
+        "transfers_links": [{'href': '<next_link>', 'rel': 'next'}]
+    }
 
 * For consistency group, it replies:
-{
-    "consistencygroups": [<List of consistencygroups>],
-    "consistencygroups_links": [{'href': '<next_link>', 'rel': 'next'}]
-}
+
+  .. code-block:: python
+
+    {
+        "consistencygroups": [<List of consistencygroups>],
+        "consistencygroups_links": [{'href': '<next_link>', 'rel': 'next'}]
+    }
 
 * For consistency group snapshots, it replies:
-{
-    "cgsnapshots": [<List of cgsnapshots>],
-    "cgsnapshots_links": [{'href': '<next_link>', 'rel': 'next'}]
-}
 
-* For backups, it replies::
-{
-    "backups": [<List of backups>],
-    "backups_links": [{'href': '<next_link>', 'rel': 'next'}]
-}
+  .. code-block:: python
+
+    {
+        "cgsnapshots": [<List of cgsnapshots>],
+        "cgsnapshots_links": [{'href': '<next_link>', 'rel': 'next'}]
+    }
+
+* For backups, it replies:
+
+  .. code-block:: python
+
+    {
+      "backups": [<List of backups>],
+      "backups_links": [{'href': '<next_link>', 'rel': 'next'}]
+    }
 
 
 Security impact

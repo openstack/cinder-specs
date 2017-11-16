@@ -160,4 +160,6 @@ References
 * Nova's spec for db archiving: https://review.openstack.org/#/c/18493/
 
 * Discussion in openstack-dev mailing list:
-http://lists.openstack.org/pipermail/openstack-dev/2014-March/029952.html
+
+  http://lists.openstack.org/pipermail/openstack-dev/2014-March/029952.html
+

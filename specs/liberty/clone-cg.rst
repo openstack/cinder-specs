@@ -43,6 +43,7 @@ Proposed change
 
 * The existing Create CG from Source API takes an existing CG snapshot
   as the source.
+
 * This blueprint proposes to modify the existing API to accept an existing
   CG as the source.
 
@@ -51,9 +52,12 @@ Alternatives
 
 Without the proposed changes, we can create a CG from an existing CG
 with these steps:
+
 * Create an empty CG.
+
 * Create a cloned volume from an existing volume in an existing CG
   and add to the new CG.
+
 * Repeat the above step for all volumes in the CG.
 
 Data model impact
@@ -68,9 +72,12 @@ REST API impact
 Consistency Group API change
 
 * Create Consistency Group from Source
-  * V2/<tenant id>/consistencygroups/create_from_src
+* V2/<tenant id>/consistencygroups/create_from_src
+
   * Method: POST
-  * JSON schema definition for V2::
+  * JSON schema definition for V2:
+
+    .. code-block:: python
 
         {
             "consistencygroup-from-src":
@@ -87,9 +94,12 @@ Consistency Group API change
     of the new CG.
 
 * Cinder Volume Driver API
+
   Two new optional parameters will be added to the existing volume driver API:
+
     * def create_consistencygroup_from_src(self, context, group, volumes,
       cgsnapshot=None, snapshots=None, src_group=None, src_volumes=None)
+
     * Note only "src_group" and "src_volumes" are new parameters.
 
 Security impact

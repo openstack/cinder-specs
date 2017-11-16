@@ -63,12 +63,17 @@ None
 REST API impact
 ---------------
 
-Add a new REST API to delete backup in v2::
-*POST /v2/{tenant_id}/backups/{id}/action
+Add a new REST API to delete backup in v2:
 
-    {
-	    "os-force_delete": {}
-    }
+.. code-block:: console
+
+ POST /v2/{tenant_id}/backups/{id}/action
+
+.. code-block:: python
+
+  {
+      "os-force_delete": {}
+  }
 
 Normal http response code:
     202

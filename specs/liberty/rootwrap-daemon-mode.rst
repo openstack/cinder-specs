@@ -90,6 +90,7 @@ in Neutron shows over 10x speedup comparing to usual ``sudo rootwrap`` call.
 Total speedup for Cinder shows impressive results too [#rw_perf]:
 test scenario CinderVolumes.create_and_delete_volume
 Current performance :
+
 +----------------------+-----------+-----------+-----------+-------+
 | action               | min (sec) | avg (sec) | max (sec) | count |
 +----------------------+-----------+-----------+-----------+-------+
@@ -97,6 +98,7 @@ Current performance :
 | cinder.delete_volume | 13.535    | 24.958    | 32.959    | 8     |
 | total                | 16.314    | 30.718    | 35.96     | 8     |
 +----------------------+-----------+-----------+-----------+-------+
+
 Load duration: 131.423681974
 Full duration: 135.794852018
 
@@ -109,6 +111,7 @@ With use_rootwrap_daemon enabled:
 | cinder.delete_volume | 2.183     | 2.226     | 2.353     | 8     |
 | total                | 4.673     | 4.845     | 5.3       | 8     |
 +----------------------+-----------+-----------+-----------+-------+
+
 Load duration: 19.7548749447
 Full duration: 22.2729279995
 

@@ -34,8 +34,7 @@ Benefits:
 * Import snapshots function could provide an effective means to manage the
   import volumes.
 
-    ::
-
+  ::
     For those volume drivers which could not delete volume with snapshots,
     we could not delete the import volume that has snapshots.
     By using import snapshots function to import snapshots, we could first
@@ -97,8 +96,13 @@ REST API impact
 
 1. Add one API "manage_snapshot"
 
-The rest API look like this in v2::
-/v2/{project_id}/os-snapshot-manage
+The rest API look like this in v2:
+
+.. code-block: console
+
+  POST /v2/{project_id}/os-snapshot-manage
+
+.. code-block:: python
 
     {
         'snapshot':{
@@ -110,13 +114,17 @@ The rest API look like this in v2::
 
   * The <string> 'host' means cinder volume host name.
     No default value.
+
   * The <string> 'volume_id' means the import snapshot's volume id.
     No default value.
+
   * The <string> 'ref' means the import snapshot name
     exist in storage back-end.
     No default value.
 
-The response body of it is like::
+The response body of it is like:
+
+.. code-block:: python
 
     {
         "snapshot": {
@@ -142,12 +150,17 @@ The response body of it is like::
 
 2. Add one API "unmanage_snapshot".
 
-The rest API look like this in v2::
-/v2/{project_id}/os-snapshot-manage/{id}/action
+The rest API look like this in v2:
 
-    {
-        'os-unmanage':{}
-    }
+.. code-block:: console
+
+  POST /v2/{project_id}/os-snapshot-manage/{id}/action
+
+.. code-block:: python
+
+  {
+      'os-unmanage':{}
+  }
 
 The status code will be HTTP 202 when the request has succeeded.
 

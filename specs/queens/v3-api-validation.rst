@@ -301,10 +301,12 @@ remove the existing validation of parameters which is there inside of
 controller methods which will again break the v2 apis.
 
 Solution:
-1] Do the schema validation for v3 apis using the @validation.schema decorator
+
+1. Do the schema validation for v3 apis using the @validation.schema decorator
    similar to Nova and also keep the validation code which is there inside of
    method to keep v2 working.
-2] Once the decision is made to remove the support to v2 we should remove the
+
+2. Once the decision is made to remove the support to v2 we should remove the
    validation code from inside of method.
 
 

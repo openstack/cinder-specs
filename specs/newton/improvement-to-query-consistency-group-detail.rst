@@ -59,22 +59,31 @@ REST API impact
 ---------------
 
 * Add volume id list into response body of querying a CG detail if specifying
-the argument 'list_volume=True', this will be dependent on the Generic Group
-spec now, so just leave a example here::
+  the argument 'list_volume=True', this will be dependent on the Generic Group
+  spec now, so just leave a example here:
 
-GET /v3/{project_id}/consistencygroups/{consistency_group_id}?list_volume=True
-RESP BODY: {"consistencygroup": {"status": "XXX",
-                                 "description": "XXX",
-                                 ...,
-                                 "volume_list":['volume_id1',
-                                                ...,
-                                                'volume_idn']
-                                }
-            }
+.. code-block:: console
 
-* Add a filter "group_id=xxx" in URL of querying volume list/detail::
+ GET /v3/{project_id}/consistencygroups/{consistency_group_id}?list_volume=True
 
-GET /v3/{project_id}/volumes?group_id=XXX
+RESP BODY:
+
+.. code-block:: python
+
+  {"consistencygroup": {"status": "XXX",
+                        "description": "XXX",
+                        ...,
+                        "volume_list":['volume_id1',
+                                       ...,
+                                       'volume_idn']
+                        }
+  }
+
+* Add a filter "group_id=xxx" in URL of querying volume list/detail:
+
+.. code-block:: console
+
+  GET /v3/{project_id}/volumes?group_id=XXX
 
 Security impact
 ---------------

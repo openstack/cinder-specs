@@ -146,6 +146,7 @@ References
 
 A patch is proposed in Manila to solve a similar problem:
     https://review.openstack.org/#/c/315266/
+
 Note that capabilities reporting for thin and thick provisioning
 in Manila is different from that in Cinder. In Manila, a driver reports
 `thin_provisioning = [True, False]` if it supports both thin and thick;

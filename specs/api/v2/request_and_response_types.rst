@@ -39,7 +39,7 @@ In the request example below, notice that *``Content-Type``* is set to
     X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
     Accept: application/xml
 
-| 
+|
 
 An XML response format is returned:
 
@@ -63,5 +63,5 @@ An XML response format is returned:
           </volume_type>
       </volume_types>
 
-| 
+|
 

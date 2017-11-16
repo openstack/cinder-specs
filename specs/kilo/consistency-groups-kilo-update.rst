@@ -17,13 +17,17 @@ Problem description
 ===================
 
 * Create CG from CG snapshot
+
   Currently a user can create a Consistency Group and create a snapshot of a
   Consistency Group.  To restore from a Cgsnapshot, however, the following
   steps need to be performed:
+
   1) Create a new Consistency Group.
   2) Do the following for every volume in the Consistency group:
+
      a) Call "create volume from snapshot" for snapshot associated with every
         volume in the original Consistency Group.
+
   There's no single API that allows a user to create a Consistency Group from
   a Cgsnapshot.
 
@@ -45,22 +49,30 @@ Proposed change
 ===============
 
 * Create CG from CG snapshot
+
   * Add an API that allows a user to create a Consistency Group from a
     Cgsnapshot.
+
   * Add a Volume Driver API accordingly.
 
 * Modify Consistency Group
+
   * Add an API that adds existing volumes to CG and removing volumes from CG
     after it is created.
+
   * Add a Volume Driver API accordingly.
 
 * DB Schema Changes
+
   The following changes are proposed:
+
   * A new cg_volumetypes table will be created.
   * This new table will contain 3 columns:
+
     * uuid of a cg_volumetype entry
     * uuid of a consistencygroup
     * uuid of a volume type
+
   * Upgrade and downgrade functions will be provided for db migrations.
 
 Alternatives
@@ -75,9 +87,10 @@ Data model impact
   The following changes are proposed:
   * A new cg_volumetypes table will be created.
   * This new table will contain 3 columns:
-    * uuid of a cg_volumetype entry
-    * uuid of a consistencygroup
-    * uuid of a volume type
+
+    - uuid of a cg_volumetype entry
+    - uuid of a consistencygroup
+    - uuid of a volume type
 
 REST API impact
 ---------------
@@ -133,11 +146,16 @@ New Consistency Group APIs changes
 
 
 * Cinder Volume Driver API
+
   The following new volume driver APIs will be added:
-  * def create_consistencygroup_from_cgsnapshot(self, context,
-    consistencygroup, volumes, cgsnapshot, snapshots)
-  * def modify_consistencygroup(self, context, consistencygroup,
-    old_volumes, new_volumes)
+
+  .. code-block:: python
+
+    def create_consistencygroup_from_cgsnapshot(self, context,
+        consistencygroup, volumes, cgsnapshot, snapshots)
+
+    def modify_consistencygroup(self, context, consistencygroup,
+        old_volumes, new_volumes)
 
 Security impact
 ---------------
@@ -153,14 +171,20 @@ Other end user impact
 python-cinderclient needs to be changed to support the new APIs.
 
 * Create CG from CG snapshot
-  cinder consisgroup-create --name <name> --description <description>
-  --cgsnapshot <cgsnapshot uuid or name>
+
+  .. code-block:: bash
+
+    cinder consisgroup-create --name <name> --description <description>
+    --cgsnapshot <cgsnapshot uuid or name>
 
 * Modify CG
-  cinder consisgroup-modify <cg uuid or name> --name <new name>
-  --description <new description> --addvolumes
-  <volume uuid> [<volume uuid> ...] --removevolumes
-  <volume uuid> [<volume uuid> ...]
+
+  .. code-block:: bash
+
+    cinder consisgroup-modify <cg uuid or name> --name <new name>
+    --description <new description> --addvolumes
+    <volume uuid> [<volume uuid> ...] --removevolumes
+    <volume uuid> [<volume uuid> ...]
 
 Performance Impact
 ------------------
@@ -192,11 +216,15 @@ Work Items
 ----------
 
 1. API changes:
+
    * Create CG from CG snapshot API
    * Modify CG API
+
 2. Volume Driver API changes:
+
    * Create CG from CG snapshot
    * Modify CG
+
 3. DB schema changes
 
 Dependencies
