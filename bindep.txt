@@ -2,6 +2,8 @@
 # install and tests;
 # see https://docs.openstack.org/infra/bindep/ for additional information.
 
-gettext [!platform:suse]
+# gettext and graphviz are needed by doc builds only. For transition,
+# have them in both doc and test.
+gettext [!platform:suse doc test]
 gettext-runtime [platform:suse]
-graphviz [test]
+graphviz [doc test]
