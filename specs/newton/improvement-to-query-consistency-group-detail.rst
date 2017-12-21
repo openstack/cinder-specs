@@ -40,7 +40,7 @@ if user wants those volume's information.
 in a CG. For example "cinder list --group-id <uuid of CG>".
 
 NOTE: Since we're working on Generic Volume Group[1], to avoid unnecessary
-code mirgation later, we will implement the 'group_id' query filter first,
+code migration later, we will implement the 'group_id' query filter first,
 and after Generic Volume Group is merged, we will implement the #1 way
 dependent on the Generic Group spec.
 
