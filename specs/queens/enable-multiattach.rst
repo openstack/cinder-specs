@@ -125,9 +125,9 @@ only way to safely control this is be requiring that a type of
 "multiattach" is created and used on volume creation.
 
 If an additional attach request is made to a volume that is NOT of the type
-multi-attach enabled the request should fail as the volume is already in-use, and
-either a new volume should be created of the correct type, or the volume should
-be retyped.  Of course if the policy allows and the type is correct the
+multi-attach enabled the request should fail as the volume is already in-use,
+and either a new volume should be created of the correct type, or the volume
+should be retyped.  Of course if the policy allows and the type is correct the
 additional attachment request should be processed and the existing
 attachment(s) are left active and NOT interrupted.
 

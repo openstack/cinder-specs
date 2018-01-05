@@ -14,7 +14,8 @@ We welcome feedback, comments and bug reports at
 Intended audience
 -----------------
 
-This spec assumes the reader has a general understanding of storage and is familiar with these concepts:
+This spec assumes the reader has a general understanding of storage and is
+familiar with these concepts:
 
 -  ReSTful web services
 
