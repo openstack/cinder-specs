@@ -60,6 +60,10 @@ Multi-Attach RW:
   Write volumes with no real distinction beyond what's provided with a single
   attachment.
 
+The ability to set Read Only options on attachments will be handled as seperate
+work in the from of an argument to ``attachment-create``.  That feature is
+not considered part of the scope of this spec and will be handled independently.
+
 
 Multi-Attach Capable Backend:
   Some backend devices just flat out may not support this.  Those that do are
@@ -67,22 +71,9 @@ Multi-Attach Capable Backend:
   this in their capabilities.
 
 Example Volume Types to communicate Multi Path info:
-  Read only Multi Attach type (extra-specs)
-  {
-  'multiattach': '<is True>',
-  'mode': 'RO'
-  }
 
-  Read/Write Multi Attach type (extra-specs)
-  # Default is RW so omission of mode in extra-specs == RW
   {
   'multiattach': '<is True>',
-  }
-
-  # Also accept explicit request if so desired
-  {
-  'multiattach': '<is True>',
-  'mode': 'RW'
   }
 
   It will be up to the Cinder scheduler to determine if the policy allows these
@@ -90,7 +81,7 @@ Example Volume Types to communicate Multi Path info:
   the corresponding Connection and Volume attributes appropriately in it's
   model returns.
 
-  Again NOTE we will NOT allow retype of attachment setting for an `in-use`
+  Again NOTE we will NOT allow retype of multiattachment setting for an `in-use`
   volume.
 
 Use Cases
@@ -111,10 +102,10 @@ MultiAttach policy
 
 Create a Cinder policy that enables/disables the ability to multi-attach
 a volume.  This policy is a global policy for the endpoint and simply either
-enables or disables the capability.  There's no need for any granularity around
-RO and RW policies, mostly as these can't be enforced from the Cinder side
-anyway.  Things like RO and RW will have to be handled by the consuming service
-(Nova, Ironic etc).
+enables or disables the capability.
+
+Additionally we'll want a specific policy to enable/disable the ability to
+multiattach bootable volumes (volume with the bootable parameter set True).
 
 MultiAttach capable volume type
 -------------------------------
@@ -134,7 +125,7 @@ attachment(s) are left active and NOT interrupted.
 To avoid various corner cases and confusion for users in what's allowed and
 what's not, this spec proposes we set a hard-code rule that disallows the
 retyping of attachment parameters of an `in-use` volume.  Regardless of what
-those changes are; multi-->non-multi, non-multi-->multi, RO, RW etc etc.
+those changes are; multi-->non-multi, non-multi-->multi.
 
 Any retype command should inspect the multiattach keys and if there is any
 change being requested in said keys the retype should fail immediately at the
