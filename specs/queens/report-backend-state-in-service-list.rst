@@ -156,4 +156,4 @@ Documentation Impact
 References
 ==========
 
-[1]http://docs.openstack.org/developer/cinder/devref/drivers.html
+[1]https://docs.openstack.org/cinder/latest/contributor/drivers.html
