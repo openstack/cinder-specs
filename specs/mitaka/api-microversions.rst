@@ -71,11 +71,11 @@ Use Cases
 
 Proposed change
 ===============
-Cinder will use a framework we will call ‘API Microversions’ for allowing
+Cinder will use a framework we will call 'API Microversions' for allowing
 changes to the API while preserving backward compatibility. The basic idea is
 that a user has to explicitly ask for their request to be treated with a
 particular version of the API. So breaking changes can be added to the API
-without breaking users who don’t specifically ask for it. This is done with
+without breaking users who don't specifically ask for it. This is done with
 an HTTP header X-OpenStack-Cinder-API-Version which is a monotonically
 increasing semantic version number starting from 2.1.
 
