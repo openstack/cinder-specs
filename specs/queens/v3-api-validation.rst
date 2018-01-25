@@ -171,7 +171,7 @@ each API method in ad-hoc. These changes would make the API method code dirty
 and we needed to create multiple patches due to incomplete validation.
 
 If using JSON Schema definitions instead, acceptable request formats are clear
-and we don’t need to do ad-hoc works in the future.
+and we don't need to do ad-hoc works in the future.
 
 Pecan Framework:
 `Pecan <http://pecan.readthedocs.org/en/latest/>`_

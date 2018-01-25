@@ -168,7 +168,7 @@ on where to perform operations.
 In a similar way to the Service state reporting we need to prevent concurrent
 access to the data structure when updating this information. Fortunately for us
 we are storing this information in a Python dictionary on the schedulers, and
-since we are using an eventlet executor for the RPC server we don’t have to
+since we are using an eventlet executor for the RPC server we don't have to
 worry about using locks, the inherent behavior of the executor will prevent
 concurrent access to the dictionary.  So no changes are needed there to have
 exclusive access to the data structure.
