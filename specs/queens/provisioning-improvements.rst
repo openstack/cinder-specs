@@ -315,34 +315,37 @@ reporting the `allocated_capacity_gb` field.
 Automatic over subscription ratio calculation
 ---------------------------------------------
 
-To allow automatic over subscription ratio calculation we will add a new
-configuration option named `auto_max_over_subscription_ratio` that will
-instruct Cinder to use configured `max_over_subscription_ratio` as a starting
+To allow automatic over subscription ratio calculation we will make existing
+configuration option `max_over_subscription_ratio` into a polymorphic option
+that accepts not only integers and floats, but also a new string value `auto`
+that will instruct Cinder to use our default value of 20 as the starting
 reference when the backend is empty and then, when there is data calculate the
 current value on each driver stats report with the following formula::
 
-  adjusted_total = `total_capacity_gb` x (1 - (`reserved_percentage` / 100.0))
-  ratio = `provisioned_capacity_gb` / adjusted_total - `free_capacity_gb`
+  ratio = 1 + (`provisioned_capacity_gb` /
+               (`total_capacity_gb` - `free_capacity_gb` + 1))
 
 If the driver is not reporting `provisioned_capacity_gb` then we'll proceed to
 use the `allocated_capacity_gb` instead::
 
-  adjusted_total = `total_capacity_gb` x (1 - (`reserved_percentage` / 100.0))
-  ratio = `allocated_capacity_gb` / adjusted_total - `free_capacity_gb`
+  ratio = 1 + (`allocated_capacity_gb` /
+               (`total_capacity_gb` - `free_capacity_gb` + 1))
 
-This new configuration option will be independent of the drivers and it will be
-part of Cinder's core code, so if `auto_max_over_subscription_ratio` is not
-defined or set to `False` then Cinder will continue behaving as it is now
-(returning the `max_over_subscription_ratio` that is reported by the driver or
-the one configured by default if not present).  But if it is set to True it
-will always return calculated ratio as explained.
+We are not considering the reserved capacity in this formula because the
+scheduler's capacity filter already takes it into consideration when
+calculating the virtual free capacity.
 
 There are a couple of drivers that are already doing this, Pure and Kaminario's
 K2, but with different configuration options,
 `pure_automatic_max_oversubscription_ratio` and
-`auto_calc_max_oversubscription_ratio` respectively, so we'll deprecate those
-configuration options and remove the code within those drivers when we add the
-generic code to Cinder.
+`auto_calc_max_oversubscription_ratio` respectively, so those configuration
+options will take precedence, if configured, over this new feature, but we'll
+encourage vendors to deprecate those options.
+
+Drivers that are making use of the `max_over_subscription_ratio` in a non
+compatible way will raise an error and fail to start, logging an appropriate
+message if configured with this new feature.
+
 
 Provisioning calculations
 -------------------------
@@ -416,23 +419,26 @@ failures on creating volumes until we correct the values of
 `reserved_percentage` and `max_over_subscription_ratio` in our cloud to the
 right values, since we may have been using incorrect ones.
 
-Two new configuration options will be added:
+A configuration option will be modified:
 
-* `auto_max_over_subscription_ratio`: Boolean value that will instruct Cinder
-  to automatically calculate the over subscription ratio based on current usage
-  instead of using a fixed value.
+* `max_over_subscription_ratio`: Changes its type from Float to String and
+  adds a new possible value, `auto`, that will enable this new feature.
+
+A new configuration options will be added:
 
 * `over_provisioning_calculation`: Will allow to select what kind of
   calculations the `CapacityFilter` does to determine if there is space for a
   volume in a backend.  Acceptable values are `standard` and `cinder`.  Default
   values will be `cinder`.
 
+
 Developer impact
 ----------------
 
 Driver maintainer will need to verify, and fix if necessary, their stat reports
-for `allocated_capacity_gb` and `provisioned_capacity_gb` unless they start
-using the new `auto_max_over_subscription_ratio` configuration option.
+for `allocated_capacity_gb` and `provisioned_capacity_gb` and if they are using
+`max_over_subscription_ratio` in a non compatible way they should fix their
+driver so that it supports the feature.
 
 Implementation
 ==============
