@@ -51,7 +51,7 @@ volume_admin_metadata table::
     volume : relationship joining to volumes table
 
 Setting a snapshot_status metadata value will allow the API layer
-to transfer this information to the the volume service.
+to transfer this information to the volume service.
 
 Volume manager<->driver interaction
 -----------------------------------
