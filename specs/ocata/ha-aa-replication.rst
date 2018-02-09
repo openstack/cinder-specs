@@ -69,7 +69,7 @@ all the operations against the secondary storage device.
 As mentioned before only one volume service will receive the request to do the
 failover, so by splitting the operation the manager will be able to request the
 local driver to do the first part of the failover and once that is done it will
-send all volume nodes in the cluster handling that backend the signal that that
+send all volume nodes in the cluster handling that backend the signal that
 the failover has been completed and that they should start pointing to the
 failed over secondary site, thus solving the problem of some services not
 knowing that a new site should be used.
