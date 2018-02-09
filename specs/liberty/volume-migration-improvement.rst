@@ -189,7 +189,7 @@ REST API impact
 
 The REST API should be able to provide the migration status and the migration
 progress information for the volumes. For the migration status, it can be
-retrieved from the database. For the the migration progress, the API request
+retrieved from the database. For the migration progress, the API request
 will be scheduled to the cinder volume service, where the volume is located,
 and cinder volume service reports the updated progress back.
 
