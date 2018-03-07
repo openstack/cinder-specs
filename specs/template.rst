@@ -178,6 +178,29 @@ guidelines are a work in progress and are designed to help you identify
 security best practices.  For further information, feel free to reach out
 to the OpenStack Security Group at openstack-security@lists.openstack.org.
 
+Active/Active HA impact
+-----------------------
+
+Describe any potential impact upon Cinder's Active/Active HA support.  Some of the
+items to consider include:
+
+* Could this impact stats/information reporting across multiple HA
+  control nodes?
+
+* Are there locking concerns that need to be addressed across multiple
+  HA control nodes?
+
+* Will RPC calls have to consider the cluster?  I.E. use the
+  "service_topic_queue" when calling the "_get_cctxt" method.
+
+* Does this add a new cleanable resource?
+
+* Does the operation require a state change in the workers table?
+
+* Is there additional testing that might be necessary in an HA
+  environment?
+
+
 Notifications impact
 --------------------
 
