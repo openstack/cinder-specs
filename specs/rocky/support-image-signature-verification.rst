@@ -361,7 +361,7 @@ Instructions for how to use this functionality will need to be documented.
 References
 ==========
 
-Cryptography API: https://pypi.python.org/pypi/cryptography/0.2.2
+Cryptography API: https://pypi.org/project/cryptography/0.2.2
 
 _`[1]` https://review.openstack.org/#/c/252462/
 _`[2]` https://en.wikipedia.org/wiki/MD5#Security

@@ -41,7 +41,7 @@ Proposed change
 ===============
 
 One possible way to validate the Cinder API is to use jsonschema similar to
-Nova, Keystone and Glance (https://pypi.python.org/pypi/jsonschema).
+Nova, Keystone and Glance (https://pypi.org/project/jsonschema).
 A jsonschema validator object can be used to check each resource against an
 appropriate schema for that resource. If the validation passes, the request
 can follow the existing flow of control through the resource manager to the
@@ -344,7 +344,7 @@ Useful Links:
 
 * [Nova Validation Examples] (http://git.openstack.org/cgit/openstack/nova/tree/nova/api/validation)
 
-* [JSON Schema on PyPI] (https://pypi.python.org/pypi/jsonschema)
+* [JSON Schema on PyPI] (https://pypi.org/project/jsonschema)
 
 * [JSON Schema core definitions and terminology] (http://tools.ietf.org/html/draft-zyp-json-schema-04)
 
