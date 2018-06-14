@@ -264,10 +264,7 @@ including the service itself.
 
 * General example:
 
-     .. code-block:: json
-
-        GET /v3.x/{tenant_id}/<some-resource-collection>/
-        {some-resource-instance}/capabilities
+  ``GET /v3.x/{tenant_id}/<some-resource-collection>/{some-resource-instance}/capabilities``
 
   Returns the set of capabilities of some-resource-instance.
 
