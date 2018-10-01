@@ -67,9 +67,9 @@ REST API impact
 
 * New microversion in Cinder API.
 
-* Add an optional argumet "no_snapshots"::
+* Add a new V3 API and an optional argument "no_snapshots"::
 
-    POST /v3/{project_id}/os-volume-transfer
+    POST /v3/{project_id}/volume-transfers
     RESP BODY: {"transfer": {
                              ...
                              no_snapshots: [True/False],
