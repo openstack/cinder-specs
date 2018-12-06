@@ -11,7 +11,8 @@ Support to query cinder resources filter by changes-since
 https://blueprints.launchpad.net/cinder/+spec/support-to-query-cinder-resources-filter-by-change-since
 
 Support users can query resources by specifying the time that resources
-are changed since, and cinder will return the all which matches condition.
+are changed since or/and changed from before, and cinder will return the all
+which matches condition.
 
 Problem description
 ===================
@@ -37,9 +38,10 @@ all resources every time to see which was changed.
 Proposed change
 ===============
 
-* Introduce a new changes-since filter for retrieving resources. It
-  accepts a timestamp and projects will return resources whose update_at fields
-  are later than this timestamp.
+* Introduce two new changes-since and changes-from-before filters for
+  retrieving resources. It accepts one or two timestamps and projects will
+  return resources whose update_at fields are later than or earlier than those
+  timestamps.
 
 
 Alternatives
@@ -58,10 +60,11 @@ None
 REST API impact
 ---------------
 
-List API will accept new query string parameter changes-since. Users can pass
-time to the list API url to retrieve resources operated since a specific time.
+List API will accept new query string parameters changes-since or/and
+changes-from-before. User can pass time to the list API url to retrieve
+resources operated since or from before a specific time.
 
-* GET /v3/{project_id}/volumes/{detail}?changes-since=2016-01-01T01:00:00
+* GET /v3/{project_id}/volumes/{detail}?changes-since=2016-01-01T01:00:00&changes-from-before=2016-12-01T01:00:00
 
 Security impact
 ---------------
@@ -105,7 +108,7 @@ Assignee(s)
 -----------
 
 Primary assignee:
-  wanghao<wanghao749@huawei.com>
+  wanghao<sxmatch1986@gmail.com>
 
 
 Work Items
@@ -125,7 +128,7 @@ None
 Testing
 =======
 
-1. Unit test to test if changes-since filter can be correctly applied.
+1. Unit test to test if those filters can be correctly applied.
 2. Tempest test if change filter work correctly from API perspective.
 
 Documentation Impact
