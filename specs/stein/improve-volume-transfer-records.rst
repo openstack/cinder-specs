@@ -10,16 +10,16 @@ Improve volume transfer records
 https://blueprints.launchpad.net/cinder/+spec/improve-volume-transfer-records
 
 This blueprint proposes to improve volume transfer records by adding
-``original_project_id`` and ``current_project_id``, ``accept`` fields to
+``source_project_id`` and ``destination_project_id``, ``accepted`` fields to
 ``transfer`` table and related api responses, makes it easier for users to
 trace the volume transfer history.
 
 Problem description
 ===================
 
-Currently, the volume transfer record does not include the current project_id
-after transferring and the original project_id before transferring. These
-fields are very useful for admins and operators to trace the transfer
+Currently, the volume transfer record does not include the destination
+project_id after transferring and the source project_id before transferring.
+These fields are very useful for admins and operators to trace the transfer
 history.
 
 And also once the transfer is deleted, the user can't determine if this
@@ -40,13 +40,13 @@ This spec proposes to do
 
 1. Add three new fields to ``transfer`` table:
 
-   * ``original_project_id``, this field records the original project_id
+   * ``source_project_id``, this field records the source project_id
      before volume transferring.
 
-   * ``current_project_id``, this field records the current project_id after
-     volume transferring.
+   * ``destination_project_id``, this field records the destination project_id
+     after volume transferring.
 
-   * ``accept``, this field records if this transfer was accepted or not.
+   * ``accepted``, this field records if this transfer was accepted or not.
 
 2. Add a new microverion API to add above fields to the response of follow
    API:
@@ -121,10 +121,10 @@ Primary assignee:
 
 Work Items
 ----------
-* Add ``original_project_id`` and ``current_project_id``, ``accept`` fields to
-  ``transfer`` table
-* Add ``original_project_id`` and ``current_project_id``, ``accept`` fields to
-  related API.
+* Add ``source_project_id`` and ``destination_project_id``, ``accepted``
+  fields to ``transfer`` table
+* Add ``source_project_id`` and ``destination_project_id``, ``accepted``
+  fields to related API.
 * Implement changes for python-cinderclient to support list transfer with
   ``--detail``.
 * Update related transfer api doc.
