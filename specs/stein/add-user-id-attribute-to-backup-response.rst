@@ -15,7 +15,7 @@ the response body of list backup with detail and show backup detail APIs.
 Problem description
 ===================
 
-Currently, there is a ``user_id`` field in the ``backups`` table, these
+Currently, there is a ``user_id`` field in the ``backups`` table. These
 fields are very useful for admin to manage the backup file, but this
 is not returned in response body. So it is difficult to manage the resources
 under the project. If there are multiple users under one project, it is
@@ -26,17 +26,15 @@ Use Cases
 
 In large scale environment, lots of backups resources were created in system,
 that we can only see the project to which the backup file belongs, but we
-cannot know which user the backup belongs to it.
+cannot know to which user the backup belongs.
 
-In order to better manage the backup files, add ``user_id``
-attribute to the response body of list backup with detail and show backup
-detail APIs, make the backup resources more visible to the users of the
-project.
+Administrators would like the ability to identify the users that have created
+backups.
 
 Proposed change
 ===============
 
-This spec proposes that add ``user_id`` attribute to the
+This spec proposes to add ``user_id`` attribute to the
 response body of list backup with detail and show backup detail APIs.
 
 Add a new microverion API to add ``user_id`` attribute
@@ -56,29 +54,29 @@ a very old backup file.
 REST API impact
 ---------------
 
-* Add a new microversion in Cinder API.
+Add a new microversion in Cinder API.
 
-* List backups with detail::
+List backups with detail::
 
-    GET /v3/{project_id}/backups/detail
-    Response BODY:
-    {
-        "backups": [{
-            ...
-            "user_id": "515ba0dd59f84f25a6a084a45d8d93b2"
-        }]
-    }
+  GET /v3/{project_id}/backups/detail
+  Response BODY:
+  {
+      "backups": [{
+          ...
+          "user_id": "515ba0dd59f84f25a6a084a45d8d93b2"
+      }]
+  }
 
-* Show backup detail::
+Show backup detail::
 
-    GET /v3/{project_id}/backups/{backup_id}
-    Response BODY:
-    {
-        "backups": [{
-            ...
-            "user_id": "515ba0dd59f84f25a6a084a45d8d93b2"
-        }]
-    }
+  GET /v3/{project_id}/backups/{backup_id}
+  Response BODY:
+  {
+      "backups": [{
+          ...
+          "user_id": "515ba0dd59f84f25a6a084a45d8d93b2"
+      }]
+  }
 
 Calling this method shows a ``user_id`` for volume backup.
 It is intended for admins to use, which is used to display the user to which
