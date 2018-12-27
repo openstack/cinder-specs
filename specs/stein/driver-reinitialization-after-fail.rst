@@ -16,27 +16,13 @@ during startup.
 Problem description
 ===================
 
-When a service starts, at first it does initialization. If something wrong
-happens, the service ends.
-After initialization completes, it cleans up resources, initializes its driver
-and RPC servers. Later the volume service reports its capabilities to scheduler
-in fixed interval.
+During Cinder initialization, for many reasons, the storage backend might not
+be ready and responding. In this case, the driver will not be loaded even if
+the array becomes available right after.
 
-During above progress, some errors lead to the service process exiting,
-leaving the volume driver not functioning.
-
-1) Driver not supported.
-2) Driver initialization fails.
-3) Volume cleanups are processed by parent class CleanableManager.
-4) Something wrong with 'publish_service_capabilities' [2].
-
-The driver will not be initialized in above case 1), 2) and 3). As a result,
-although the volume service process exists, and tries to publish its service
-capabilities to scheduler, but fails every time. This means users have to
-restart cinder volume to re-initialize drivers.
-
-When case 4 happens the volume service moves on and can become available if
-it succeeds to publish its service to scheduler next time.
+As there is no retry in Cinder volume service, even later the backend storage
+is ready, Cinder volume service can't recover by itself. It needs users
+to restart the volume service manually.
 
 Use Cases
 =========
@@ -44,7 +30,7 @@ Use Cases
 When a Cinder volume service starts, sometimes its corresponding storage
 services are not ready. But later the storage services become ready. As a
 result the volume service can't work properly and can't recover by itself.
-But the administrator probably prefer Cinder to automatically recover from
+But the administrators probably prefer Cinder to automatically recover from
 the temporary failures without manual intervention of restarting the service.
 
 Proposed change
@@ -52,31 +38,30 @@ Proposed change
 
 The proposal is to
 
-- Reintialize the volume driver when it failed to initialize. This reinitialization
-  happens except when the error is unrecoverable. The following lists
-  unrecoverable errors:
+- Allow reinitialization of a volume driver when it failed to initialize.
 
-  1) config error
-  2) Driver not supported
-  3) lack of python driver library
+- Provide a configuration to set the maximum retry numbers.
 
-- Every time when a volume service publishes its capability to scheduler,
-  it checks whether the driver is initialized. If it is not initialized
-  and can be recovered, it calls init_host[1] to do reinitialization.
+- The interval of retry will exponentially backoff. Every interval is the
+  exponentiation of retry count. The first interval is 1s, second interval
+  is 2s, third interval is 4s, and so on.
+
+- Retry will be handled in init_host.
 
 For this, the following additional config option would be needed:
 
 - 'reinit_driver_count' (default: 3)
    Set the maximum times to reintialize the driver if volume initialization fails.
-   Default number is 3. The value 0 means no limitation.
+   Default number is 3.
 
 Alternatives
 ------------
 
-Compared with listing unrecoverable errors when checking whether retrying, another
-way is to keep a list of all recoverable errors and reinitialize on the errors in
-the list. The problem is that it tightly depends on exceptions raised by drivers which
-may change on different versions.
+- We also can differentiate whether it should retry with an exception. Like
+  import error, config error, it may not retry. But the benefit is not
+  very impressive, and implementing the differentiation needs work in every
+  driver. As drivers don't differentiate such errors from backend storage
+  errors.
 
 Data model impact
 -----------------
@@ -137,10 +122,7 @@ Work Items
 ----------
 
 * Add the option 'reinit_driver_count'.
-* Need to differentiate config and library error in drivers, and update these
-  exceptions to inherit from same base exceptions. So that we can skip these
-  errors when reinitializing.
-* Reinitialize volume drivers in 'publish_service_capabilities' [2].
+* Retry to initialize volume drivers when it fails.
 * Add related unit test cases.
 
 Dependencies
@@ -162,5 +144,4 @@ Documentation Impact
 References
 ==========
 
-_`[1]`: https://github.com/openstack/cinder/blob/master/cinder/volume/manager.py#L408
-_`[2]`: https://github.com/openstack/cinder/blob/master/cinder/volume/manager.py#L2539
+* None
