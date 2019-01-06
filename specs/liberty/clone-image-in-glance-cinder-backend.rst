@@ -54,7 +54,7 @@ on creating a volume from an image:
 On uploading a volume to an image:
 
 * If image format is raw and image_upload_use_cinder_backend is enabled in
-  cinder.conf, clone the volume and register its location to the image.
+  cinder.conf, clone the volume and register its location to the image [2]_.
 
     * If image_upload_use_internal_tenant is set to True, the cloned volume is
       placed in the internal tenant.

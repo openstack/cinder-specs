@@ -123,7 +123,7 @@ Note that a cinder instance may implement a particular feature but may not
 allow a particular user to access the same. So, the capabilities API
 should not only consider whether the service implements the particular feature
 but also if the current user is privileged to access the same. The "privilege"
-information is already available in the policy.json file that maps different
+information is already available in the policy.json [4]_ file that maps different
 operations to the users that can access them. So, any capapbility API
 implementation must make use of this file.
 
@@ -134,10 +134,10 @@ replication feature, it could be statically set when the volume type is
 created or it could be fetched from the driver somehow.
 
 It is not possible to implement the capabilities API based solely on the info
-in the policy.json file as the policy file does not allow defining rules per
-resource. For example, we can allow replication operation for all users but we
-cannot constrain it to a specific volume type (which is deal breaker since not
-all volume types support replication).
+in the policy.json [4]_ file as the policy file does not allow defining rules
+per resource. For example, we can allow replication operation for all users
+but we cannot constrain it to a specific volume type (which is deal breaker
+since not all volume types support replication).
 
 It is easy to see that all capabilities APIs should be public, i.e. accessible
 by any user.
