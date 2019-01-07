@@ -25,7 +25,7 @@ where a volume be created on.  How can Cinder provide such capability without
 hurting the simplicity we have been keeping?  Affinity/anti-affinity is one
 of the flexibility we can provide without exposing details to backends.
 
-The term affinity/anti-affinity here is to to describe the relationship
+The term affinity/anti-affinity here is to describe the relationship
 between two sets of volumes in terms of location.  To limit the scope, we
 describe one volume is affinity with the other one only when they reside in
 the same volume back-end (this notion can be extended to volume pools if
