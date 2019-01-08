@@ -4,6 +4,14 @@
 Volume Service Specifications (cinder)
 ======================================
 
+Train approved specs:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/train/*
+
 Stein approved specs:
 
 .. toctree::
