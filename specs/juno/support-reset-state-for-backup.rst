@@ -12,7 +12,7 @@ Include the URL of your launchpad blueprint:
 
 https://blueprints.launchpad.net/cinder/+spec/support-reset-state-for-backup
 
-Provide an API to to reset the state of a backup being stucked in creating or
+Provide an API to reset the state of a backup being stucked in creating or
 restoring.
 
 Problem description
