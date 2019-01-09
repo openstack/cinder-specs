@@ -24,19 +24,19 @@ Current Workflow
 2. Failure Occurs
 3. Fail over
 4. Promote Secondary Backend
+
    a. Freeze backend to prevent manage operations
    b. Stop cinder volume service
    c. Update cinder.conf to have backend A replaced with B and B with C
-   d. *Hack db to set backend to no longer be in 'failed-over' state*
-   This is the step this spec is concerned with. Example:
-   ::
+   d. *Hack db to set backend to no longer be in 'failed-over' state*.
+      This is the step this spec is concerned with. Example:
+      ::
 
         update services set disabled=0,
                             disabled_reason=NULL,
                             replication_status='enabled',
                             active_backend_id=NULL
           where id=3;
-
    e. Start cinder volume service
    f. Unfreeze backend
 
