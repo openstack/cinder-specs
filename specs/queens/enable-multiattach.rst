@@ -73,7 +73,7 @@ Multi-Attach Capable Backend:
 Example Volume Types to communicate Multi Path info:
 
   {
-  'multiattach': '<is True>',
+  'multiattach': '<is> True',
   }
 
   It will be up to the Cinder scheduler to determine if the policy allows these
@@ -173,14 +173,14 @@ it's multiattach column is set to True, else False.
 To elaborate on the create flow:
 Admin creates a volume type `multiattach` with extra-specs:
 {
-'multiattach': '<is True>'
+'multiattach': '<is> True'
 }
 
 If a user desires a multiattach volume, he/she issues a create call specifying
 the multiattach type:
 `cinder create --volume-type multiattach --name my-mavol 20`
 
-If there are NO backends reporting `multiattach: <is True>` then scheduling
+If there are NO backends reporting `multiattach: True` then scheduling
 will fail.  Unfortunatly this process includes the task-flow retries and the
 object will be created, the caller will get a 202 response, but after taskflow
 and the scheduler finish retries and fail to find a backend the volume status
