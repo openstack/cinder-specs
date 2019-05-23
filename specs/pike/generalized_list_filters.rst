@@ -4,9 +4,9 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-============================================================
+=========================================
 Generalized filtered listing on resources
-============================================================
+=========================================
 
 https://blueprints.launchpad.net/cinder/+spec/generalized-filtering-for-cinder-list-resource
 
@@ -77,18 +77,18 @@ Alternatives
 * We could provide a generalized "filters" (pick a better name) controller
   that could be called directly and then call the specified resource item
   with filters.  This would mean you would do things like:
-  `cinder filters-list --resource volume`  to get a list of valid filter
+  `cinder list-filters --resource volume`  to get a list of valid filter
   items for a volume (volumes should be the default).
 
-  `cinder filters-list --resource snapshot` for snapshots, etc.
+  `cinder list-filters --resource snapshot` for snapshots, etc.
 
-  But then have something like a `cinder filtered-list --filter xyz=abc`
-  which would go to a filtered-list controller and then call the resource
+  But then have something like a `cinder [<resource>-]list --filters xyz=abc`
+  which would go to a resource list controller and then call the resource
   controller appropriately.
 
   This might be a good way to reduce some duplicate code and churn even further
   but it may require just as much work and code as just having each resource
-  have it's own "--filter" options to the list commands.
+  have it's own "--filters" options to the list commands.
 
 Data model impact
 -----------------
