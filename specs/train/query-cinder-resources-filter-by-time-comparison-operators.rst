@@ -4,20 +4,20 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-=========================================================
-Support to query cinder resources filter by changes-since
-=========================================================
+=====================================================================
+Support to query cinder resources filter by time comparison operators
+=====================================================================
 
-https://blueprints.launchpad.net/cinder/+spec/support-to-query-cinder-resources-filter-by-change-since
+https://blueprints.launchpad.net/cinder/+spec/support-to-query-cinder-resources-filter-by-time-comparison-operators
 
-Support users can query resources by specifying the time that resources
-are changed since or/and changed from before, and cinder will return the all
-which matches condition.
+Support users can query resources by specifying the time comparison
+operators along with created_at or updated_at, and cinder will return all
+which matches the time condition.
 
 Problem description
 ===================
 
-Cinder(also other projects, like heat and neutron) API only supports filtering
+Cinder (also other projects, like heat and neutron) API only support filtering
 resources by discrete values, even though cinder resources have timestamp
 fields, users can only query resources operated at given time,
 not during given period. Users may be interested in resources operated in a
@@ -31,17 +31,26 @@ Use Cases
 
 In large scale environment, lots of resources were created in system,
 for tracing the change of resource, user or manage system only need to get
-those resources which was changed from some time point, instead of querying
-all resources every time to see which was changed.
+those resources which was creatded or changed from some time point, instead of
+querying all resources every time to see which was changed.
 
 
 Proposed change
 ===============
 
-* Introduce two new changes-since and changes-from-before filters for
-  retrieving resources. It accepts one or two timestamps and projects will
-  return resources whose update_at fields are later than or earlier than those
-  timestamps.
+* Introduce six time comparison operators along with created_at or updated_at
+  fields for retrieving resources more flexible. User needs to specify the
+  operator first, a colon (:) as a separator, and then the time.
+  One step closer, we will also support multi-operators querying at once, a
+  comma (,) as the separator.
+* Operator 'gt': Return results more recent than the specified time.
+* Operator 'gte': Return any results matching the specified time and also any
+  more recent results.
+* Operator 'eq': Return any results matching the specified time exactly.
+* Operator 'neq': Return any results that do not match the specified time.
+* Operator 'lt': Return results older than the specified time.
+* Operator 'lte': Return any results matching the specified time and also
+  any older results.
 
 
 Alternatives
@@ -60,11 +69,13 @@ None
 REST API impact
 ---------------
 
-List API will accept new query string parameters changes-since or/and
-changes-from-before. User can pass time to the list API url to retrieve
-resources operated since or from before a specific time.
+List API will accept new query string parameters. User can pass the operator
+and time to the list API url to retrieve resources created or updated since or
+prior to a specific time.
+This changes also need to bump the microversion of API to keep forward
+compatibility.
 
-* GET /v3/{project_id}/volumes/{detail}?changes-since=2016-01-01T01:00:00&changes-from-before=2016-12-01T01:00:00
+* GET /v3/{project_id}/volumes/{detail}?updated_at=gt:2016-01-01T01:00:00,lt:2016-12-01T01:00:00
 
 Security impact
 ---------------
@@ -140,6 +151,4 @@ Documentation Impact
 References
 ==========
 
-[1]: Nova: http://specs.openstack.org/openstack/nova-specs/specs/newton/approved/add-pagination-and-change-since-for-migration-list.html
-[2]: Glance V2 related spec: http://git.openstack.org/cgit/openstack/glance-specs/tree/specs/liberty/v2-additional-filtering.rst
-[3]: Neutron: http://git.openstack.org/cgit/openstack/neutron-specs/tree/specs/mitaka/add-port-timestamp.rst
+[1]: https://developer.openstack.org/api-ref/image/v2/?expanded=list-images-detail#v2-comparison-ops
