@@ -92,7 +92,22 @@ Juno approved specs:
 
    specs/juno/*
 
-=============
+Untargeted Specs:
+
+.. note::
+
+   The following specs are ones that have been approved but have
+   not been completed in the planned release.  Rather than leave
+   them in the originally planned release or remove them, they
+   should be made untargeted for future reference.
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/untargeted/*
+
+
 Volume V2 API
 =============
 
@@ -103,7 +118,6 @@ Volume V2 API
     specs/api/v2/*
 
 
-==================
 Indices and tables
 ==================
 
