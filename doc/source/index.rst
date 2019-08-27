@@ -1,8 +1,8 @@
 .. cinder-specs documentation master file
 
-======================================
-Volume Service Specifications (cinder)
-======================================
+=============================================
+Block Storage Service Specifications (cinder)
+=============================================
 
 Train approved specs:
 
