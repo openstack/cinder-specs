@@ -140,6 +140,15 @@ used to encrypt an image, we will let Glance register as a consumer of that
 key (secret in Barbican [1]) when the corresponding encrypted image is
 uploaded and unregister as a consumer when the image is deleted in Glance.
 
+The methods for encryption and decryption of files - in this case images -
+will be written in a driver like manner in os-brick so the image encryption
+can be extended with another encryption format easily. The encryption driver
+should focus a specific encryption format and implement exactly one encrypt
+and one decrypt method, both based on a cipher implementation of GPG aes.
+This driver may be simple wrappers around an existing implementation. An
+abstract base class should be defined and be used for the implementation of
+GPG encryption (and might be used for other implementations in the future).
+
 
 Alternatives
 ------------
@@ -240,7 +249,7 @@ Other deployer impact
 Developer impact
 ----------------
 
-* To use the encoding and decoding of images in the library, we need to
+* To use the encoding and decoding of images in os-brick, we need to
   execute priviledged functions. We decided to use privsep for this as in
   nova.
 
@@ -273,6 +282,8 @@ Work Items
 * Add a dedicated encryption workflow and implementation in Cinder for
   creating encrypted images from volumes using the proposed image encryption
   format (GPG)
+
+* Add encryption and decryption methods for the GPG format in os-brick
 
 
 Dependencies
@@ -328,5 +339,5 @@ History
 
    * - Release Name
      - Description
-   * - Stein
+   * - Train
      - Introduced
