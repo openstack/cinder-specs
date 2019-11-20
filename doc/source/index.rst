@@ -4,6 +4,18 @@
 Block Storage Service Specifications (cinder)
 =============================================
 
+Ussuri approved specs:
+
+.. any patch adding a spec should remove the following line:
+
+* No specs have yet been approved.
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/ussuri/*
+
 Train approved specs:
 
 .. toctree::
