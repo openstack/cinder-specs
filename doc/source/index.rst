@@ -108,16 +108,6 @@ Untargeted Specs:
    specs/untargeted/*
 
 
-Volume V2 API
-=============
-
-.. toctree::
-    :glob:
-    :maxdepth: 1
-
-    specs/api/v2/*
-
-
 Indices and tables
 ==================
 
