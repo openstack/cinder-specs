@@ -4,7 +4,8 @@
 Block Storage Service Specifications (cinder)
 =============================================
 
-Ussuri approved specs:
+Ussuri approved specs
+=====================
 
 .. any patch adding a spec should remove the following line:
 
@@ -16,7 +17,8 @@ Ussuri approved specs:
 
    specs/ussuri/*
 
-Train approved specs:
+Train approved specs
+====================
 
 .. toctree::
    :glob:
@@ -24,7 +26,8 @@ Train approved specs:
 
    specs/train/*
 
-Stein approved specs:
+Stein approved specs
+====================
 
 .. toctree::
    :glob:
@@ -32,7 +35,8 @@ Stein approved specs:
 
    specs/stein/*
 
-Rocky approved specs:
+Rocky approved specs
+====================
 
 .. toctree::
    :glob:
@@ -40,7 +44,8 @@ Rocky approved specs:
 
    specs/rocky/*
 
-Queens approved specs:
+Queens approved specs
+=====================
 
 .. toctree::
    :glob:
@@ -48,7 +53,8 @@ Queens approved specs:
 
    specs/queens/*
 
-Pike approved specs:
+Pike approved specs
+===================
 
 .. toctree::
    :glob:
@@ -56,7 +62,8 @@ Pike approved specs:
 
    specs/pike/*
 
-Ocata approved specs:
+Ocata approved specs
+====================
 
 .. toctree::
    :glob:
@@ -64,7 +71,8 @@ Ocata approved specs:
 
    specs/ocata/*
 
-Newton approved specs:
+Newton approved specs
+=====================
 
 .. toctree::
    :glob:
@@ -72,7 +80,8 @@ Newton approved specs:
 
    specs/newton/*
 
-Mitaka approved specs:
+Mitaka approved specs
+=====================
 
 .. toctree::
    :glob:
@@ -80,7 +89,8 @@ Mitaka approved specs:
 
    specs/mitaka/*
 
-Liberty approved specs:
+Liberty approved specs
+======================
 
 .. toctree::
    :glob:
@@ -88,7 +98,8 @@ Liberty approved specs:
 
    specs/liberty/*
 
-Kilo approved specs:
+Kilo approved specs
+===================
 
 .. toctree::
    :glob:
@@ -96,7 +107,8 @@ Kilo approved specs:
 
    specs/kilo/*
 
-Juno approved specs:
+Juno approved specs
+===================
 
 .. toctree::
    :glob:
@@ -104,7 +116,8 @@ Juno approved specs:
 
    specs/juno/*
 
-Untargeted Specs:
+Untargeted specs
+================
 
 .. note::
 
