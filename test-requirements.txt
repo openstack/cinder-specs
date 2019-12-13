@@ -3,7 +3,6 @@
 # process, which may cause wedges in the gate later.
 
 openstackdocstheme>=1.11.0
-sphinx!=1.6.6,!=1.6.7,>=1.6.2,<2.0.0;python_version=='2.7'  # BSD
 sphinx!=1.6.6,!=1.6.7,>=1.6.2;python_version>='3.4'  # BSD
 flake8
 yasfb>=0.5.1
