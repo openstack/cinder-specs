@@ -166,10 +166,10 @@ References
 
 .. [1] Proposal for Glance to support download from/upload to Cinder backend
 
-* glance-specs: https://review.openstack.org/183363
-* glance patch(adding rootwrap): https://review.openstack.org/
-* glance_store patch: https://review.openstack.org/166414
+* glance-specs: https://review.opendev.org/#/c/183363
+* glance patch(adding rootwrap): https://review.opendev.org/
+* glance_store patch: https://review.opendev.org/#/c/166414
 
 .. [2] Proposed change for Cinder
 
-* https://review.openstack.org/#/c/201754/
+* https://review.opendev.org/#/c/201754/
