@@ -119,4 +119,4 @@ n/a
 References
 ==========
 
-[1] - https://review.openstack.org/103048
+[1] - https://review.opendev.org/#/c/103048/
