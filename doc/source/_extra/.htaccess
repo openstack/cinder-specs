@@ -1,0 +1,5 @@
+# This file contains redirects to handle existing URLs for specs
+# that have been moved
+Redirect 301 /specs/train/image-encryption.rst /specs/ussuri/image-encryption.rst
+Redirect 301 /specs/train/support-glance-multiple-backend.rst /specs/ussuri/support-glance-multiple-backend.rst
+Redirect 301 /specs/train/query-cinder-resources-filter-by-time-comparison-operators.rst /specs/ussuri/query-cinder-resources-filter-by-time-comparison-operators.rst

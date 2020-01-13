@@ -150,6 +150,10 @@ html_last_updated_fmt = '%Y-%m-%d %H:%M'
 # template names.
 #html_additional_pages = {}
 
+# Add any paths that contain "extra" files, such as .htaccess or
+# robots.txt.
+html_extra_path = ['_extra']
+
 # If false, no module index is generated.
 html_domain_indices = False
 
