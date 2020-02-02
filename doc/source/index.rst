@@ -4,6 +4,19 @@
 Block Storage Service Specifications (cinder)
 =============================================
 
+Victoria approved specs
+=======================
+
+.. any patch adding a spec should remove the following line:
+
+* No specs have yet been approved.
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/victoria/*
+
 Ussuri approved specs
 =====================
 
