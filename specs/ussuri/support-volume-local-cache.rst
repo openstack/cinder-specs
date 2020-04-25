@@ -446,8 +446,9 @@ Documentation Impact
 References
 ==========
 
-.. [1] https://review.opendev.org/#/c/663549/
-.. [2] https://review.opendev.org/#/c/663542/
-.. [3] https://review.opendev.org/#/c/700799/
+[1] https://review.opendev.org/#/c/663549/
+[2] https://review.opendev.org/#/c/663542/
+[3] https://review.opendev.org/#/c/700799/
+
 .. [4] https://review.opendev.org/#/c/689070/
 .. [5] https://open-cas.github.io/

@@ -12,7 +12,6 @@
 # serve to show the default.
 
 import datetime
-import subprocess
 import sys
 import os
 
@@ -76,7 +75,7 @@ copyright = u'%s, OpenStack Cinder Team' % datetime.date.today().year
 # directories to ignore when looking for source files.
 exclude_patterns = [
     '_build',
-    'template.rst',
+    '**/template.rst',
 ]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
@@ -133,11 +132,6 @@ html_theme_options = {
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 #html_favicon = None
-
-# If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
-# using the given strftime format.
-
-html_last_updated_fmt = '%Y-%m-%d %H:%M'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.

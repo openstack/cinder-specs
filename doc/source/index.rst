@@ -15,7 +15,8 @@ Victoria approved specs
    :glob:
    :maxdepth: 1
 
-   specs/victoria/*
+.. any patch adding a spec should uncomment the following line:
+..   specs/victoria/*
 
 Ussuri approved specs
 =====================
