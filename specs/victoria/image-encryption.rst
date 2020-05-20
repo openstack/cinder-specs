@@ -341,3 +341,5 @@ History
      - Description
    * - Train
      - Introduced
+   * - Ussuri
+     - Postponed

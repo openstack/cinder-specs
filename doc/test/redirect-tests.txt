@@ -1,6 +1,7 @@
 # This file contains tests for redirects to handle existing URLs for
 # specs that have been moved. See
 # https://docs.openstack.org/whereto/latest/ for details.
-/specs/train/image-encryption.rst 301 /specs/ussuri/image-encryption.rst
+/specs/train/image-encryption.rst 301 /specs/victoria/image-encryption.rst
+/specs/ussuri/image-encryption.rst 301 /specs/victoria/image-encryption.rst
 /specs/train/support-glance-multiple-backend.rst 301 /specs/ussuri/support-glance-multiple-backend.rst
 /specs/train/query-cinder-resources-filter-by-time-comparison-operators.rst 301 /specs/ussuri/query-cinder-resources-filter-by-time-comparison-operators.rst
