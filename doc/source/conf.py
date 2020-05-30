@@ -35,9 +35,10 @@ extensions = ['sphinx.ext.autodoc',
              ]
 
 # openstackdocstheme options
-repository_name = 'openstack/cinder-specs'
-bug_project = 'cinder-specs'
-bug_tag = 'doc'
+openstackdocs_repo_name = 'openstack/cinder-specs'
+openstackdocs_auto_name = False
+openstackdocs_bug_project = 'cinder-specs'
+openstackdocs_bug_tag = 'doc'
 
 # Feed configuration for yasfb
 feed_base_url = 'http://specs.openstack.org/openstack/cinder-specs'
