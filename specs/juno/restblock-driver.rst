@@ -29,7 +29,7 @@ This block driver currently offers the following simple features:
 
  * Mirror-server list management (failover and load balancing)
 
- * Provisionning (create/extend/delete)
+ * Provisioning (create/extend/delete)
 
  * Automatic attach/detach of volumes (practical for use within cinder)
 
@@ -56,7 +56,7 @@ most of the control operations will be implemented using the process utils
 module. For the general feature implementation, here is how we plan to support
 the multiple required features of a Cinder driver:
 
- * Provisionning (create/extend/delete) : natively supported by the kernel
+ * Provisioning (create/extend/delete) : natively supported by the kernel
    driver
 
  * Automatic attach of volumes at setup-time: Natively supported by the kernel
@@ -73,7 +73,7 @@ evolve.
 
 In the future it will provide a way to manage the snapshots from the driver
 itself, but it is not yet supported. Thus, the driver will use the lvm code
-tools to manage thin snapshot provisionning and support snapshots for the
+tools to manage thin snapshot provisioning and support snapshots for the
 volumes exposed by our Rest Block Driver.
 
 Alternatives
