@@ -4,6 +4,15 @@
 Block Storage Service Specifications (cinder)
 =============================================
 
+Wallaby approved specs
+=======================
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/wallaby/*
+
 Victoria approved specs
 =======================
 
