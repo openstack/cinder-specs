@@ -71,18 +71,17 @@ Volume Type on a per project basis to make it easier to manage complex
 deployments.
 
 With the introduction of this new default volume type configuration, we'll now
-have 3 different default volume types.  From more specific to more generic
+have 2 different default volume types.  From more specific to more generic
 these are:
 
 - Per project
-- Defined in cinder.conf
-- Defined in the database: named *__DEFAULT__*
+- Defined in cinder.conf (defaults to *__DEFAULT__* type)
 
 So when a user creates a new volume that has no defined volume type (explicit
 or in the source), Cinder will look for the appropriate default first by
 checking if there's one defined in the DB for the specific project and use it,
 if there isn't one, it will continue like it does today, using the default type
-from ``cinder.conf`` or the *__DEFAULT__* volume type if it's ``None``.
+from ``cinder.conf``.
 
 Administrators and users must still be careful with the normal Cinder behavior
 when creating volumes, as Cinder will still only resort to using the default
@@ -96,10 +95,8 @@ those defaults if we:
 - Create a volume from an image that has ``cinder_img_volume_type`` defined in
   its metadata.
 
-By default the policy restricting access to set, delete, or get project default
-volume type will be set to admins only, and those admins can only manage
-projects belonging to their project's descendants hierarchy as described in the
-`KeyStone Hierarchical Projects spec <https://specs.openstack.org/openstack/keystone-specs/specs/keystone/juno/hierarchical_multitenancy.html>`_.
+By default the policy restricting access to set, unset, get or list all
+project default volume type will be set to system admins only.
 
 Alternatives
 ------------
@@ -214,8 +211,7 @@ We'll need a new set of REST API calls to provide the CRUD operations:
       - Success - 200 (with body)
 
       Notice that we only list overrides, we won't return the value of
-      ``default_volume_type`` or ``__DEFAULT__`` if there's no global default
-      type override.
+      ``default_volume_type``.
 
 A user can get its effective default type using existing ``cinder
 type-default`` command: ``GET /v3/{project_id}/types/default``.
@@ -264,8 +260,7 @@ Developer impact
 
 We should no longer refer directly to the ``default_volume_type`` configuration
 option throughout the code and instead use the ``get_default_volume_type``
-method from ``cinder.volume.volume_types``.  But this is something that we
-should already be doing after we introduced the ``__DEFAULT__`` volume type.
+method from ``cinder.volume.volume_types``.
 
 Implementation
 ==============
@@ -282,17 +277,14 @@ Work Items
 * Cinder service
 
   * Check if caller is authorized to do the operation: First we'll check the
-    normal policy to see if it's an admin, etc, but then we'll have to check
-    the project, and we'll only authorize the operation if the project's
-    default we want to change is the one in the caller context's or if it's a
-    child.
+    normal policy to see if it's a system admin, etc, but then we'll have to
+    check the project, and we'll only authorize the operation if caller's
+    context has system scope.
 
-    For this we can compare the context's project and the requested project and
-    say OK when equal and then leverage the `get_project_hierarchy` method in
-    `cinder.quota_utils` to get the parents of the requested project and see
-    if it's present in the `parents` attribute.  This will also help us
-    validate that the project actually exists (since the method does a `get` of
-    the project.
+    For this we have introduced a new policy to check if the caller is a
+    system admin and then leverage the `get_project_hierarchy` method in
+    `cinder.quota_utils` to validate that the project actually exists
+    (since the method does a `get` of the project).
 
   * Add the DB field and the DB migration.
 
@@ -315,7 +307,7 @@ Work Items
   * Update ``get_default_volume_type`` to return the effective volume type for
     the current project.  Basically calling the *get project default type* DB
     method, and if it returns None, then we'll continue with the current code
-    we have to use the one from the config or the ``__DEFAULT__`` type if not.
+    we have to use the one from the config.
 
   * Updating the volume type methods to ensure we don't try to delete a volume
     type that is used as a default, and making sure we don't set as private a
@@ -324,7 +316,7 @@ Work Items
   * Ensure that ``purge_deleted_rows`` from ``cinder.db.sqlalchemy.api`` works
     as expected.
 
-  * Add a new API microversion and implement the 3 REST API methods.
+  * Add a new API microversion and implement the 4 REST API methods.
 
   * Write appropriate unit-tests for the DB methods, REST API methods, and
     update existing tests for the changes we introduced.
@@ -381,11 +373,11 @@ a series of Tempest tests to test existing functionality.
   * Create 2 custom volume types: #1 and #2
   * Set default volume type #1 for project and #2 for alternative project.
   * Admin lists all default volume type and validates them.
-  * Admin lists default volume type for project and confirms that it only gets
+  * Admin gets default volume type for project and confirms that it only gets
     that one.
   * Repeat previous 2 steps for the alternative project.
   * Unset the default types.
-  * Confirm that full list returns empty list.
+  * Confirm that default type list returns empty list.
   * Confirm that showing default for a project id returns 404.
   * Show default for a fake project id and confirm we get 404 error code.
 
