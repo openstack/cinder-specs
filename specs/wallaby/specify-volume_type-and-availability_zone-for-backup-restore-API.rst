@@ -139,7 +139,7 @@ Assignee(s)
 -----------
 
 Primary assignee:
-  <smile-luobin>
+  alan-bishop
 
 Other contributors:
   <None>

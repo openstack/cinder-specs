@@ -1,6 +1,8 @@
 # This file contains redirects to handle existing URLs for specs
 # that have been moved
-Redirect 301 /specs/train/image-encryption.rst /specs/victoria/image-encryption.rst
-Redirect 301 /specs/ussuri/image-encryption.rst /specs/victoria/image-encryption.rst
-Redirect 301 /specs/train/support-glance-multiple-backend.rst /specs/ussuri/support-glance-multiple-backend.rst
-Redirect 301 /specs/train/query-cinder-resources-filter-by-time-comparison-operators.rst /specs/ussuri/query-cinder-resources-filter-by-time-comparison-operators.rst
+Redirect 301 /specs/train/image-encryption.html /specs/wallaby/image-encryption.html
+Redirect 301 /specs/ussuri/image-encryption.html /specs/wallaby/image-encryption.html
+Redirect 301 /specs/victoria/image-encryption.html /specs/wallaby/image-encryption.html
+Redirect 301 /specs/train/support-glance-multiple-backend.html /specs/ussuri/support-glance-multiple-backend.html
+Redirect 301 /specs/train/query-cinder-resources-filter-by-time-comparison-operators.html /specs/ussuri/query-cinder-resources-filter-by-time-comparison-operators.html
+Redirect 301 /specs/newton/specify-volume_type-and-availability_zone-for-backup-restore-API.html /specs/wallaby/specify-volume_type-and-availability_zone-for-backup-restore-API.html
