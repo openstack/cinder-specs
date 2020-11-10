@@ -26,9 +26,10 @@ Specifications are proposed for a given release by adding them to the
 status of a blueprint for a given release can be found by looking at the
 blueprint in launchpad.  Not all approved blueprints will get fully implemented.
 
-Specifications have to be re-proposed for every release.  The review may be
-quick, but even if something was previously approved, it should be re-reviewed
-to make sure it still makes sense as written.
+**Previously approved specifications must be re-proposed for a new release.**
+The review will most likely be quick, but we need to make sure that everyone
+still understands the spec as written, and that it still fits in with the
+project's plans.
 
 Prior to the Juno development cycle, this repository was not used for spec
 reviews.  Reviews prior to Juno were completed entirely through Launchpad

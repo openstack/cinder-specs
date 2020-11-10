@@ -135,10 +135,14 @@ Untargeted specs
 
 .. note::
 
-   The following specs are ones that have been approved but have
-   not been completed in the planned release.  Rather than leave
-   them in the originally planned release or remove them, they
-   should be made untargeted for future reference.
+   The following specs have been approved but have not been completed
+   in the originally planned release.  Rather than remove them, they
+   have been made 'untargeted' for future reference.  If you would like
+   to work on one of these specs, please re-propose it for the appropriate
+   release.  The review will most likely be quick, but we need to make sure
+   that everyone still understands the spec as written, and that it still
+   fits in with the Cinder project's plans.
+
 
 .. toctree::
    :glob:
