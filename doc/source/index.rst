@@ -4,6 +4,15 @@
 Block Storage Service Specifications (cinder)
 =============================================
 
+Xena approved specs
+===================
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/xena/*
+
 Wallaby approved specs
 =======================
 
