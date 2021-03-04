@@ -7,5 +7,4 @@ build
 *.swp
 *.swo
 *.pyc
-.testrepository
 .DS_Store
