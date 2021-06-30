@@ -1,8 +1,11 @@
 # This file contains redirects to handle existing URLs for specs
 # that have been moved
-Redirect 301 /openstack/cinder-specs/specs/train/image-encryption.html /openstack/cinder-specs/specs/wallaby/image-encryption.html
-Redirect 301 /openstack/cinder-specs/specs/ussuri/image-encryption.html /openstack/cinder-specs/specs/wallaby/image-encryption.html
-Redirect 301 /openstack/cinder-specs/specs/victoria/image-encryption.html /openstack/cinder-specs/specs/wallaby/image-encryption.html
+Redirect 301 /openstack/cinder-specs/specs/train/image-encryption.html /openstack/cinder-specs/specs/xena/image-encryption.html
+Redirect 301 /openstack/cinder-specs/specs/ussuri/image-encryption.html /openstack/cinder-specs/specs/xena/image-encryption.html
+Redirect 301 /openstack/cinder-specs/specs/victoria/image-encryption.html /openstack/cinder-specs/specs/xena/image-encryption.html
+Redirect 301 /openstack/cinder-specs/specs/wallaby/image-encryption.html /openstack/cinder-specs/specs/xena/image-encryption.html
 Redirect 301 /openstack/cinder-specs/specs/train/support-glance-multiple-backend.html /openstack/cinder-specs/specs/ussuri/support-glance-multiple-backend.html
 Redirect 301 /openstack/cinder-specs/specs/train/query-cinder-resources-filter-by-time-comparison-operators.html /openstack/cinder-specs/specs/ussuri/query-cinder-resources-filter-by-time-comparison-operators.html
 Redirect 301 /openstack/cinder-specs/specs/newton/specify-volume_type-and-availability_zone-for-backup-restore-API.html /openstack/cinder-specs/specs/wallaby/specify-volume_type-and-availability_zone-for-backup-restore-API.html
+Redirect 301 /openstack/cinder-specs/specs/wallaby/reset-state-robustification.rst /openstack/cinder-specs/specs/xena/reset-state-robustification.rst
+Redirect 301 /openstack/cinder-specs/specs/wallaby/sizing-encrypted-volumes.rst /openstack/cinder-specs/specs/xena/sizing-encrypted-volumes.rst
