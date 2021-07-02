@@ -14,6 +14,9 @@ Daemon that monitors NVMe connections and MDRAID arrays created by the
 NVMe connector, identifies faulted volume replicas, requests new replicas
 and replaces faulted replicas with new ones.
 
+.. note::
+   This spec has been superseded by :doc:`../xena/nvme-agent`.
+
 
 Problem description
 ===================
