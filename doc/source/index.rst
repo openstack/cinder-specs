@@ -4,6 +4,15 @@
 Block Storage Service Specifications (cinder)
 =============================================
 
+Yoga approved specs
+===================
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/yoga/*
+
 Xena approved specs
 ===================
 
