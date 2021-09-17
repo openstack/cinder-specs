@@ -8,7 +8,7 @@
 Make Cinder Consistent and Secure RBAC Ready
 ============================================
 
-https://blueprints.launchpad.net/cinder/+spec/s-rbac-ready
+https://blueprints.launchpad.net/cinder/+spec/s-rbac-ready-x
 
 Revise Cinder's policy definitions to support the community-wide
 Consistent and Secure RBAC effort.
@@ -45,9 +45,42 @@ Some examples:
 Proposed change
 ===============
 
-Make changes to cinder so that it can recognize the scope of a token and
-add policy checkstrings to implement the "personas" described in
-https://review.opendev.org/c/openstack/cinder/+/763306
+Make changes to the cinder default policies so that the default configuration
+recognizes the keystone 'reader' role and treats it appropriately.  This will
+entail rewriting all policies that don't govern "Admin API" calls.
+
+For Xena, we'll implement three personas using project-scope only.  What
+this means is that any cinder user must have a role on a project in order
+to pass policy checks.  This is basically what we have now, except that
+we'll distinguish the 'member' role on a project as distinct from a 'reader'
+role on a project.
+
+.. note::
+   What exactly "personas" are and what they can do relative to the Block
+   Storage API are described in the `Policy Personas and Permissions
+   <https://docs.openstack.org/cinder/xena/configuration/block-storage/policy-personas.html>`_
+   document.
+
+Additionally, we'll address the following issues:
+
+* New tests will need to be added, because previously we only needed to
+  distinguish between a "cinder administrator" and an "end user", whereas now
+  we'll have to make distinctions between a larger number of "personas" who can
+  make API calls.
+
+* We currently have some unrestricted policies (that is, the check string is
+  ``""``).  Their checkstrings will be rewritten to something more specific and
+  appropriate.
+
+* We currently have some single policies that govern create, read, update,
+  and delete operations on cinder resources.  These will need to be split
+  up into finer-grained policies so that a user with only a 'reader' role
+  can read a resource without modifying it.
+
+See the "Implementation Strategy" outlined in the `Policy Personas and
+Permissions
+<https://docs.openstack.org/cinder/xena/configuration/block-storage/policy-personas.html>`_ for more details.
+
 
 Alternatives
 ------------
@@ -135,23 +168,21 @@ Work Items
   validate tests of the default policies.
   https://review.opendev.org/c/openstack/cinder/+/763306
 
-* Policy update patches (adding project scope):
+* Policy update patches:
   https://review.opendev.org/q/project:openstack/cinder+topic:secure-rbac
 
 * Testing patches. Groundwork patch is
+  https://review.opendev.org/c/openstack/cinder/+/805316
+
+  We'll work with the current structure in cinder of individual files
+  in the cinder/policies directory for specific sets of policies, and
+  add the tests to the same patch where the policies are redefined.
+
+* Tempest testing. Groundwork patch is
   https://review.opendev.org/c/openstack/cinder-tempest-plugin/+/772915
 
   Initial test patches:
   https://review.opendev.org/q/project:openstack/cinder-tempest-plugin+topic:secure-rbac
-
-* Client changes to support system scope:
-  https://review.opendev.org/c/openstack/python-cinderclient/+/776469
-
-* Relax the cinder REST API to handle system scope:
-  https://review.opendev.org/c/openstack/cinder/+/776468
-
-  (For more about this, see the `Xena PTG discussion
-  <https://wiki.openstack.org/wiki/CinderXenaPTGSummary#Consistent_and_Secure_RBAC>`_.)
 
 
 Dependencies
@@ -162,9 +193,18 @@ None, the required changes in Keystone and oslo.policy merged long ago.
 Testing
 =======
 
-* Because of the complexity of the policy configuration, testing will be
-  done mostly in the cinder-tempest-plugin so that each persona can be
-  tested against a real Keystone instance.
+* We'll need a flexible testing framework because we are going from 2
+  personas in Wallaby to 3 personas in Xena to 5 personas in Yoga, and
+  we will need to be sure that the deprecated policy checkstrings continue
+  to work appropriately until they are removed.  Thus some kind of
+  ddt-based approach where we have some base tests and run all the
+  different kinds of users through them makes a lot of sense.
+
+* As a stretch goal, because of the complexity of the policy configuration,
+  it would be good to have testing in the cinder-tempest-plugin so that each
+  persona can be tested against a real Keystone instance.  This would also
+  allow using tempest for testing the consistency of the Secure and Consistent
+  RBAC across openstack projects.
 
 Documentation Impact
 ====================
