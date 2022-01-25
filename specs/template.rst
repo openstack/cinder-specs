@@ -353,3 +353,11 @@ references are unavailable. Examples of what you could include are:
 * Related specifications as appropriate (e.g. link to any vendor documentation)
 
 * Anything else you feel it is worthwhile to refer to
+
+To ensure that references do not cause duplicate label issues with other
+existing issues use the following example references [1]_ or
+`example reference`_.
+
+.. [1] This is the first reference
+
+_`example reference`: Second reference
