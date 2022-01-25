@@ -38,7 +38,7 @@ REST APIs, so find out what are others are doing may help us to have a
 better API model for this case.
 
 1. Facebook API support the ``total_count`` attribute in their list
-   APIs `[1]`_. And this is their API response::
+   APIs [1]_. And this is their API response::
 
     {
       "data": [],
@@ -49,7 +49,7 @@ better API model for this case.
     }
 
 2. JSON API org adds an example to demonstrate the usage of ``total-pages`` or
-   ``count`` in their recommended examples `[2]`_::
+   ``count`` in their recommended examples [2]_::
 
     {
         "meta": {
@@ -65,7 +65,7 @@ better API model for this case.
     }
 
 3. StackExchange API also adds the total attribute in their
-   ``Common Wrapper Object`` `[3]`_. And this is how their response
+   ``Common Wrapper Object`` [3]_. And this is how their response
    looks like::
 
     {
@@ -88,7 +88,7 @@ response (take volume for example)::
 So, this bp proposes to add new attribute ``count`` in our list APIs (
 including index and detail).
 
-Based on our current pagination system `[4]`_, if we add the ``count``
+Based on our current pagination system [4]_, if we add the ``count``
 attribute into our response body in default, the db's query statement would
 be executed twice for only one query which obviously has a performance
 impact, considering not every request requires this kind of info, the
@@ -98,7 +98,7 @@ resource::
     /v3/{tenant_id}/{resource}?with_count=true
     /v3/{tenant_id}/{resource}/detail?with_count=true
 
-Also, this is recommended by OpenStack API-WG `[5]`_.
+Also, this is recommended by OpenStack API-WG [5]_.
 
 For the first step we only plan to add the summary support for our main
 resources: ``volumes``, ``snapshots`` and ``backups``.
@@ -220,11 +220,11 @@ Update API documentation.
 References
 ==========
 
-_`[1]`: https://developers.facebook.com/docs/graph-api/reference/v2.1/user/friends
-_`[2]`: http://jsonapi.org/examples/
-_`[3]`: https://api.stackexchange.com/docs/wrapper
-_`[4]`: https://github.com/openstack/cinder/blob/master/cinder/db/sqlalchemy/api.py#L2324
-_`[5]`: https://github.com/openstack/api-wg/blob/64e3e9b07272f50353429dc51d98524642ab6d67/guidelines/counting.rst
+.. [1] https://developers.facebook.com/docs/graph-api/reference/v2.1/user/friends
+.. [2] http://jsonapi.org/examples/
+.. [3] https://api.stackexchange.com/docs/wrapper
+.. [4] https://github.com/openstack/cinder/blob/master/cinder/db/sqlalchemy/api.py#L2324
+.. [5] https://github.com/openstack/api-wg/blob/64e3e9b07272f50353429dc51d98524642ab6d67/guidelines/counting.rst
 
 
 

@@ -25,7 +25,7 @@ based on our current logic.
 Use Cases
 =========
 
-We have discussed the concept of **sold out** during Rocky PTG `[1]`_ and
+We have discussed the concept of **sold out** during Rocky PTG [1]_ and
 that word is more related to administrative operation, when most of an
 specific pool's capacity has been consumed, administrators need the
 functionality to mark the backend pool sold out, that is to say, it
@@ -169,5 +169,6 @@ References
 ==========
 
 
-_`[1]`: https://etherpad.openstack.org/p/cinder-ptg-rocky-wednesday
-_`[2]`: https://review.openstack.org/#/c/308869/
+.. [1] https://etherpad.openstack.org/p/cinder-ptg-rocky-wednesday
+
+* https://review.openstack.org/#/c/308869/

@@ -29,7 +29,7 @@ users can know valid volume types in current AZ.
 Proposed change
 ===============
 
-As the discussion result during Rocky PTG `[1]`_, we would propose to use
+As the discussion result during Rocky PTG [1]_, we would propose to use
 volume type's ``extra specs`` to support this. Since ``extra specs`` is
 designed for generic use, we would propose to introduce a reserved key
 ``os-extended:availability_zones`` for extra specs. Administrator can
@@ -184,4 +184,4 @@ Documentation Impact
 References
 ==========
 
-_`[1]`: https://etherpad.openstack.org/p/cinder-ptg-rocky-wednesday
+.. [1] https://etherpad.openstack.org/p/cinder-ptg-rocky-wednesday

@@ -55,7 +55,7 @@ support for this filter in logic:
 * the filter properties of ``get_filtered_hosts`` only consists of volume-type
   properties.
 
-* As already proposed by generalized resource filtering `[1]`, the changes on
+* As already proposed by generalized resource filtering [1]_, the changes on
   cinder-client for this feature are not needed.
 
 
@@ -132,7 +132,7 @@ Work Items
 Dependencies
 ============
 
-Depended on generalized resource filtering `[1]`_
+Depended on generalized resource filtering [1]_
 
 Testing
 =======
@@ -150,4 +150,4 @@ Documentation Impact
 References
 ==========
 
-_`[1]`: https://review.openstack.org/#/c/441516/
+.. [1] https://review.openstack.org/#/c/441516/

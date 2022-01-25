@@ -282,9 +282,9 @@ Documentation Impact
 References
 ==========
 
-* _`[1]` Linux on System z Device Driver book,
+* Linux on System z Device Driver book,
   http://public.dhe.ibm.com/software/dw/linux390/docu/l316dd25.pdf
 
-* _`[2]` Linux on System z,
+* Linux on System z,
   http://www.ibm.com/developerworks/linux/linux390/
 

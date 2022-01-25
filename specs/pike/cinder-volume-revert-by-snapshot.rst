@@ -15,7 +15,7 @@ snapshot. The revert function can be used to revert a volume to a previous
 snapshot, restoring the volume to the state at the time the snapshot was
 created. The feature supports reverting a volume to the most recent snapshot
 taken, also manila (shared file system service) has already supported what
-we are proposing in Ocata `[1]`_.
+we are proposing in Ocata [1]_.
 
 The revert process will overwrite the current state and data of the volume.
 If the volume was extended after the snapshot, the request would be rejected
@@ -126,7 +126,7 @@ As we support extend volumes at present, we could meet the case that
 snapshot is smaller than volume when reverting to snapshot and it's obviously
 safe to revert in that case. But we will still restrict to revert the volume
 which current volume size is equal to snapshot, cause we don't support shrink
-volume yet `[2]`_ (that ability will be used in the generic method, if the
+volume yet [2]_ (that ability will be used in the generic method, if the
 driver don't support revert to snapshot).
 
 Therefore, we need to do the following changes in order to support volume
@@ -356,5 +356,5 @@ Documentation Impact
 References
 ==========
 
-_`[1]`: https://specs.openstack.org/openstack/manila-specs/specs/ocata/manila-share-revert-to-snapshot.html
-_`[2]`: https://wiki.openstack.org/wiki/CinderSupportMatrix
+.. [1] https://specs.openstack.org/openstack/manila-specs/specs/ocata/manila-share-revert-to-snapshot.html
+.. [2] https://wiki.openstack.org/wiki/CinderSupportMatrix

@@ -134,7 +134,7 @@ Alternatives
 ------------
 
 The alternatives is we could keep adding user messages in the way of we
-currently have `[1]`_. (There could be more alternatives or better solutions,
+currently have [1]_. (There could be more alternatives or better solutions,
 but I failed to figure out.)
 
 Data model impact
@@ -215,5 +215,4 @@ Documentation Impact
 
 References
 ==========
-
-_`[1]` https://review.openstack.org/#/c/298052/
+.. [1] https://review.openstack.org/#/c/298052/

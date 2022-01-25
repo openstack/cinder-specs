@@ -171,4 +171,4 @@ Documentation Impact
 References
 ==========
 
-_`[1]`: https://review.openstack.org/#/c/550858/
+* https://review.openstack.org/#/c/550858/

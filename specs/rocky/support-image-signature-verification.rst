@@ -16,7 +16,7 @@ provide end users with stronger assurances of the integrity of the image data
 they are using to create volumes. This change will use the same data model for
 image metadata as the accompanying functionality in Glance, which will allow
 the end user to sign images and verify these image signatures upon
-upload `[1]`_.
+upload [1]_.
 
 Problem description
 ===================
@@ -24,7 +24,7 @@ Problem description
 Previously, OpenStack's protection against unexpected modification of images
 was limited to verifying an MD5 checksum. While this may be sufficient for
 protecting against accidental modifications, MD5 is a hash function, not an
-authentication primitive `[2]`_, and thus provides no protection against
+authentication primitive [2]_, and thus provides no protection against
 deliberate, malicious modification of images. An image could potentially be
 modified in transit, such as when it is uploaded to Glance or transferred to
 Cinder. An image that is modified could include malicious code.
@@ -79,7 +79,7 @@ follows:
 
 * img_signature_key_type - A string designating the signature scheme used to
   generate the signature. For more detail on which are currently supported,
-  please check Glance's documentation `[7]`_.
+  please check Glance's documentation [7]_.
 
 * img_signature_certificate_uuid - A string encoding the certificate
   uuid used to retrieve the certificate from the key manager.
@@ -107,7 +107,7 @@ Proposed change
 ===============
 
 Since Nova has implemented this feature and all of the verification process
-has been moved into ``cursive`` module `[4]`_, it's more convenient to support
+has been moved into ``cursive`` module [4]_, it's more convenient to support
 this in Cinder now.
 
 **Verify image signature with certificate**
@@ -183,7 +183,7 @@ image metadata when creating from image.
 
 This feature tries to find a way to determine if the certificate
 used to generate and verify that signature is a certificate that
-is trusted by the user, we could find more detail in Nova spec `[5]`_.
+is trusted by the user, we could find more detail in Nova spec [5]_.
 In short, within that feature end user can also validate the image's
 certificate with the given trusted certificates (specified via API
 or config option).
@@ -276,7 +276,7 @@ This change will involve adding log messages to indicate the success or
 failure of signature verification and creation.
 
 A later change will involve notifying the user about failure in case signature
-verification fails, this will use async error notification feature `[3]`_.
+verification fails, this will use async error notification feature [3]_.
 
 Other end user impact
 ---------------------
@@ -303,9 +303,9 @@ decrypting a signature using a public key.
 Other deployer impact
 ---------------------
 
-We will recommend you deploy Barbican service `[6]`_ to store your
+We will recommend you deploy Barbican service [6]_ to store your
 certificate information as other projects suggest, although you can integrate
-any other secret manager service via Castellan `[8]`_.
+any other secret manager service via Castellan [8]_.
 
 
 Developer impact
@@ -363,11 +363,11 @@ References
 
 Cryptography API: https://pypi.org/project/cryptography/0.2.2
 
-_`[1]` https://review.openstack.org/#/c/252462/
-_`[2]` https://en.wikipedia.org/wiki/MD5#Security
-_`[3]` https://blueprints.launchpad.net/cinder/+spec/summarymessage
-_`[4]` https://git.openstack.org/cgit/openstack/cursive
-_`[5]` http://specs.openstack.org/openstack/nova-specs/specs/queens/approved/nova-validate-certificates.html
-_`[6]` https://docs.openstack.org/barbican/latest/
-_`[7]` https://docs.openstack.org/glance/pike/user/signature.html
-_`[8]` https://wiki.openstack.org/wiki/Castellan
+.. [1] https://review.openstack.org/#/c/252462/
+.. [2] https://en.wikipedia.org/wiki/MD5#Security
+.. [3] https://blueprints.launchpad.net/cinder/+spec/summarymessage
+.. [4] https://git.openstack.org/cgit/openstack/cursive
+.. [5] http://specs.openstack.org/openstack/nova-specs/specs/queens/approved/nova-validate-certificates.html
+.. [6] https://docs.openstack.org/barbican/latest/
+.. [7] https://docs.openstack.org/glance/pike/user/signature.html
+.. [8] https://wiki.openstack.org/wiki/Castellan

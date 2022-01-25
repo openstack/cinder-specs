@@ -43,7 +43,7 @@ users can directly create a new volume with backup id as below:
 Volume's size is equal to the backup's original volume size if size
 option is omitted.
 
-Since we already introduced the generic backup implementation `[1]`_ for our
+Since we already introduced the generic backup implementation [1]_ for our
 existing volume drivers, it makes sense to add this ability to our volume
 drivers, so when create volume from backup, the request will be scheduled
 to the volume backend as normal, and first we would try the vendor-specific
@@ -147,7 +147,7 @@ Work Items
 Dependencies
 ============
 
-Depends on generic backup implementation `[1]`_
+Depends on generic backup implementation [1]_
 
 Testing
 =======
@@ -162,4 +162,4 @@ Both API documentation and CLI documentation should be updated.
 References
 ==========
 
-* _`[1]`: https://github.com/openstack/cinder-specs/blob/master/specs/queens/generic-backup-implementation.rst
+.. [1] https://github.com/openstack/cinder-specs/blob/master/specs/queens/generic-backup-implementation.rst

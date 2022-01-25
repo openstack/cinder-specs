@@ -21,7 +21,7 @@ Currently, we could only filter cinder resource by exact match, and this is
 not flexible enough when user would like to retrieve some resource whose name
 or attribute is partly alike, especially for the users who have lots of
 volumes. As it's already introduced in many other projects, we can take
-advantage of those some existing mechanism, nova `[1]`_ and ironic `[2]`_.
+advantage of those some existing mechanism, `nova`_ and `ironic`_.
 
 Use Cases
 =========
@@ -33,7 +33,7 @@ Proposed change
 ===============
 
 Although we can provide filtering resource based on regex filter, but there
-is a possibility that we could have ReDos `[3]`_ attack. Considering the
+is a possibility that we could have `ReDos`_ attack. Considering the
 'LIKE' operator is flexible and safe enough for this case. We could only
 introduce 'LIKE' operator ('NOT LIKE' is another useful operator, but it's
 not as common as 'LIKE'). And we can easily apply this filter at the
@@ -44,8 +44,8 @@ existing common filtering function individually with a decorator::
         pass
 
 This spec intends to support 'LIKE' based filter on some specified resources
-and columns, as we would have the generalized resource filtering feature
-`[4]`_, this one will take advantage of that spec in order to make it
+and columns, as we would have the generalized `resource filtering`_ feature,
+this one will take advantage of that spec in order to make it
 configurable for administrators, so this is what we would finally have in our
 filters' configuration file ::
 
@@ -150,7 +150,7 @@ Work Items
 Dependencies
 ============
 
-Depended on generalized resource filtering `[4]`_
+Depended on generalized `resource filtering`_
 
 Testing
 =======
@@ -165,8 +165,8 @@ Update API documentation.
 References
 ==========
 
-_`[1]`: https://review.openstack.org/#/c/45026/
-_`[2]`: https://review.openstack.org/#/c/266688/
-_`[3]`: https://en.wikipedia.org/wiki/ReDoS
-_`[4]`: https://review.openstack.org/#/c/441516/
+_`nova`: https://review.openstack.org/#/c/45026/
+_`ironic`: https://review.openstack.org/#/c/266688/
+_`reDos`: https://en.wikipedia.org/wiki/ReDoS
+_`resource filtering`: https://review.openstack.org/#/c/441516/
 
