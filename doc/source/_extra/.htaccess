@@ -8,5 +8,6 @@ Redirect 301 /openstack/cinder-specs/specs/xena/image-encryption.html /openstack
 Redirect 301 /openstack/cinder-specs/specs/train/support-glance-multiple-backend.html /openstack/cinder-specs/specs/ussuri/support-glance-multiple-backend.html
 Redirect 301 /openstack/cinder-specs/specs/train/query-cinder-resources-filter-by-time-comparison-operators.html /openstack/cinder-specs/specs/ussuri/query-cinder-resources-filter-by-time-comparison-operators.html
 Redirect 301 /openstack/cinder-specs/specs/newton/specify-volume_type-and-availability_zone-for-backup-restore-API.html /openstack/cinder-specs/specs/wallaby/specify-volume_type-and-availability_zone-for-backup-restore-API.html
-Redirect 301 /openstack/cinder-specs/specs/wallaby/reset-state-robustification.rst /openstack/cinder-specs/specs/xena/reset-state-robustification.rst
-Redirect 301 /openstack/cinder-specs/specs/wallaby/sizing-encrypted-volumes.rst /openstack/cinder-specs/specs/xena/sizing-encrypted-volumes.rst
+Redirect 301 /openstack/cinder-specs/specs/wallaby/reset-state-robustification.html /openstack/cinder-specs/specs/xena/reset-state-robustification.html
+Redirect 301 /openstack/cinder-specs/specs/wallaby/sizing-encrypted-volumes.html /openstack/cinder-specs/specs/xena/sizing-encrypted-volumes.html
+Redirect 301 /openstack/cinder-specs/specs/train/add-volume-re-image-api.html /openstack/cinder-specs/specs/yoga/add-volume-re-image-api.html
