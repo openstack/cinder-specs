@@ -166,7 +166,10 @@ References
 ==========
 
 _`nova`: https://review.openstack.org/#/c/45026/
+
 _`ironic`: https://review.openstack.org/#/c/266688/
+
 _`reDos`: https://en.wikipedia.org/wiki/ReDoS
+
 _`resource filtering`: https://review.openstack.org/#/c/441516/
 
