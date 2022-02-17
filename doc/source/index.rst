@@ -4,6 +4,15 @@
 Block Storage Service Specifications (cinder)
 =============================================
 
+Zed approved specs
+==================
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/zed/*
+
 Yoga approved specs
 ===================
 
