@@ -1,11 +1,12 @@
 # This file contains tests for redirects to handle existing URLs for
 # specs that have been moved. See
 # https://docs.openstack.org/whereto/latest/ for details.
-/openstack/cinder-specs/specs/train/image-encryption.html 301 /openstack/cinder-specs/specs/yoga/image-encryption.html
-/openstack/cinder-specs/specs/ussuri/image-encryption.html 301 /openstack/cinder-specs/specs/yoga/image-encryption.html
-/openstack/cinder-specs/specs/victoria/image-encryption.html 301 /openstack/cinder-specs/specs/yoga/image-encryption.html
-/openstack/cinder-specs/specs/wallaby/image-encryption.html 301 /openstack/cinder-specs/specs/yoga/image-encryption.html
-/openstack/cinder-specs/specs/xena/image-encryption.html 301 /openstack/cinder-specs/specs/yoga/image-encryption.html
+/openstack/cinder-specs/specs/train/image-encryption.html 301 /openstack/cinder-specs/specs/zed/image-encryption.html
+/openstack/cinder-specs/specs/ussuri/image-encryption.html 301 /openstack/cinder-specs/specs/zed/image-encryption.html
+/openstack/cinder-specs/specs/victoria/image-encryption.html 301 /openstack/cinder-specs/specs/zed/image-encryption.html
+/openstack/cinder-specs/specs/wallaby/image-encryption.html 301 /openstack/cinder-specs/specs/zed/image-encryption.html
+/openstack/cinder-specs/specs/xena/image-encryption.html 301 /openstack/cinder-specs/specs/zed/image-encryption.html
+/openstack/cinder-specs/specs/yoga/image-encryption.html 301 /openstack/cinder-specs/specs/zed/image-encryption.html
 /openstack/cinder-specs/specs/train/support-glance-multiple-backend.html 301 /openstack/cinder-specs/specs/ussuri/support-glance-multiple-backend.html
 /openstack/cinder-specs/specs/train/query-cinder-resources-filter-by-time-comparison-operators.html 301 /openstack/cinder-specs/specs/ussuri/query-cinder-resources-filter-by-time-comparison-operators.html
 /openstack/cinder-specs/specs/newton/specify-volume_type-and-availability_zone-for-backup-restore-API.html 301 /openstack/cinder-specs/specs/wallaby/specify-volume_type-and-availability_zone-for-backup-restore-API.html
