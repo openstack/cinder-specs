@@ -237,7 +237,7 @@ Other end user impact
 There will be a new set of commands in the *python-cinderclient* to match the
 new REST API endpoints:
 
-* Set default: ``cinder default-type-set <project-id> <type-name>``
+* Set default: ``cinder default-type-set <type-name> <project-id>``
 
 * Unset default: ``cinder default-type-unset <project-id>``
 
