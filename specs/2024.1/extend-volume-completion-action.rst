@@ -421,7 +421,8 @@ Work Items
 * Add OpenStack SDK support.
 * Add Nova support.
 * Update drivers to use the feature.
-* Add integration tests.
+* Adapt the ``devstack-plugin-nfs-tempest`` CI-jobs to also test online volume
+  extend.
 
 Dependencies
 ============
@@ -435,9 +436,12 @@ Testing
   responses.
 * Unit tests for ``VolumeManager.extend_volume`` will test all the code paths
   described in `VolumeManager.extend_volume`_.
-* Integration tests will test the new behavior of the ``os-extend`` and
-  ``os-extend_volume_completion`` volume actions, as well as the interaction
-  between Cinder and Nova.
+* The new volume action cannot be independently tested by Tempest, because it
+  requires the volume to be in a state that cannot be reproduced externally.
+  It is, however, covered by the existing tests for online volume extend when
+  they are run with one of the volume drivers that use this feature.
+  The ``devstack-plugin-nfs-tempest`` jobs that run as part of the Cinder and
+  Nova CI gates will be configured to enable online volume extend tests.
 
 Documentation Impact
 ====================
@@ -454,4 +458,4 @@ References
 .. [1] https://review.opendev.org/c/openstack/cinder/+/739079
 .. [2] https://review.opendev.org/c/openstack/nova-specs/+/855490/6
 .. [3] https://review.opendev.org/c/openstack/cinder-specs/+/864020
-.. [4] https://review.opendev.org/c/openstack/nova-specs/+/877233
+.. [4] https://review.opendev.org/c/openstack/nova-specs/+/895648
