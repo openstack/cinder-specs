@@ -75,25 +75,27 @@ and the chances of introducing new bugs.
 
 This quota system will support 2 different drivers:
 
-- ``Counters``:  This will be similar to the old system, using counters in the
-  DB, but instead of doing reservations and commits/rollbacks for every
-  resource modification, it will only do reservations for the very few
-  operations that really need it to keep track of the resources while the
+- ``StoredQuotaDriver``:  This will be similar to the old system, using
+  counters in the DB, but instead of doing reservations and commits/rollbacks
+  for every resource modification, it will only do reservations for the very
+  few operations that really need it to keep track of the resources while the
   operation is in progress.
 
-- ``Counting``: This driver will no longer store usage and resource tracking in
-  the database table (``quota_usages``) and instead dynamically calculates each
-  quota check based on the resources that exist in the database.
+- ``DynamicQuotaDriver``: This driver will no longer store usage and resource
+  tracking in the database table (``quota_usages``) and instead dynamically
+  calculates each quota check based on the resources that exist in the
+  database.
 
   Calculations will be counting for resources (e.g. ``snapshots``) or sum of
   values for sizes (e.g. ``gigabytes``).
 
-  Just like the ``Counters`` driver this will use reservations as little as
-  possible.
+  Just like the ``StoredQuotaDriver`` driver this will use reservations as
+  little as possible.
 
 The reason for having 2 drivers instead of a single one is because there are
-trade-offs with each of the drivers, and the default will be the ``Counting``
-driver, for reasons explained later in the `Performance Impact`_ section.
+trade-offs with each of the drivers, and the default will be the
+``DynamicQuotaDriver`` driver, for reasons explained later in the
+`Performance Impact`_ section.
 
 The changes will try, as much as possible, to avoid over engineering the
 solution focusing on the 2 new drivers and current cinder and not solve all
@@ -140,10 +142,10 @@ except the ``per_volume_gigabytes``, since there cannot be any usage for it.
 Reservation values will be stored in the ``delta`` field of the
 ``reservations`` table just like they are today.
 
-For the ``Counting`` driver these values will be dynamically added, grouping by
-``resource`` for non deleted rows belonging to the specific project.  On the
-other hand the ``Counters`` driver will track the sum in the ``reserved`` field
-of the ``quota_usages`` table.
+For the ``DynamicQuotaDriver`` these values will be dynamically added,
+grouping by ``resource`` for non deleted rows belonging to the specific
+project.  On the other hand the ``StoredQuotaDriver`` will track the sum in
+the ``reserved`` field of the ``quota_usages`` table.
 
 Both drivers will adhere to the following rules when reporting in-use values:
 
@@ -228,7 +230,7 @@ does.
 The quota driver context manager starts a DB session/transaction in the
 provided ``context`` so the ``volume_create`` call will use that same session
 to create the volume record, and the transaction will be finalized when the
-code exists the context manager, thus ensuring that no other operations check
+code exits the context manager, thus ensuring that no other operations check
 the quota until the volume has been created.
 
 From a developer's point of view all this will be hidden, because at a higher
@@ -299,9 +301,9 @@ limits which provides:
   doesn't need to know about the ``no_snapshot_gb_quota`` configuration option.
 
 - If we want to add, in the future, snapshot specific quota limits -
-  ``snapshot_gigabytes`` and ``snapshot_gigabytes_<volume-ype>``- we'll be able
-  to do so without affecting any of the Cinder code with the sole exception of
-  the quota driver itself.
+  ``snapshot_gigabytes`` and ``snapshot_gigabytes_<volume-type>``- we'll be
+  able to do so without affecting any of the Cinder code with the sole
+  exception of the quota driver itself.
 
 Reservations
 ------------
@@ -310,11 +312,11 @@ For the new quota system the reservation commit and rollback operations will be
 grouped into a single context manager that handles both cases.  Committing and
 rolling back reservations have different meanings for the 2 drivers.
 
-For the ``Counting`` driver these are *noop* operations, since checks use the
-DB values every time and the database has already been modified in the same
-transaction that the reservations are removed.  On the other hand the
-``Counters`` driver needs to modify the ``in_use`` and ``reserved`` counters in
-the ``quota_usages`` table accordingly to the operation.
+For the ``DynamicQuotaDriver`` these are *noop* operations, since checks use
+the DB values every time and the database has already been modified in the
+same transaction that the reservations are removed.  On the other hand the
+``StoredQuotaDriver`` needs to modify the ``in_use`` and ``reserved`` counters
+in the ``quota_usages`` table accordingly to the operation.
 
 As mentioned before, reservations will only be necessary for specific
 operations, to be exact on 3 operations: extend, transfer, and retype.
@@ -332,8 +334,8 @@ Each of these operations have different reasons for requiring reservations:
 - Transfer: Under normal circumstances accepting a transfer would not require
   the use of a reservation, as we should be able to check the quota and do the
   database changes to accept the transfer in the same transaction.
-  Unfortunately the *SolidFire* driver needs to make some changes in its
-  backend on transfer, so the volume service has to make a driver call.
+  Unfortunately the *SolidFire* and *VMDK* drivers need to make some changes in
+  their backend on transfer, so the volume service has to make a driver call.
 
   We cannot keep the database locked while the driver call completes, as it can
   take some time and we don't want to prevent the API from processing other
@@ -342,12 +344,12 @@ Each of these operations have different reasons for requiring reservations:
   That is why reservations will be created before calling the driver and
   cleared after accepting the resources.
 
-  In terms of reservations, transfers are complex for the ``Counters`` driver,
-  because when completing one it needs to modify 2 different projects.  One to
-  increase counters and the other to decrease them, so higher levels will need
-  to make 2 different calls for 2 different projects, one with positive and one
-  with negative numbers and negative numbers should ignore quota usage and
-  limits.
+  In terms of reservations, transfers are complex for the
+  ``StoredQuotaDriver``, because when completing one it needs to modify 2
+  different projects.  One to increase counters and the other to decrease them,
+  so higher levels will need to make 2 different calls for 2 different
+  projects, one with positive and one with negative numbers and negative
+  numbers should ignore quota usage and limits.
 
   When storing reservations for transfer of volumes with snapshots they have
   to be stored separately in case someone restarts the service after changing
@@ -430,17 +432,17 @@ new quota system we have bigger problems, because it's not only
 ``no_snapshot_gb_quota`` that can be changed, but also ``quota_driver``, and
 changing the quota driver means that a quota system may need to recalculate
 things to ensure that it starts operating with the correct quota assumptions.
-For example when changing from the ``Counting`` driver to the ``Counter``
-driver all the counters in the DB will be wrong, so the ``Counter`` driver
-needs to calculate the counters before it can start working or the whole quota
-system will not operate correctly.
+For example when changing from the ``DynamicQuotaDriver`` to the
+``StoredQuotaDriver`` all the counters in the DB will be wrong, so the
+``StoredQuotaDriver`` needs to calculate the counters before it can start
+working or the whole quota system will not operate correctly.
 
 These configuration options are not the kind of things that are frequently
 changed, and we expect most deployments to never have to change them at all,
 but Cinder should still provide a way for them to be safely changed since one
 of the cases we expect to happen is a deployment outgrowing the usefulness of
-the ``Counting`` driver and running into performance issues.  In that case they
-will want to switch to the ``Counter`` driver.
+the ``DynamicQuotaDriver`` and running into performance issues.  In that case
+they will want to switch to the ``StoredQuotaDriver``.
 
 To support changing configuration option changes to the quota system there are
 3 things that the new quota system needs to be able to do:
@@ -504,9 +506,9 @@ Initialization method for the quota driver where the ``driver_switched``
 parameter indicates whether the last run was done using the same Quota driver
 or if a different one was used and this is the first run with this one.
 
-This is important because switching to the ``Counters`` driver from the
-``Counting`` driver means that ``in-use`` and ``reserved`` counters need to be
-recalculated since they could be out of sync or missing altogether.
+This is important because switching to the ``StoredQuotaDriver`` from the
+``DynamicQuotaDriver`` means that ``in-use`` and ``reserved`` counters need to
+be recalculated since they could be out of sync or missing altogether.
 
 This effort is going to focus on only supporting these 2 quota drivers and
 avoid unnecessary complexity, because if we wanted to support other kind of
@@ -519,8 +521,8 @@ when switching.
 The interface can be enhanced if a future quota driver finds it insufficient.
 
 The ``no_snapshot_gb_quota_toggled`` parameter indicates whether the option has
-changed since the last run.  This is important for the ``Counters`` driver that
-would need to recalculate ``in-use`` and ``reserved`` counters.  This is
+changed since the last run.  This is important for the ``StoredQuotaDriver``
+that would need to recalculate ``in-use`` and ``reserved`` counters.  This is
 something that doesn't work correctly right now.
 
 Drivers can block the Cinder database when synchronizing when the driver has
@@ -536,7 +538,7 @@ resync
 
     def resync(self, context, project_id):
 
-This is only relevant for the ``Counters`` driver, and is intended to allow
+This is only relevant for the ``StoredQuotaDriver``, and is intended to allow
 the ``cinder-manage`` command request a recalculation of quotas for a specific
 project or for the whole deployment.
 
@@ -789,7 +791,7 @@ group_free
 Context manager to free group quotas upon context exiting.  The DB row soft
 deletion of groups will be enclosed by this call.
 
-This is only relevant for the ``Counters`` driver that needs to decrease its
+This is only relevant for the ``StoredQuotaDriver`` that needs to decrease its
 counters.
 
 backup_check_cm
@@ -850,7 +852,7 @@ backup_free
 Context manager to free backup quotas upon context exiting.  The DB row soft
 deletion of the backup will be enclosed by this call.
 
-This is only relevant for the ``Counters`` driver that needs to decrease its
+This is only relevant for the ``StoredQuotaDriver`` that needs to decrease its
 counters.
 
 vol_snap_check_and_reserve_cm
@@ -928,7 +930,7 @@ reservations will pass the volume's ``uuid``.
 Both drivers must use different entries for volume and snapshot gigabyte
 reservations because the ``no_snapshot_gb_quota_toggled`` configuration option
 may be changed and the service restarted before a transfer is accepted, and the
-``Counters`` driver will need to make a decision both when recalculating (if
+``StoredQuotaDriver`` will need to make a decision both when recalculating (if
 driver has changed) and on transfer accept.
 
 This context manager must ensure that there are no race conditions with
@@ -936,8 +938,10 @@ concurrent calls to ``vol_snap_check_and_reserve_cm`` within different threads
 and processes in the node as well as across different nodes.
 
 For the database driver this can be achieved using a ``SELECT FOR UPDATE`` on
-the ``backups`` and ``backup_gigabytes`` quota limits which blocks other backup
-requests until the context manager exists.
+the ``volumes``, ``volumes_<volume-type>``, ``snapshots``,
+``snapshots_<volume-type>``, ``gigabytes`` and ``gigabytes_<volume_type>``
+quota limits which blocks other volume and snapshot requests until the context
+manager exists.
 
 Users of this context manager should try to keep the code within the context
 manager to a minimum to allow higher concurrency.
@@ -987,7 +991,7 @@ vol_snap_free
 
 Context manager to free volume and snapshot quotas upon context exiting.
 
-This is only relevant for the ``Counters`` driver that needs to decrease its
+This is only relevant for the ``StoredQuotaDriver`` that needs to decrease its
 counters.
 
 reservations_clean_cm
@@ -1004,14 +1008,14 @@ The ``uuid`` is the "primary" uuid of the operation and it won't be a different
 uuid for each resource that has been reserved. E.g. when accepting a volume
 transfer with its snapshots, all reservations will use the volume's id.
 
-For the ``Counting`` driver this is mostly just deleting the entries from the
-database, but for the ``Counters`` driver it needs to adjust the ``in-use`` and
-``reserved`` counters.
+For the ``DynamicQuotaDriver`` this is mostly just deleting the entries from
+the database, but for the ``StoredQuotaDriver`` it needs to adjust the
+``in-use`` and ``reserved`` counters.
 
 These counters may be from different projects, for the transfer of volumes, so
 the ``context``'s ``project_id`` will be ignored.
 
-The ``Counting`` driver must also take into account the
+The ``DynamicQuotaDriver`` driver must also take into account the
 ``no_snapshot_gb_quota_toggled`` configuration option when committing a
 transfer, because the snapshot reservations are stored in different row entries
 in case the option is changed and the service rebooted before a transfer is
@@ -1317,7 +1321,7 @@ Table ``global_data`` will have the following fields:
   ``no_snapshot_gb_quota`` or ``quota_driver``.
 
 - ``value``: String with the value of the key. For example ``true`` or
-  ``Counters``.
+  ``StoredQuotaDriver``.
 
 REST API impact
 ---------------
@@ -1367,22 +1371,22 @@ Performance Impact
 
 Some preliminary code was prototyped for the volume creation and get usage
 operations to evaluate the performance of the different quota drivers: the old,
-the new ``Counters``, and the new ``Counting``.
+the new ``StoredQuotaDriver``, and the new ``DynamicQuotaDriver``.
 
-The results showed that the new ``Counters`` system was twice as fast as the
-old code in both operations, and the ``Counting`` was slower than the
-``Counters`` driver, as expected, but faster than the old one until there are
-around 26000 resources per project.
+The results showed that the new ``StoredQuotaDriver`` system was twice as fast
+as the old code in both operations, and the ``DynamicQuotaDriver`` was slower
+than the ``StoredQuotaDriver``, as expected, but faster than the old one until
+there are around 26000 resources per project.
 
-So the ``Counting`` driver is less likely to be out of sync with reality
-because it doesn't store fixed values, but the ``Counters`` driver has better
+So the ``DynamicQuotaDriver`` is less likely to be out of sync with reality
+because it doesn't store fixed values, but the ``StoredQuotaDriver`` has better
 performance, and that's the reason why both drivers are going to be
 implemented, to allow system administrators decide which one is better for
 them.
 
-The default driver will be ``Counting`` to prioritize the usage values always
-stay in sync, and large deployments or those looking for best performance will
-be able to use the ``Counters`` quota driver.
+The default driver will be ``DynamicQuotaDriver`` to prioritize the usage
+values always stay in sync, and large deployments or those looking for best
+performance will be able to use the ``StoredQuotaDriver``.
 
 Deployments may even start with one quota system and then switch to the other
 if necessary.
@@ -1403,7 +1407,7 @@ Other deployer impact
 * New quota system will no longer have an internal brute force cleaning
   mechanism of quotas, the volume state change API will be used to clean
   reservations, and the ``cinder-manage quota sync`` command will be used for
-  the ``Counters`` driver, so the following configuration options will be
+  the ``StoredQuotaDriver``, so the following configuration options will be
   deprecated and will no longer have any effect:
   ``reservation_expire``, ``reservation_clean_interval``, ``until_refresh``,
   and ``max_age``.
@@ -1432,6 +1436,8 @@ Assignee(s)
 Primary assignee:
   Gorka Eguileor (geguileo)
 
+Other contributors:
+  Rajat Dhasmana (whoami-rajat)
 
 Work Items
 ----------
@@ -1439,8 +1445,8 @@ Work Items
 As discussed in the PTG/mid-cycle this work may be split in 2 phases that may
 be implemented in different releases:
 
-Phase 1: ``Counting`` driver
-****************************
+Phase 1: ``DynamicQuotaDriver``
+*******************************
 
 - Deprecate configuration options and log warnings for deployments that are
   using custom quota drivers.
@@ -1454,7 +1460,7 @@ Phase 1: ``Counting`` driver
 - Remove deprecated ``consistencygroups`` resources from the ``quota_classes``,
   ``quotas``, ``quota_usages`` and ``reservations`` table.
 
-- Write the ``Counting`` database quota driver.
+- Write the ``DynamicQuotaDriver`` database quota driver.
 
 - Make the following operations use the new quota driver:
 
@@ -1476,19 +1482,19 @@ Phase 1: ``Counting`` driver
 
 - Make the ``cinder-manage quota sync`` and ``check`` be ``noop``.
 
-- Write the ``Counting`` database quota driver unit tests.
+- Write the ``DynamicQuotaDriver`` database quota driver unit tests.
 
 - Update existing unit tests.
 
 - Write initial documentation and mention that a more efficient driver will be
   coming in the future.
 
-Phase 2: ``Counters`` driver
-****************************
+Phase 2: ``StoredQuotaDriver``
+******************************
 
-- Write the ``Counters`` database quota driver.
+- Write the ``StoredQuotaDriver`` database quota driver.
 
-- Write the ``Counters`` database quota driver unit tests.
+- Write the ``StoredQuotaDriver`` database quota driver unit tests.
 
 - Update the ``cinder-manage quota sync`` and ``check`` commands.
 
