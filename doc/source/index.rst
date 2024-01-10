@@ -13,177 +13,6 @@ Block Storage Service Specifications (cinder)
 
    specs/2024.1/*
 
-2023.2 approved specs
-=====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/2023.2/*
-
-2023.1 approved specs
-=====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/2023.1/*
-
-Zed approved specs
-==================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/zed/*
-
-Yoga approved specs
-===================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/yoga/*
-
-Xena approved specs
-===================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/xena/*
-
-Wallaby approved specs
-=======================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/wallaby/*
-
-Victoria approved specs
-=======================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/victoria/*
-
-Ussuri approved specs
-=====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/ussuri/*
-
-Train approved specs
-====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/train/*
-
-Stein approved specs
-====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/stein/*
-
-Rocky approved specs
-====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/rocky/*
-
-Queens approved specs
-=====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/queens/*
-
-Pike approved specs
-===================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/pike/*
-
-Ocata approved specs
-====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/ocata/*
-
-Newton approved specs
-=====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/newton/*
-
-Mitaka approved specs
-=====================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/mitaka/*
-
-Liberty approved specs
-======================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/liberty/*
-
-Kilo approved specs
-===================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/kilo/*
-
-Juno approved specs
-===================
-
-.. toctree::
-   :glob:
-   :maxdepth: 1
-
-   specs/juno/*
-
 Untargeted specs
 ================
 
@@ -204,6 +33,179 @@ Untargeted specs
 
    specs/untargeted/*
 
+Previously approved specs
+=========================
+
+2023.2
+------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/2023.2/*
+
+2023.1
+------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/2023.1/*
+
+Zed
+---
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/zed/*
+
+Yoga
+----
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/yoga/*
+
+Xena
+----
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/xena/*
+
+Wallaby
+--------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/wallaby/*
+
+Victoria
+--------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/victoria/*
+
+Ussuri
+------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/ussuri/*
+
+Train
+-----
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/train/*
+
+Stein
+-----
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/stein/*
+
+Rocky
+-----
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/rocky/*
+
+Queens
+------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/queens/*
+
+Pike
+----
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/pike/*
+
+Ocata
+-----
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/ocata/*
+
+Newton
+------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/newton/*
+
+Mitaka
+------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/mitaka/*
+
+Liberty
+-------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/liberty/*
+
+Kilo
+----
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/kilo/*
+
+Juno
+----
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/juno/*
 
 Indices and tables
 ==================
