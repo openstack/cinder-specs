@@ -458,4 +458,4 @@ References
 .. [1] https://review.opendev.org/c/openstack/cinder/+/739079
 .. [2] https://review.opendev.org/c/openstack/nova-specs/+/855490/6
 .. [3] https://review.opendev.org/c/openstack/cinder-specs/+/864020
-.. [4] https://review.opendev.org/c/openstack/nova-specs/+/895648
+.. [4] https://review.opendev.org/c/openstack/nova-specs/+/917133
