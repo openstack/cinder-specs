@@ -16,14 +16,14 @@ and rootwrap produce significant performance overhead. This blueprint
 is one of the series of blueprints that would cover mitigating rootwrap
 part of the overhead using new mode of operations for rootwrap - daemon
 mode. These blueprints will be created in several projects starting
-with oslo.rootwrap [#rw_bp].
+with oslo.rootwrap [#rw_bp]_.
 
 Problem description
 ===================
 
-As you can see in [#ne_ml] rootwrap presents big performance overhead for
+As you can see in [#ne_ml]_ rootwrap presents big performance overhead for
 Neutron. Impact on Cinder is not as significant but it is still there.
-Details of the overhead are covered in [#rw_bp].
+Details of the overhead are covered in [#rw_bp]_.
 
 Use Cases
 =========
@@ -42,7 +42,7 @@ Note that this is not usual RPC over some message queue. It uses UNIX socket,
 so no remote connections are available. It also uses digest authentication
 with key shared over stdout (pipe) with parent process, so no other processes
 will have access to the daemon. Further details of rootwrap daemon are covered
-in [#rw_bp].
+in [#rw_bp]_.
 
 ``use_rootwrap_daemon`` configuration option should be added that will make
 ``utils.execute`` use daemon instead of usual rootwrap.
@@ -50,7 +50,7 @@ in [#rw_bp].
 Alternatives
 ------------
 
-Alternative approaches have been discussed in [#rw_eth].
+Alternative approaches have been discussed in [#rw_eth]_.
 
 Data model impact
 -----------------
@@ -69,7 +69,7 @@ This change requires additional endpoint to be available to run as root -
 ``cinder-rootwrap-daemon``.
 
 All security issues with using client+daemon instead of plain rootwrap are
-covered in [#rw_bp].
+covered in [#rw_bp]_.
 
 Notifications impact
 --------------------
@@ -87,7 +87,7 @@ Performance Impact
 This change introduces performance boost for disk operations that are
 required to be run with root privileges. Current state of rootwrap daemon
 in Neutron shows over 10x speedup comparing to usual ``sudo rootwrap`` call.
-Total speedup for Cinder shows impressive results too [#rw_perf]:
+Total speedup for Cinder shows impressive results too [#rw_perf]_:
 test scenario CinderVolumes.create_and_delete_volume
 Current performance :
 
