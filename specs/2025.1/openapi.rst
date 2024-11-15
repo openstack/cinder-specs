@@ -212,6 +212,9 @@ Work Items
 - Add response body schemas
 - Add decorator to validate response body schemas against response
 - Add tests to validate existence of response body schemas
+- Update ``doc/source/contributor/api_microversion_dev.rst`` to include
+  the requirement that anyone contributing a change that requires a new
+  microversion is expected to provide request and response schemas
 
 Dependencies
 ============
@@ -253,7 +256,5 @@ History
 
    * - Release Name
      - Description
-   * - 2024.02
-     - Introduced
    * - 2025.01
-     - Re-proposed
+     - Introduced
