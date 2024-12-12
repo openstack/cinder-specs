@@ -7,3 +7,5 @@
 gettext [!platform:suse doc test]
 gettext-runtime [platform:suse]
 graphviz [doc test]
+
+libpcre3-dev [platform:ubuntu]
