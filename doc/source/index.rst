@@ -4,6 +4,15 @@
 Block Storage Service Specifications (cinder)
 =============================================
 
+2026.1 approved specs
+=====================
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/2026.1/*
+
 2025.1 approved specs
 =====================
 
