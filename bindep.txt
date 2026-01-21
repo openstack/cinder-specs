@@ -5,7 +5,8 @@
 # gettext and graphviz are needed by doc builds only. For transition,
 # have them in both doc and test.
 gettext [!platform:suse doc test]
-gettext-runtime [platform:suse]
+gettext-runtime [platform:suse doc test]
 graphviz [doc test]
 
-libpcre3-dev [platform:ubuntu]
+libpcre2-dev [platform:ubuntu doc test]
+pcre2-devel [platform:rpm doc test]
