@@ -1,15 +1,10 @@
-========================
-Team and repository tags
-========================
+===============================
+OpenStack Cinder Specifications
+===============================
 
 .. image:: https://governance.openstack.org/tc/badges/cinder-specs.svg
-    :target: https://governance.openstack.org/tc/reference/tags/index.html
 
 .. Change things from this point on
-
-==================================
-OpenStack Cinder Specifications
-==================================
 
 This git repository is used to hold approved design specifications for additions
 to the Cinder project.  Reviews of the specs are done in gerrit, using a
