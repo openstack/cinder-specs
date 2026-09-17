@@ -4,14 +4,14 @@
 Block Storage Service Specifications (cinder)
 =============================================
 
-2026.2 approved specs
+2027.1 approved specs
 =====================
 
 .. toctree::
    :glob:
    :maxdepth: 1
 
-   specs/2026.2/*
+   specs/2027.1/*
 
 Untargeted specs
 ================
@@ -35,6 +35,15 @@ Untargeted specs
 
 Previously approved specs
 =========================
+
+2026.2
+------
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
+   specs/2026.2/*
 
 2026.1
 ------
